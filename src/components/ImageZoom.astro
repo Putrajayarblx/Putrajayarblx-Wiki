@@ -1,0 +1,37 @@
+---
+import PwIcon from './PwIcon.astro';
+---
+
+<dialog class="pw-zoom" data-pw-zoom aria-label="Image preview">
+  <button class="pw-zoom__close" type="button" data-pw-zoom-close aria-label="Close image">
+    <PwIcon name="bi-x-lg" />
+  </button>
+  <img data-pw-zoom-image src="" alt="" />
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-pw-zoom]');
+  const zoomed = dialog?.querySelector<HTMLImageElement>('[data-pw-zoom-image]');
+  const close = dialog?.querySelector<HTMLButtonElement>('[data-pw-zoom-close]');
+
+  if (dialog && zoomed) {
+    document.addEventListener('click', (event) => {
+      const image = (event.target as Element | null)?.closest?.(
+        '.sl-markdown-content img'
+      ) as HTMLImageElement | null;
+
+      if (!image) return;
+      event.preventDefault();
+
+      zoomed.src = image.currentSrc || image.src;
+      zoomed.alt = image.alt || '';
+      if (!dialog.open) dialog.showModal();
+    });
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    close?.addEventListener('click', () => dialog.close());
+  }
+</script>
