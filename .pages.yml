@@ -36,7 +36,8 @@ content:
             type: string
           - name: rows
             label: Rows
-            type: list
+            type: object
+            list: true
             fields:
               - name: label
                 label: Label
