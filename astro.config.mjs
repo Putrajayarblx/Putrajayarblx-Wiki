@@ -9,13 +9,17 @@ export default defineConfig({
       description:
         'A practical, community-maintained reference library for Putrajaya of Roblox.',
       logo: {
-        src: './src/assets/logo-mark.png',
+        light: './src/assets/logo-mark.png',
+        dark: './src/assets/logo-mark-dark.png',
         alt: 'Putrajaya.rblx Wiki',
       },
       favicon: '/favicon.png',
+      lastUpdated: true,
       components: {
-        SocialIcons: './src/components/SocialIcons.astro',
+        Head: './src/components/Head.astro',
         Header: './src/components/Header.astro',
+        Footer: './src/components/Footer.astro',
+        SocialIcons: './src/components/SocialIcons.astro',
       },
       social: [
         {
@@ -47,26 +51,6 @@ export default defineConfig({
             rel: 'stylesheet',
             href: 'https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..800;1,300..800&display=swap',
           },
-        },
-        {
-          tag: 'link',
-          attrs: {
-            rel: 'stylesheet',
-            href: 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.min.css',
-          },
-        },
-        {
-          tag: 'link',
-          attrs: {
-            rel: 'stylesheet',
-            href: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css',
-          },
-        },
-        {
-          // Header is solid at the top, transparent once the page scrolls.
-          tag: 'script',
-          content:
-            "(()=>{const r=document.documentElement;const s=()=>{r.classList.toggle('pw-scrolled',window.scrollY>6)};s();window.addEventListener('scroll',s,{passive:true})})();",
         },
       ],
       customCss: ['./src/styles/custom.css'],

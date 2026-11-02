@@ -1,0 +1,24 @@
+---
+interface Props {
+  name: string;
+  class?: string;
+}
+
+const { name, class: className = '' } = Astro.props;
+
+const icons = import.meta.glob('../icons/*.svg', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+const raw = icons[`../icons/${name}.svg`];
+const svg = raw
+  ? raw.replace(
+      '<svg',
+      `<svg class="pw-icon ${className}" fill="currentColor" aria-hidden="true" focusable="false"`
+    )
+  : '';
+---
+
+{svg && <Fragment set:html={svg} />}

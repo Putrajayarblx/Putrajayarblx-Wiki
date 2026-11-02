@@ -1,0 +1,59 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import PwIcon from './PwIcon.astro';
+---
+
+<Default />
+
+<div class="pw-helpful" data-pw-helpful hidden>
+  <p>Was this page helpful?</p>
+  <button class="pw-helpful__btn" type="button" data-pw-vote="yes">
+    <PwIcon name="bi-hand-thumbs-up" />
+    Yes
+  </button>
+  <button class="pw-helpful__btn" type="button" data-pw-vote="no">
+    <PwIcon name="bi-hand-thumbs-down" />
+    No
+  </button>
+  <span class="pw-helpful__thanks" data-pw-thanks hidden></span>
+</div>
+
+<script>
+  const content = document.querySelector('.sl-markdown-content');
+  const widget = document.querySelector<HTMLElement>('[data-pw-helpful]');
+  // Only on documentation pages (they have a sidebar), not the splash home.
+  const isDocPage = Boolean(document.getElementById('starlight__sidebar'));
+
+  if (content && widget && isDocPage) {
+    const words = (content.textContent ?? '').trim().split(/\s+/).filter(Boolean).length;
+    const minutes = Math.max(1, Math.round(words / 220));
+    const title = document.querySelector('h1[data-page-title], #_top');
+    if (title) {
+      const line = document.createElement('p');
+      line.className = 'pw-readtime';
+      line.textContent = `${minutes} min read`;
+      title.insertAdjacentElement('afterend', line);
+    }
+
+    const key = `pw-helpful:${location.pathname}`;
+    const thanks = widget.querySelector<HTMLElement>('[data-pw-thanks]');
+    const show = (vote: string) => {
+      if (!thanks) return;
+      thanks.hidden = false;
+      thanks.textContent =
+        vote === 'yes' ? 'Thanks — glad it helped.' : 'Thanks — noted for review.';
+    };
+
+    const saved = localStorage.getItem(key);
+    widget.hidden = false;
+    if (saved) show(saved);
+
+    widget.querySelectorAll<HTMLButtonElement>('[data-pw-vote]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const vote = button.dataset.pwVote ?? '';
+        localStorage.setItem(key, vote);
+        show(vote);
+      });
+    });
+  }
+</script>

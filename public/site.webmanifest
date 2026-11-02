@@ -1,0 +1,24 @@
+{
+  "name": "Putrajaya.rblx Wiki",
+  "short_name": "Putrajaya Wiki",
+  "description": "A practical, community-maintained handbook for Putrajaya of Roblox.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7fbfd",
+  "theme_color": "#123a8f",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

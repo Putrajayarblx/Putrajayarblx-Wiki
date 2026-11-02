@@ -1,0 +1,44 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
+
+const site = 'https://putrajayarblx-wiki.vercel.app';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Putrajaya.rblx Wiki',
+    url: `${site}/`,
+    inLanguage: 'en',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${site}/?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Putrajaya of Roblox',
+    url: 'https://putrajayarblx.github.io/putrajaya-of-roblox/',
+    logo: `${site}/og.png`,
+    sameAs: ['https://github.com/Putrajayarblx'],
+  },
+];
+---
+
+<Default />
+
+<meta property="og:image" content={`${site}/og.png`} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Putrajaya.rblx Wiki" />
+<meta name="twitter:image" content={`${site}/og.png`} />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<Analytics />
+<SpeedInsights />

@@ -1,66 +1,126 @@
 ---
 import Default from '@astrojs/starlight/components/Header.astro';
+import PwIcon from './PwIcon.astro';
 ---
 
 <Default />
 
-<div class="pw-menu" data-pw-menu>
+<div class="pw-progress" aria-hidden="true"><span data-pw-progress-bar></span></div>
+
+<div class="pw-mnav" data-pw-menu>
   <button
-    class="pw-menu__fab"
+    class="pw-mnav__button"
     type="button"
     aria-label="Open menu"
     aria-expanded="false"
     aria-controls="pw-menu-panel"
   >
-    <i class="bi bi-list" aria-hidden="true"></i>
+    <PwIcon name="bi-list" class="pw-mnav__icon-open" />
+    <PwIcon name="bi-x-lg" class="pw-mnav__icon-close" />
   </button>
 
-  <div class="pw-menu__scrim" data-pw-menu-close hidden></div>
+  <div class="pw-mnav__scrim" data-pw-menu-close hidden></div>
 
-  <nav class="pw-menu__panel" id="pw-menu-panel" aria-label="Quick links" hidden>
-    <p class="pw-menu__title">Menu</p>
+  <nav class="pw-mnav__sheet" id="pw-menu-panel" aria-label="Menu" hidden>
+    <p class="pw-mnav__title">Menu</p>
+
+    <button class="pw-mnav__row" type="button" data-pw-search>
+      <PwIcon name="bi-search" />
+      <span>Search</span>
+      <kbd>Ctrl K</kbd>
+    </button>
+
+    <button class="pw-mnav__row" type="button" data-pw-theme aria-pressed="false">
+      <PwIcon name="bi-moon-stars" class="pw-mnav__theme-moon" />
+      <PwIcon name="bi-sun" class="pw-mnav__theme-sun" />
+      <span data-pw-theme-label>Dark mode</span>
+      <span class="pw-mnav__switch" aria-hidden="true"><span></span></span>
+    </button>
+
+    <div class="pw-mnav__divider" role="presentation"></div>
+
     <a href="/getting-started/">
-      <i class="bi bi-signpost-2" aria-hidden="true"></i>
+      <PwIcon name="bi-signpost-2" />
       Getting started
     </a>
     <a href="/city-roles/">
-      <i class="bi bi-people" aria-hidden="true"></i>
+      <PwIcon name="bi-people" />
       Roles and departments
     </a>
     <a href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
-      <i class="bi bi-house-door" aria-hidden="true"></i>
+      <PwIcon name="bi-house-door" />
       Main site
     </a>
     <a href="https://github.com/Putrajayarblx/Putrajayarblx-Wiki">
-      <i class="bi bi-github" aria-hidden="true"></i>
+      <PwIcon name="bi-github" />
       GitHub
     </a>
   </nav>
 </div>
 
 <script>
-  document.querySelectorAll('[data-pw-menu]').forEach((menu) => {
-    const button = menu.querySelector('.pw-menu__fab');
-    const panel = menu.querySelector('.pw-menu__panel');
-    const scrim = menu.querySelector('.pw-menu__scrim');
-    if (!button || !panel || !scrim) return;
+  const root = document.documentElement;
 
-    const setOpen = (open) => {
-      panel.hidden = !open;
+  // ---- scroll progress + header background state ----
+  const bar = document.querySelector('[data-pw-progress-bar]');
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    if (bar) bar.style.transform = `scaleX(${ratio})`;
+    root.classList.toggle('pw-scrolled', window.scrollY > 6);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+
+  // ---- any search trigger (hero, menu) opens Starlight's modal ----
+  const openSearch = () =>
+    document.querySelector<HTMLButtonElement>('site-search button[data-open-modal]')?.click();
+  document.querySelectorAll('[data-pw-search]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const sheet = el.closest('.pw-mnav__sheet');
+      if (sheet instanceof HTMLElement) sheet.hidden = true;
+      openSearch();
+    });
+  });
+
+  // ---- mobile menu ----
+  document.querySelectorAll('[data-pw-menu]').forEach((menu) => {
+    const button = menu.querySelector('.pw-mnav__button');
+    const sheet = menu.querySelector('.pw-mnav__sheet');
+    const scrim = menu.querySelector('.pw-mnav__scrim');
+    if (!button || !sheet || !scrim) return;
+
+    const setOpen = (open: boolean) => {
+      sheet.hidden = !open;
       scrim.hidden = !open;
       button.setAttribute('aria-expanded', String(open));
       button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      const icon = button.querySelector('i');
-      if (icon) icon.className = open ? 'bi bi-x-lg' : 'bi bi-list';
     };
 
-    button.addEventListener('click', () => setOpen(panel.hidden));
+    button.addEventListener('click', () => setOpen(sheet.hidden));
     scrim.addEventListener('click', () => setOpen(false));
-    panel.addEventListener('click', (event) => {
-      if (event.target.closest('a')) setOpen(false);
+    sheet.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('a')) setOpen(false);
     });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !panel.hidden) setOpen(false);
+      if (event.key === 'Escape' && !sheet.hidden) setOpen(false);
     });
+
+    // theme: same key Starlight uses
+    const themeButton = sheet.querySelector('[data-pw-theme]');
+    const themeLabel = sheet.querySelector('[data-pw-theme-label]');
+    const syncTheme = () => {
+      const dark = root.dataset.theme === 'dark';
+      if (themeLabel) themeLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+      themeButton?.setAttribute('aria-pressed', String(dark));
+    };
+    themeButton?.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      localStorage.setItem('starlight-theme', next);
+      syncTheme();
+    });
+    syncTheme();
   });
 </script>
