@@ -1713,3 +1713,11 @@ header .site-title img {
     margin-inline: auto;
   }
 }
+
+/* Very wide screens: move the info box into the gap between the text column
+   and the TOC, so the article keeps its full reading width. */
+@media (min-width: 110rem) {
+  .pw-infobox {
+    margin-inline-end: -20rem;
+  }
+}
