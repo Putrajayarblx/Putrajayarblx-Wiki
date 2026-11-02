@@ -19,6 +19,6 @@ Putrajaya is built around strong roleplay structures and meaningful public servi
 Choose a role that fits your interests and the kind of story you want to build. Strong communities are built by players who stay active and contribute intentionally.
 
 :::caution
-Recruitment for departments opens in cycles, not on demand. Waiting for an opening is normal â€” joining a department is not a race.
+Recruitment for departments opens in cycles, not on demand. Waiting for an opening is normal — joining a department is not a race.
 :::
 
