@@ -1093,7 +1093,7 @@ header .site-title img {
   font-size: 0.7rem;
 }
 
-/* Soft gradient wash behind the hero (no repeating rays). */
+/* Soft gradient wash behind the hero — no ray pattern, no logo artwork. */
 .hero::after {
   position: absolute;
   inset: -30% -8% auto -8%;
@@ -1101,16 +1101,16 @@ header .site-title img {
   height: 132%;
   background:
     radial-gradient(
-      58% 76% at 76% 18%,
-      color-mix(in srgb, var(--pw-amber) 16%, transparent) 0%,
-      transparent 70%
+      64% 80% at 78% 14%,
+      color-mix(in srgb, var(--pw-amber) 22%, transparent) 0%,
+      transparent 72%
     ),
     radial-gradient(
-      52% 70% at 14% 34%,
-      color-mix(in srgb, var(--pw-teal) 13%, transparent) 0%,
-      transparent 72%
+      56% 74% at 12% 30%,
+      color-mix(in srgb, var(--pw-teal) 20%, transparent) 0%,
+      transparent 74%
     );
-  filter: blur(6px);
+  filter: blur(10px);
   content: '';
   pointer-events: none;
 }
