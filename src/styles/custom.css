@@ -26,7 +26,7 @@
     monospace;
 
   /* Tighter table-of-contents column and mobile TOC bar. */
-  --sl-sidebar-width: 15rem;
+  --sl-sidebar-width: 16rem;
   --sl-mobile-toc-height: 2.25rem;
   /* Use more of the horizontal space for article text (default is 45rem). */
   --sl-content-width: 45rem;
@@ -651,8 +651,8 @@ mobile-starlight-toc summary .toggle {
   }
 
   .right-sidebar-container {
-    width: 15rem;
-    max-width: 15rem;
+    width: 16rem;
+    max-width: 16rem;
   }
 
   /* The TOC track is wider than the visible panel, biasing the centred
@@ -1841,8 +1841,8 @@ header .site-title img {
 /* Desktop: panel lives inline under the table of contents. */
 .pw-appearance__panel--rail {
   position: static;
-  width: 15rem;
-  max-width: 15rem;
+  width: 16rem;
+  max-width: 16rem;
   margin: 1.1rem 0 0;
   padding: 0.75rem 0 0;
   border: 0;
@@ -1881,4 +1881,5 @@ html[data-pw-width='wide'] {
     bottom: 4.5rem;
   }
 }
+
 
