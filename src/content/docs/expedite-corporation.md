@@ -16,8 +16,10 @@ infobox:
       value: "2025"
     - label: Headquarters
       value: Menara L&G, Presint 3, W.P Putrajaya, Putrajaya.rblx
-    - label: Board of Directors
+    - label: Key people
       value: RyssNzr, PlaneProMaster
+    - label: Locale
+      value: Putrajaya and Kuching
     - label: Link
       value: Discord
       href: https://discord.gg/BCQNGRCMcn
@@ -46,6 +48,10 @@ In 2026, Expedite began it's long-delayed operations in Kuching, Sarawak replaci
 ## Operations
 
 The corporation operates within the public transportation sector. Its activities are associated with passenger transportation, particularly bus-based public transit services. Its branding features a red-and-black public transit bus, reflecting its transportation identity.
+
+> ![Expedite advertisement](/uploads/ExpediteAd5(1).png)
+>
+> An advertisement depicting two Expedite busses stopped at a bus stop whilst operating in Kuching.
 
 
 
