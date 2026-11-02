@@ -29,7 +29,7 @@
   --sl-sidebar-width: 16rem;
   --sl-mobile-toc-height: 2.25rem;
   /* Use more of the horizontal space for article text (default is 45rem). */
-  --sl-content-width: clamp(45rem, 58vw, 60rem);
+  --sl-content-width: 45rem;
 
   --sl-color-accent-low: #d9ecf9;
   --sl-color-accent: #2f7fb8;
@@ -1697,5 +1697,31 @@ header .site-title img {
 
   .pw-infobox__rows {
     grid-template-columns: 6.5rem 1fr;
+  }
+}
+
+/* Wide screens: float the info box into the gutter beside the text instead of
+   eating into the reading column. Only where the gap is guaranteed to fit. */
+@media (min-width: 100rem) {
+  .pw-infobox {
+    width: 12.5rem;
+    margin-inline-end: -13.25rem;
+    margin-inline-start: 0;
+  }
+
+  .pw-infobox__rows {
+    display: block;
+  }
+
+  .pw-infobox__rows dt {
+    margin-top: 0.5rem;
+  }
+
+  .pw-infobox__rows dt:first-of-type {
+    margin-top: 0;
+  }
+
+  .pw-infobox__rows dd {
+    margin-bottom: 0.4rem;
   }
 }
