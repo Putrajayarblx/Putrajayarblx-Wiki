@@ -1,0 +1,122 @@
+---
+import PwIcon from './PwIcon.astro';
+---
+
+<div class="pw-appearance" data-appearance>
+  <button
+    class="pw-appearance__toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="pw-appearance-panel"
+  >
+    <PwIcon name="bi-sliders" />
+    <span>Appearance</span>
+  </button>
+
+  <div class="pw-appearance__panel" id="pw-appearance-panel" hidden>
+    <div class="pw-appearance__head">
+      <p>Appearance</p>
+      <button type="button" class="pw-appearance__hide" data-appearance-close>hide</button>
+    </div>
+
+    <fieldset>
+      <legend>Text</legend>
+      <label><input type="radio" name="pw-text" value="small" /> Small</label>
+      <label><input type="radio" name="pw-text" value="standard" checked /> Standard</label>
+      <label><input type="radio" name="pw-text" value="large" /> Large</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Width</legend>
+      <label><input type="radio" name="pw-width" value="standard" checked /> Standard</label>
+      <label><input type="radio" name="pw-width" value="wide" /> Wide</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Color</legend>
+      <label><input type="radio" name="pw-color" value="auto" /> Automatic</label>
+      <label><input type="radio" name="pw-color" value="light" /> Light</label>
+      <label><input type="radio" name="pw-color" value="dark" /> Dark</label>
+    </fieldset>
+  </div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const box = document.querySelector('[data-appearance]');
+
+  if (box) {
+    const toggle = box.querySelector<HTMLButtonElement>('.pw-appearance__toggle');
+    const panel = box.querySelector<HTMLElement>('.pw-appearance__panel');
+    const close = box.querySelector<HTMLButtonElement>('[data-appearance-close]');
+    const inputs = [...box.querySelectorAll<HTMLInputElement>('input[type=radio]')];
+
+    const KEY_TEXT = 'pw-text';
+    const KEY_WIDTH = 'pw-width';
+    const KEY_COLOR = 'pw-color';
+    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const applyTheme = (mode: string) => {
+      if (mode === 'auto') localStorage.removeItem('starlight-theme');
+      else localStorage.setItem('starlight-theme', mode);
+      const dark = mode === 'dark' || (mode === 'auto' && darkQuery.matches);
+      root.dataset.theme = dark ? 'dark' : 'light';
+      root.dataset.pwColor = mode;
+    };
+
+    const applyText = (size: string) => {
+      root.dataset.pwText = size;
+      localStorage.setItem(KEY_TEXT, size);
+    };
+
+    const applyWidth = (width: string) => {
+      root.dataset.pwWidth = width;
+      localStorage.setItem(KEY_WIDTH, width);
+    };
+
+    const sync = () => {
+      const text = localStorage.getItem(KEY_TEXT) ?? 'standard';
+      const width = localStorage.getItem(KEY_WIDTH) ?? 'standard';
+      const color = localStorage.getItem(KEY_COLOR) ?? 'auto';
+      root.dataset.pwText = text;
+      root.dataset.pwWidth = width;
+      root.dataset.pwColor = color;
+      for (const input of inputs) {
+        if (input.name === 'pw-text') input.checked = input.value === text;
+        if (input.name === 'pw-width') input.checked = input.value === width;
+        if (input.name === 'pw-color') input.checked = input.value === color;
+      }
+      applyTheme(color);
+    };
+
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+
+    toggle.addEventListener('click', () => setOpen(panel.hidden));
+    close?.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !panel.hidden) setOpen(false);
+    });
+
+    inputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        if (!input.checked) return;
+        if (input.name === 'pw-text') applyText(input.value);
+        if (input.name === 'pw-width') applyWidth(input.value);
+        if (input.name === 'pw-color') {
+          localStorage.setItem(KEY_COLOR, input.value);
+          root.dataset.pwColor = input.value;
+          applyTheme(input.value);
+        }
+      });
+    });
+
+    darkQuery.addEventListener('change', () => {
+      if ((localStorage.getItem(KEY_COLOR) ?? 'auto') === 'auto') applyTheme('auto');
+    });
+
+    sync();
+  }
+</script>

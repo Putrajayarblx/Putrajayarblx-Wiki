@@ -1,6 +1,7 @@
 ---
 import Default from '@astrojs/starlight/components/Header.astro';
 import PwIcon from './PwIcon.astro';
+import Appearance from './Appearance.astro';
 
 const locale = Astro.locals.starlightRoute.locale ?? 'en';
 const isMs = locale === 'ms';
@@ -113,6 +114,8 @@ const connect = [
     }
   </nav>
 </div>
+
+<Appearance />
 
 <script>
   const root = document.documentElement;

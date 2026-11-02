@@ -1728,3 +1728,130 @@ header .site-title img {
     margin-inline-end: -20rem;
   }
 }
+
+/* ---------- Appearance panel ---------- */
+.pw-appearance {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 96;
+}
+
+.pw-appearance__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 999px;
+  background: var(--pw-paper);
+  box-shadow: var(--pw-shadow-sm);
+  color: var(--sl-color-text);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.pw-appearance__toggle:hover {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-accent);
+  transform: translateY(-1px);
+}
+
+.pw-appearance__panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.5rem);
+  width: min(16rem, calc(100vw - 2rem));
+  padding: 0.35rem 0.9rem 0.9rem;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 14px;
+  background: var(--pw-paper);
+  box-shadow: var(--pw-shadow-lg);
+  animation: pw-sheet-in 180ms ease;
+}
+
+.pw-appearance__panel[hidden] {
+  display: none;
+}
+
+.pw-appearance__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0 0.35rem;
+}
+
+.pw-appearance__head p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.pw-appearance__hide {
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--sl-color-text) 6%, transparent);
+  color: var(--pw-muted);
+  font: inherit;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  cursor: pointer;
+}
+
+.pw-appearance fieldset {
+  margin: 0;
+  padding: 0.55rem 0 0.35rem;
+  border: 0;
+  border-top: 1px solid var(--sl-color-hairline);
+}
+
+.pw-appearance legend {
+  padding: 0;
+  color: var(--pw-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.pw-appearance label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.28rem 0;
+  color: var(--sl-color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.pw-appearance input[type='radio'] {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: var(--sl-color-accent);
+}
+
+/* Text size */
+html[data-pw-text='small'] .sl-markdown-content {
+  font-size: 0.92rem;
+}
+
+html[data-pw-text='large'] .sl-markdown-content {
+  font-size: 1.08rem;
+}
+
+/* Width */
+html[data-pw-width='wide'] {
+  --sl-content-width: 60rem;
+}
+
+@media (max-width: 50rem) {
+  .pw-appearance {
+    bottom: 4.5rem;
+  }
+}
