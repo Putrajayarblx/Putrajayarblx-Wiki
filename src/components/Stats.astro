@@ -1,0 +1,48 @@
+﻿---
+import { getCollection } from 'astro:content';
+import { execSync } from 'node:child_process';
+import { sidebar } from '../data/sidebar';
+
+const locale = Astro.locals.starlightRoute?.locale ?? 'en';
+const isMs = locale === 'ms';
+
+const all = await getCollection('docs');
+const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
+const inLocale = all.filter((entry) => (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)));
+const homeId = isMs ? 'ms' : 'index';
+const articles = inLocale.filter(
+  (entry) => entry.id !== homeId && !entry.id.endsWith('404')
+).length;
+
+const sections = sidebar.length;
+const languages = 2;
+
+let updated = '2026-11-02';
+try {
+  const out = execSync('git log -1 --format=%cs -- src/content/docs', {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'ignore'],
+  }).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(out)) updated = out;
+} catch {
+  // No git history available (e.g. a plain copy of the folder).
+}
+
+const updatedLabel = new Intl.DateTimeFormat(isMs ? 'ms-MY' : 'en-MY', {
+  month: 'short',
+  year: 'numeric',
+}).format(new Date(`${updated}T00:00:00Z`));
+
+const t = isMs
+  ? { articles: 'Artikel', sections: 'Bahagian', languages: 'Bahasa', updated: 'Dikemas kini' }
+  : { articles: 'Articles', sections: 'Sections', languages: 'Languages', updated: 'Updated' };
+---
+
+<div class="pw-stats">
+  <div class="pw-stat"><strong>{articles}</strong><span>{t.articles}</span></div>
+  <div class="pw-stat"><strong>{sections}</strong><span>{t.sections}</span></div>
+  <div class="pw-stat"><strong>{languages}</strong><span>{t.languages}</span></div>
+  <div class="pw-stat"><strong>{updatedLabel}</strong><span>{t.updated}</span></div>
+</div>
+
+

@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { sidebar } from './src/data/sidebar';
 
 export default defineConfig({
   site: 'https://putrajayarblx-wiki.vercel.app',
@@ -13,24 +14,7 @@ export default defineConfig({
         root: { label: 'English', lang: 'en' },
         ms: { label: 'Bahasa Melayu', lang: 'ms' },
       },
-      sidebar: [
-        {
-          label: 'Guides',
-          translations: { ms: 'Panduan' },
-          items: [
-            {
-              label: 'Getting started',
-              translations: { ms: 'Mula di sini' },
-              slug: 'getting-started',
-            },
-            {
-              label: 'Roles and departments',
-              translations: { ms: 'Peranan dan jabatan' },
-              slug: 'city-roles',
-            },
-          ],
-        },
-      ],
+      sidebar,
       logo: {
         light: './src/assets/logo-mark.png',
         dark: './src/assets/logo-mark-dark.png',
