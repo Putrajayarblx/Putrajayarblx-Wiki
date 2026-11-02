@@ -1,0 +1,66 @@
+---
+import Default from '@astrojs/starlight/components/Header.astro';
+---
+
+<Default />
+
+<div class="pw-menu" data-pw-menu>
+  <button
+    class="pw-menu__fab"
+    type="button"
+    aria-label="Open menu"
+    aria-expanded="false"
+    aria-controls="pw-menu-panel"
+  >
+    <i class="bi bi-list" aria-hidden="true"></i>
+  </button>
+
+  <div class="pw-menu__scrim" data-pw-menu-close hidden></div>
+
+  <nav class="pw-menu__panel" id="pw-menu-panel" aria-label="Quick links" hidden>
+    <p class="pw-menu__title">Menu</p>
+    <a href="/getting-started/">
+      <i class="bi bi-signpost-2" aria-hidden="true"></i>
+      Getting started
+    </a>
+    <a href="/city-roles/">
+      <i class="bi bi-people" aria-hidden="true"></i>
+      Roles and departments
+    </a>
+    <a href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
+      <i class="bi bi-house-door" aria-hidden="true"></i>
+      Main site
+    </a>
+    <a href="https://github.com/Putrajayarblx/Putrajayarblx-Wiki">
+      <i class="bi bi-github" aria-hidden="true"></i>
+      GitHub
+    </a>
+  </nav>
+</div>
+
+<script>
+  document.querySelectorAll('[data-pw-menu]').forEach((menu) => {
+    const button = menu.querySelector('.pw-menu__fab');
+    const panel = menu.querySelector('.pw-menu__panel');
+    const scrim = menu.querySelector('.pw-menu__scrim');
+    if (!button || !panel || !scrim) return;
+
+    const setOpen = (open) => {
+      panel.hidden = !open;
+      scrim.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      const icon = button.querySelector('i');
+      if (icon) icon.className = open ? 'bi bi-x-lg' : 'bi bi-list';
+    };
+
+    button.addEventListener('click', () => setOpen(panel.hidden));
+    scrim.addEventListener('click', () => setOpen(false));
+    panel.addEventListener('click', (event) => {
+      if (event.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !panel.hidden) setOpen(false);
+    });
+  });
+</script>
