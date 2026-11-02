@@ -1,5 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 
 const locale = Astro.locals.starlightRoute?.locale ?? 'en';
@@ -19,10 +21,12 @@ if (isMs) {
 }
 
 const available = [...byKey.values()];
-const isParent = (entry: (typeof available)[number]) =>
-  available.some((other) => other.id !== entry.id && other.id.startsWith(`${entry.id}/`));
-const articles = available.filter((entry) => !isParent(entry)).length;
-const sections = available.filter((entry) => isParent(entry)).length || 1;
+const docsRoot = join(process.cwd(), 'src/content/docs');
+const isLanding = (entry: (typeof available)[number]) => existsSync(join(docsRoot, entry.id));
+const articles = available.filter(
+  (entry) => !isLanding(entry) && entry.id !== 'index' && entry.id !== 'ms'
+).length;
+const sections = available.filter((entry) => isLanding(entry)).length || 1;
 const languages = 2;
 
 let updated = '2026-11-02';

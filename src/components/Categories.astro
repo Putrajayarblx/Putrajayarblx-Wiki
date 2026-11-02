@@ -10,9 +10,11 @@ const all = await getCollection('docs');
 const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
 
 const entries = all.filter((entry) => (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)));
+const docsRoot = join(process.cwd(), 'src/content/docs');
 
+// A category landing page is a docs entry that names an actual folder.
 const categories = entries
-  .filter((entry) => entries.some((other) => other.id !== entry.id && other.id.startsWith(`${entry.id}/`)))
+  .filter((entry) => existsSync(join(docsRoot, entry.id)))
   .map((entry) => {
     const slug = entry.id.split('/').pop() ?? '';
     let image = entry.data.image;
@@ -58,4 +60,3 @@ const base = isMs ? '/ms' : '';
     ))
   }
 </div>
-

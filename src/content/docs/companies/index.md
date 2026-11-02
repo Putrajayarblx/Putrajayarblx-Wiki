@@ -1,12 +1,18 @@
 ---
-title: Companies
-sidebar:
-  label: Companies
-description: Businesses and public transport operators in Putrajaya.
+title: Getting started with companies
+description: How to register a business, hire staff and keep it running.
 ---
 
-Companies are player-run businesses: transport, retail, hospitality and services. Each company page documents what it does, who runs it, and how to get involved.
+Companies are player-run businesses: transport, retail, hospitality and services. This guide covers the basics of starting one.
 
-Start with the guide below to learn how registration and staffing work.
+## Registering
 
+Bring a name, a service description, and at least one other member who will help run it. Registration is reviewed by the city administration.
 
+## Hiring and payroll
+
+Keep a clear roster: who works which shift, what they're paid, and who can open or close. Documenting this early prevents most disputes.
+
+:::note
+Company pages are maintained by their owners. If yours is out of date, edit it through the link at the bottom of the page.
+:::
