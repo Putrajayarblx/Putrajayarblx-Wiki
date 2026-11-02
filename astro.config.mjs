@@ -1,8 +1,12 @@
 ﻿import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import remarkUploads from './src/plugins/remark-uploads.mjs';
 
 export default defineConfig({
   site: 'https://putrajayarblx-wiki.vercel.app',
+  markdown: {
+    remarkPlugins: [remarkUploads],
+  },
   integrations: [
     starlight({
       title: 'Putrajaya.rblx Wiki',
