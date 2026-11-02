@@ -1640,6 +1640,8 @@ header .site-title img {
 }
 
 .pw-infobox__rows dt {
+  margin: 0;
+  padding: 0;
   color: var(--sl-color-text);
   font-weight: 650;
 }
