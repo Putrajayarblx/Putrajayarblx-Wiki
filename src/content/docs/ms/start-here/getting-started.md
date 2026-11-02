@@ -1,4 +1,4 @@
----
+﻿---
 title: Bermula di Putrajaya
 description: Ketahui cara menyertai komuniti dan memilih peranan pertama anda.
 section: Mula di sini
@@ -7,7 +7,7 @@ section: Mula di sini
 Selamat datang ke Putrajaya of Roblox.
 
 :::note
-Baharu di sini? Baca halaman ini sehingga habis sebelum memilih jabatan — ia akan menjimatkan banyak kekeliruan kemudian.
+Baharu di sini? Baca halaman ini sehingga habis sebelum memilih jabatan â€” ia akan menjimatkan banyak kekeliruan kemudian.
 :::
 
 ## Sertai komuniti
@@ -23,5 +23,6 @@ Peranan boleh merangkumi perkhidmatan awam, pemilikan perniagaan, hospitaliti, u
 Roleplay yang berjaya bergantung pada rasa hormat, konsistensi, dan sumbangan. Bina kepercayaan, sokong orang lain, dan jadilah sebahagian aktif bandar ini.
 
 :::tip
-Anda tidak perlu memohon untuk menjadi warganegara. Pengambilan jabatan berlaku secara berasingan — lihat [Peranan dan jabatan](/ms/city-roles/).
+Anda tidak perlu memohon untuk menjadi warganegara. Pengambilan jabatan berlaku secara berasingan â€” lihat [Peranan dan jabatan](/ms/city/city-roles/).
 :::
+

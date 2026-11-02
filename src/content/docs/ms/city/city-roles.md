@@ -1,4 +1,4 @@
----
+﻿---
 title: Peranan dan jabatan bandar
 description: Panduan ringkas tentang peranan yang paling biasa di Putrajaya.
 section: Bandar
@@ -19,5 +19,6 @@ Putrajaya dibina atas struktur roleplay yang kukuh dan perkhidmatan awam yang be
 Pilih peranan yang sesuai dengan minat anda dan jenis cerita yang ingin anda bina. Komuniti yang kukuh dibentuk oleh pemain yang kekal aktif dan menyumbang secara sengaja.
 
 :::caution
-Pengambilan jabatan dibuka secara berkala, bukan atas permintaan. Menunggu kekosongan adalah perkara biasa — menyertai jabatan bukan satu perlumbaan.
+Pengambilan jabatan dibuka secara berkala, bukan atas permintaan. Menunggu kekosongan adalah perkara biasa â€” menyertai jabatan bukan satu perlumbaan.
 :::
+

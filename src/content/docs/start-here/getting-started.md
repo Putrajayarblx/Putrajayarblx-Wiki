@@ -1,4 +1,4 @@
----
+﻿---
 title: Getting started in Putrajaya
 description: Learn how to join the community and choose your first role.
 section: Start here
@@ -7,7 +7,7 @@ section: Start here
 Welcome to Putrajaya of Roblox.
 
 :::note
-New here? Read this page top to bottom before picking a department — it will save you a lot of confusion later.
+New here? Read this page top to bottom before picking a department â€” it will save you a lot of confusion later.
 :::
 
 ## Join the community
@@ -23,5 +23,6 @@ Roles can include public service, business ownership, hospitality, law, transpor
 Successful roleplay depends on respect, consistency, and contribution. Build trust, support others, and be an active part of the city.
 
 :::tip
-You do not need to apply to be a citizen. Department recruitment happens separately — see [Roles and departments](/city-roles/).
+You do not need to apply to be a citizen. Department recruitment happens separately â€” see [Roles and departments](/city/city-roles/).
 :::
+

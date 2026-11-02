@@ -1,4 +1,4 @@
----
+﻿---
 title: Expedite Corporation
 description: A public transport provider company.
 section: Companies
@@ -23,4 +23,5 @@ Expedite Corporation is a public transport company based in Putrajaya. It curren
 ## History
 
 The company was founded in 2025 and began operations in Kuching in 2026.
+
 

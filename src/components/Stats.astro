@@ -7,23 +7,22 @@ const isMs = locale === 'ms';
 
 const all = await getCollection('docs');
 const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
-const isDoc = (id: string) => id !== 'index' && id !== 'ms' && !id.endsWith('404');
+const is404 = (id: string) => id.endsWith('404');
 
-// One entry per slug, preferring the current locale and falling back to English.
-const bySlug = new Map<string, (typeof all)[number]>();
-for (const entry of all.filter((e) => isDoc(e.id) && !isMsEntry(e.id))) {
-  bySlug.set(entry.id, entry);
-}
+const key = (id: string) => id.replace(/^ms\//, '').replace(/^index$/, 'home');
+
+// One entry per page, preferring the current locale with English fallback.
+const byKey = new Map<string, (typeof all)[number]>();
+for (const entry of all.filter((e) => !isMsEntry(e.id) && !is404(e.id))) byKey.set(key(entry.id), entry);
 if (isMs) {
-  for (const entry of all.filter((e) => isDoc(e.id) && isMsEntry(e.id))) {
-    bySlug.set(entry.id.replace(/^ms\//, ''), entry);
-  }
+  for (const entry of all.filter((e) => isMsEntry(e.id) && !is404(e.id))) byKey.set(key(entry.id), entry);
 }
 
-const available = [...bySlug.values()];
-const articles = available.length;
-const sections =
-  new Set(available.map((entry) => entry.data.section).filter(Boolean)).size || 1;
+const available = [...byKey.values()];
+const isParent = (entry: (typeof available)[number]) =>
+  available.some((other) => other.id !== entry.id && other.id.startsWith(`${entry.id}/`));
+const articles = available.filter((entry) => !isParent(entry)).length;
+const sections = available.filter((entry) => isParent(entry)).length || 1;
 const languages = 2;
 
 let updated = '2026-11-02';
@@ -43,8 +42,8 @@ const updatedLabel = new Intl.DateTimeFormat(isMs ? 'ms-MY' : 'en-MY', {
 }).format(new Date(`${updated}T00:00:00Z`));
 
 const t = isMs
-  ? { articles: 'Artikel', sections: 'Bahagian', languages: 'Bahasa', updated: 'Dikemas kini' }
-  : { articles: 'Articles', sections: 'Sections', languages: 'Languages', updated: 'Updated' };
+  ? { articles: 'Artikel', sections: 'Kategori', languages: 'Bahasa', updated: 'Dikemas kini' }
+  : { articles: 'Articles', sections: 'Categories', languages: 'Languages', updated: 'Updated' };
 ---
 
 <div class="pw-stats">
@@ -53,3 +52,4 @@ const t = isMs
   <div class="pw-stat"><strong>{languages}</strong><span>{t.languages}</span></div>
   <div class="pw-stat"><strong>{updatedLabel}</strong><span>{t.updated}</span></div>
 </div>
+

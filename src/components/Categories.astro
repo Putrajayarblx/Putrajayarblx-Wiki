@@ -1,0 +1,61 @@
+﻿---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { getCollection } from 'astro:content';
+import PwIcon from './PwIcon.astro';
+
+const locale = Astro.locals.starlightRoute?.locale ?? 'en';
+const isMs = locale === 'ms';
+const all = await getCollection('docs');
+const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
+
+const entries = all.filter((entry) => (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)));
+
+const categories = entries
+  .filter((entry) => entries.some((other) => other.id !== entry.id && other.id.startsWith(`${entry.id}/`)))
+  .map((entry) => {
+    const slug = entry.id.split('/').pop() ?? '';
+    let image = entry.data.image;
+    if (image && /\.(png|jpe?g)$/i.test(image)) {
+      const webp = image.replace(/\.(png|jpe?g)$/i, '.webp');
+      if (existsSync(join(process.cwd(), 'public', webp))) image = webp;
+    }
+    return {
+      slug,
+      title: entry.data.title,
+      description: entry.data.description ?? '',
+      image,
+    };
+  });
+
+const order = ['start-here', 'city', 'companies'];
+categories.sort((a, b) => {
+  const ia = order.indexOf(a.slug);
+  const ib = order.indexOf(b.slug);
+  return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+});
+
+const base = isMs ? '/ms' : '';
+---
+
+<div class="pw-grid pw-cats">
+  {
+    categories.map((cat) => (
+      <a class="pw-cat" href={`${base}/${cat.slug}/`}>
+        {cat.image ? (
+          <img class="pw-cat__image" src={cat.image} alt="" loading="lazy" decoding="async" />
+        ) : (
+          <div class={`pw-cat__image pw-cat__image--${cat.slug}`} aria-hidden="true" />
+        )}
+        <div class="pw-cat__body">
+          <h3 class="pw-cat__title">{cat.title}</h3>
+          <p>{cat.description}</p>
+          <span class="pw-card__cta">
+            Open category <PwIcon name="bi-arrow-right" />
+          </span>
+        </div>
+      </a>
+    ))
+  }
+</div>
+

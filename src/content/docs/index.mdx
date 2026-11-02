@@ -1,4 +1,4 @@
----
+﻿---
 title: Home
 description: A practical, community-maintained handbook for citizens, departments, rules, roles, and systems.
 template: splash
@@ -37,15 +37,16 @@ hero:
       </div>
   actions:
     - text: Start reading
-      link: /getting-started/
+      link: /start-here/getting-started/
       icon: right-arrow
     - text: Roles and departments
-      link: /city-roles/
+      link: /city/city-roles/
       variant: minimal
 ---
 
 import PwIcon from '../../components/PwIcon.astro';
 import Stats from '../../components/Stats.astro';
+import Categories from '../../components/Categories.astro';
 
 <div class="pw-badge-row">
   <span class="pw-badge"><PwIcon name="bi-people-fill" /> Community maintained</span>
@@ -55,49 +56,13 @@ import Stats from '../../components/Stats.astro';
 
 <button class="pw-hero-search" type="button" data-pw-search>
   <PwIcon name="bi-search" />
-  <span>Search the wiki…</span>
+  <span>Search the wikiâ€¦</span>
   <kbd>Ctrl K</kbd>
 </button>
 
 ## Explore the wiki
 
-<div class="pw-grid">
-
-  <a class="pw-card" href="/getting-started/">
-    <span class="pw-card__icon"><PwIcon name="fa-compass" /></span>
-    <h3 class="pw-card__title">Getting started</h3>
-    <p>Join the community, choose your first role, and learn the habits that keep the city running.</p>
-    <span class="pw-chips">
-      <span class="pw-chip pw-chip--blue">Onboarding</span>
-      <span class="pw-chip pw-chip--teal">Roles</span>
-      <span class="pw-chip pw-chip--peach">Rules</span>
-    </span>
-    <span class="pw-card__cta">Read the guide <PwIcon name="bi-arrow-right" /></span>
-  </a>
-
-  <a class="pw-card" href="/city-roles/">
-    <span class="pw-card__icon"><PwIcon name="fa-users-gear" /></span>
-    <h3 class="pw-card__title">Roles and departments</h3>
-    <p>Public service, transit, business, hospitality, law — a quick guide to where you fit.</p>
-    <span class="pw-chips">
-      <span class="pw-chip pw-chip--teal">Departments</span>
-      <span class="pw-chip pw-chip--blue">Careers</span>
-    </span>
-    <span class="pw-card__cta">Browse roles <PwIcon name="bi-arrow-right" /></span>
-  </a>
-
-  <a class="pw-card" href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
-    <span class="pw-card__icon"><PwIcon name="fa-globe" /></span>
-    <h3 class="pw-card__title">Main community site</h3>
-    <p>News, blog posts, projects, and everything else happening around the city.</p>
-    <span class="pw-chips">
-      <span class="pw-chip pw-chip--peach">External</span>
-      <span class="pw-chip pw-chip--teal">Community</span>
-    </span>
-    <span class="pw-card__cta">Visit the site <PwIcon name="bi-box-arrow-up-right" /></span>
-  </a>
-
-</div>
+<Categories />
 
 <Stats />
 
@@ -110,7 +75,7 @@ import Stats from '../../components/Stats.astro';
   <div class="pw-card pw-card--static">
     <span class="pw-card__icon"><PwIcon name="bi-journal-text" /></span>
     <h3 class="pw-card__title">Written for newcomers</h3>
-    <p>Start with the basics and work outward — no prior knowledge assumed.</p>
+    <p>Start with the basics and work outward â€” no prior knowledge assumed.</p>
   </div>
 
   <div class="pw-card pw-card--static">
@@ -171,7 +136,10 @@ import Stats from '../../components/Stats.astro';
 <div class="pw-cta">
   <div>
     <h3>Want to help keep this accurate?</h3>
-    <p>The wiki is community-driven. Fix a typo, add a section, or correct a rule — every contribution is reviewed and credited.</p>
+    <p>The wiki is community-driven. Fix a typo, add a section, or correct a rule â€” every contribution is reviewed and credited.</p>
   </div>
   <a class="pw-cta__link" href="https://github.com/Putrajayarblx/Putrajayarblx-Wiki">Open the repository <PwIcon name="bi-box-arrow-up-right" /></a>
 </div>
+
+
+

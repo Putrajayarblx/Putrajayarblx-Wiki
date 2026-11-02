@@ -1,4 +1,4 @@
----
+﻿---
 title: Laman Utama
 description: Buku panduan praktikal yang diselenggara komuniti untuk warga, jabatan, peraturan, peranan dan sistem.
 template: splash
@@ -37,15 +37,16 @@ hero:
       </div>
   actions:
     - text: Mula membaca
-      link: /ms/getting-started/
+      link: /ms/start-here/getting-started/
       icon: right-arrow
     - text: Peranan dan jabatan
-      link: /ms/city-roles/
+      link: /ms/city/city-roles/
       variant: minimal
 ---
 
 import PwIcon from '../../../components/PwIcon.astro';
 import Stats from '../../../components/Stats.astro';
+import Categories from '../../../components/Categories.astro';
 
 <div class="pw-badge-row">
   <span class="pw-badge"><PwIcon name="bi-people-fill" /> Diselenggara komuniti</span>
@@ -55,49 +56,13 @@ import Stats from '../../../components/Stats.astro';
 
 <button class="pw-hero-search" type="button" data-pw-search>
   <PwIcon name="bi-search" />
-  <span>Cari wiki…</span>
+  <span>Cari wikiâ€¦</span>
   <kbd>Ctrl K</kbd>
 </button>
 
 ## Terokai wiki
 
-<div class="pw-grid">
-
-  <a class="pw-card" href="/ms/getting-started/">
-    <span class="pw-card__icon"><PwIcon name="fa-compass" /></span>
-    <h3 class="pw-card__title">Mula di sini</h3>
-    <p>Sertai komuniti, pilih peranan pertama anda, dan pelajari tabiat yang memastikan bandar berjalan lancar.</p>
-    <span class="pw-chips">
-      <span class="pw-chip pw-chip--blue">Pengenalan</span>
-      <span class="pw-chip pw-chip--teal">Peranan</span>
-      <span class="pw-chip pw-chip--peach">Peraturan</span>
-    </span>
-    <span class="pw-card__cta">Baca panduan <PwIcon name="bi-arrow-right" /></span>
-  </a>
-
-  <a class="pw-card" href="/ms/city-roles/">
-    <span class="pw-card__icon"><PwIcon name="fa-users-gear" /></span>
-    <h3 class="pw-card__title">Peranan dan jabatan</h3>
-    <p>Perkhidmatan awam, pengangkutan, perniagaan, hospitaliti, undang-undang — panduan ringkas tentang tempat anda.</p>
-    <span class="pw-chips">
-      <span class="pw-chip pw-chip--teal">Jabatan</span>
-      <span class="pw-chip pw-chip--blue">Kerjaya</span>
-    </span>
-    <span class="pw-card__cta">Lihat peranan <PwIcon name="bi-arrow-right" /></span>
-  </a>
-
-  <a class="pw-card" href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
-    <span class="pw-card__icon"><PwIcon name="fa-globe" /></span>
-    <h3 class="pw-card__title">Laman komuniti utama</h3>
-    <p>Berita, catatan blog, projek dan segala yang berlaku di sekitar bandar.</p>
-    <span class="pw-chips">
-      <span class="pw-chip pw-chip--peach">Luar</span>
-      <span class="pw-chip pw-chip--teal">Komuniti</span>
-    </span>
-    <span class="pw-card__cta">Lawati laman <PwIcon name="bi-box-arrow-up-right" /></span>
-  </a>
-
-</div>
+<Categories />
 
 <Stats />
 
@@ -110,7 +75,7 @@ import Stats from '../../../components/Stats.astro';
   <div class="pw-card pw-card--static">
     <span class="pw-card__icon"><PwIcon name="bi-journal-text" /></span>
     <h3 class="pw-card__title">Ditulis untuk pendatang baharu</h3>
-    <p>Mulakan dengan asas dan kembangkan pengetahuan — tiada pengetahuan awal diperlukan.</p>
+    <p>Mulakan dengan asas dan kembangkan pengetahuan â€” tiada pengetahuan awal diperlukan.</p>
   </div>
 
   <div class="pw-card pw-card--static">
@@ -156,7 +121,10 @@ import Stats from '../../../components/Stats.astro';
 <div class="pw-cta">
   <div>
     <h3>Ingin membantu memastikan ketepatan?</h3>
-    <p>Wiki ini dipacu komuniti. Betulkan salah taip, tambah bahagian, atau betulkan peraturan — setiap sumbangan disemak dan diberi penghargaan.</p>
+    <p>Wiki ini dipacu komuniti. Betulkan salah taip, tambah bahagian, atau betulkan peraturan â€” setiap sumbangan disemak dan diberi penghargaan.</p>
   </div>
   <a class="pw-cta__link" href="https://github.com/Putrajayarblx/Putrajayarblx-Wiki">Buka repositori <PwIcon name="bi-box-arrow-up-right" /></a>
 </div>
+
+
+

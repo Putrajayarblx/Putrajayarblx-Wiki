@@ -1,4 +1,4 @@
-import { defineCollection } from 'astro:content';
+﻿import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { docsLoader, i18nLoader } from '@astrojs/starlight/loaders';
 import { docsSchema, i18nSchema } from '@astrojs/starlight/schema';
@@ -9,6 +9,7 @@ export const collections = {
     schema: docsSchema({
       extend: z.object({
         section: z.string().optional(),
+        image: z.string().optional(),
         infobox: z
           .object({
             title: z.string().optional(),
@@ -30,3 +31,4 @@ export const collections = {
   }),
   i18n: defineCollection({ loader: i18nLoader(), schema: i18nSchema() }),
 };
+

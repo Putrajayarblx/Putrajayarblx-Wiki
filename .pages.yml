@@ -1,4 +1,4 @@
-media:
+﻿media:
   input: public/uploads
   output: /uploads
 
@@ -16,6 +16,10 @@ content:
       - name: description
         label: Summary
         type: text
+      - name: image
+        label: Category image
+        type: image
+        description: Used on the homepage card. Only needed on a category landing page.
       - name: section
         label: Section
         type: string
@@ -51,3 +55,4 @@ content:
       - name: body
         label: Body
         type: rich-text
+
