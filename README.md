@@ -1,4 +1,4 @@
-# Putrajaya of Roblox — Wiki
+# Putrajaya.rblx Wiki
 
 The community wiki for **Putrajaya of Roblox**, built with [Astro Starlight](https://starlight.astro.build).
 

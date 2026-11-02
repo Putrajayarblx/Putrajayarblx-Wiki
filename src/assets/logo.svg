@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Putrajaya Wiki">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Putrajaya.rblx Wiki">
   <defs>
     <linearGradient id="pw" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2d318f" />
-      <stop offset="0.55" stop-color="#e93644" />
-      <stop offset="1" stop-color="#f3c744" />
+      <stop offset="0" stop-color="#25479b" />
+      <stop offset="0.55" stop-color="#3fa9a0" />
+      <stop offset="1" stop-color="#f2a563" />
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="16" fill="url(#pw)" />
   <path d="M16 47V31h7v16zM28.5 47V23h7v24zM41 47V35h7v12z" fill="#fff" opacity=".95" />
   <path d="M32 13.5l3.4 5.6h-6.8z" fill="#fff" opacity=".95" />
-  <circle cx="32" cy="44.5" r="2.4" fill="#2d318f" opacity=".35" />
+  <circle cx="32" cy="44.5" r="2.4" fill="#25479b" opacity=".35" />
 </svg>

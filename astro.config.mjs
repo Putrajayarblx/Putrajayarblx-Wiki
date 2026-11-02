@@ -5,14 +5,17 @@ export default defineConfig({
   site: 'https://putrajayarblx-wiki.vercel.app',
   integrations: [
     starlight({
-      title: 'Putrajaya Wiki',
+      title: 'Putrajaya.rblx Wiki',
       description:
         'A practical, community-maintained reference library for Putrajaya of Roblox.',
       logo: {
         src: './src/assets/logo.svg',
-        alt: 'Putrajaya Wiki',
+        alt: 'Putrajaya.rblx Wiki',
       },
       favicon: '/favicon.svg',
+      components: {
+        SocialIcons: './src/components/SocialIcons.astro',
+      },
       social: [
         {
           icon: 'github',
@@ -57,6 +60,12 @@ export default defineConfig({
             rel: 'stylesheet',
             href: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css',
           },
+        },
+        {
+          // Header is solid at the top, transparent once the page scrolls.
+          tag: 'script',
+          content:
+            "(()=>{const r=document.documentElement;const s=()=>{r.classList.toggle('pw-scrolled',window.scrollY>6)};s();window.addEventListener('scroll',s,{passive:true})})();",
         },
       ],
       customCss: ['./src/styles/custom.css'],
