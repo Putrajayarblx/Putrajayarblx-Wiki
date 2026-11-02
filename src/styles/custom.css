@@ -28,6 +28,8 @@
   /* Tighter table-of-contents column and mobile TOC bar. */
   --sl-sidebar-width: 16rem;
   --sl-mobile-toc-height: 2.25rem;
+  /* Use more of the horizontal space for article text (default is 45rem). */
+  --sl-content-width: 52rem;
 
   --sl-color-accent-low: #d9ecf9;
   --sl-color-accent: #2f7fb8;
