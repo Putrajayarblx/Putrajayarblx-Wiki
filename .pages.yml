@@ -1,0 +1,25 @@
+media:
+  input: assets/uploads
+  output: /Putrajayarblx-Wiki/assets/uploads
+
+content:
+  - name: wiki
+    label: Wiki articles
+    type: collection
+    path: content/wiki
+    filename: "{slug}.md"
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: section
+        label: Section
+        type: string
+        required: true
+      - name: summary
+        label: Summary
+        type: text
+      - name: body
+        label: Body
+        type: rich-text
