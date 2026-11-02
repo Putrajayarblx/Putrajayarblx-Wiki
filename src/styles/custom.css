@@ -1,5 +1,5 @@
-/* ============================================================
-   Putrajaya Wiki — theme
+﻿/* ============================================================
+   Putrajaya Wiki â€” theme
    Palette and typography inspired by mys.wiki (Public Sans,
    paper/ink neutrals, red/blue/amber accents, soft cards).
    ============================================================ */
@@ -1134,7 +1134,7 @@ header .site-title img {
   font-size: 0.7rem;
 }
 
-/* Soft gradient wash behind the hero — no ray pattern, no logo artwork. */
+/* Soft gradient wash behind the hero â€” no ray pattern, no logo artwork. */
 .hero::after {
   position: absolute;
   inset: -30% -8% auto -8%;
@@ -1700,28 +1700,16 @@ header .site-title img {
   }
 }
 
-/* Wide screens: float the info box into the gutter beside the text instead of
-   eating into the reading column. Only where the gap is guaranteed to fit. */
-@media (min-width: 100rem) {
-  .pw-infobox {
-    width: 12.5rem;
-    margin-inline-end: -13.25rem;
-    margin-inline-start: 0;
+
+/* Below the sidebar breakpoint Starlight lays the article out full width,
+   leaving it hugging the left edge. Centre the reading column. */
+@media (max-width: 71.99rem) {
+  .main-frame {
+    padding-inline-start: 0;
   }
 
-  .pw-infobox__rows {
-    display: block;
-  }
-
-  .pw-infobox__rows dt {
-    margin-top: 0.5rem;
-  }
-
-  .pw-infobox__rows dt:first-of-type {
-    margin-top: 0;
-  }
-
-  .pw-infobox__rows dd {
-    margin-bottom: 0.4rem;
+  .content-panel {
+    max-width: calc(var(--sl-content-width) + 2 * var(--sl-content-pad-x));
+    margin-inline: auto;
   }
 }
