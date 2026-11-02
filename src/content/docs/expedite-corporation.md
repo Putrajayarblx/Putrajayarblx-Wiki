@@ -3,9 +3,20 @@ title: Expedite Corporation
 description: A public transport provider company.
 section: Companies
 infobox:
-  title: Expedite Corporation
+  title: Expedite Transport Corporation
   image: /uploads/ExpediteAd1.png
-  imageAlt: Expedite advert
+  imageAlt: An expedite advertisement
+  rows:
+    - label: Type
+      value: Private Corporation
+    - label: Industry
+      value: Public Transportation
+    - label: Founded
+      value: "2025"
+    - label: Headquarters
+      value: Menara L&G, Presint 3, W.P Putrajaya, Putrajaya.rblx
+    - label: Board of Directors
+      value: RyssNzr, PlaneProMaster
 ---
 Expedite Corporation is a public transport company based in Putrajaya. It currently operates bus and taxi services in Kuching and Putrajaya with plans of further expansion.
 
