@@ -128,7 +128,7 @@ html.pw-scrolled header.header {
     color 160ms ease;
 }
 
-.pw-top-link i {
+.pw-top-link .pw-icon {
   color: var(--sl-color-accent);
   font-size: 0.95rem;
 }

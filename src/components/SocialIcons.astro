@@ -3,6 +3,7 @@ import PwIcon from './PwIcon.astro';
 
 const isMs = (Astro.locals.starlightRoute?.locale ?? 'en') === 'ms';
 const connectLabel = isMs ? 'Hubungi' : 'Connect';
+const mainLabel = isMs ? 'Laman utama' : 'Main site';
 const websiteLabel = isMs ? 'Laman web' : 'Website';
 
 const links = [
@@ -28,6 +29,11 @@ const links = [
   },
 ];
 ---
+
+<a class="pw-top-link" href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
+  <PwIcon name="bi-house-door" />
+  <span>{mainLabel}</span>
+</a>
 
 <div class="pw-cmenu" data-pw-connect>
   <button

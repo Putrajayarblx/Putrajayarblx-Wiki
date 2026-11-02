@@ -1,0 +1,22 @@
+---
+import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
+import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+---
+
+<div class="mobile-preferences sl-flex">
+  <ThemeSelect />
+  <LanguageSelect />
+</div>
+
+<style>
+  @layer starlight.core {
+    .mobile-preferences {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      border-top: 1px solid var(--sl-color-gray-6);
+    }
+  }
+</style>

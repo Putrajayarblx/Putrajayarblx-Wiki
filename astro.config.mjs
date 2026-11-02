@@ -8,11 +8,29 @@ export default defineConfig({
       title: 'Putrajaya.rblx Wiki',
       description:
         'A practical, community-maintained reference library for Putrajaya of Roblox.',
-      defaultLocale: 'en',
+      defaultLocale: 'root',
       locales: {
-        en: { label: 'English', lang: 'en' },
+        root: { label: 'English', lang: 'en' },
         ms: { label: 'Bahasa Melayu', lang: 'ms' },
       },
+      sidebar: [
+        {
+          label: 'Guides',
+          translations: { ms: 'Panduan' },
+          items: [
+            {
+              label: 'Getting started',
+              translations: { ms: 'Mula di sini' },
+              slug: 'getting-started',
+            },
+            {
+              label: 'Roles and departments',
+              translations: { ms: 'Peranan dan jabatan' },
+              slug: 'city-roles',
+            },
+          ],
+        },
+      ],
       logo: {
         light: './src/assets/logo-mark.png',
         dark: './src/assets/logo-mark-dark.png',
@@ -25,6 +43,7 @@ export default defineConfig({
         Header: './src/components/Header.astro',
         Footer: './src/components/Footer.astro',
         SocialIcons: './src/components/SocialIcons.astro',
+        MobileMenuFooter: './src/components/MobileMenuFooter.astro',
       },
       editLink: {
         baseUrl:
