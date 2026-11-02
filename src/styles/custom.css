@@ -1,0 +1,12 @@
+/* Putrajaya of Roblox brand accents */
+:root {
+  --sl-color-accent-low: #132a1f;
+  --sl-color-accent: #1f6f4a;
+  --sl-color-accent-high: #a8e6c3;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #d6f2e2;
+  --sl-color-accent: #16724a;
+  --sl-color-accent-high: #0b3d28;
+}

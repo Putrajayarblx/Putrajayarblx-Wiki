@@ -1,40 +1,62 @@
 # Putrajaya of Roblox — Wiki
 
-The community wiki for **Putrajaya of Roblox**, migrated from `putrajaya-of-roblox`.
+The community wiki for **Putrajaya of Roblox**, built with [Astro Starlight](https://starlight.astro.build).
 
-## How it works
+**Live:** https://putrajayarblx-wiki.vercel.app
 
-Plain static site — no build step, no framework.
+## Stack
 
-- `index.html` — article directory with search and section filter
-- `wiki-article.html` — renders one article (`?slug=<name>`)
-- `script.js` — fetches `content/wiki/*.md` from the GitHub API, parses frontmatter, renders Markdown
-- `.pages.yml` — Pages CMS config for editing articles in the browser
-- `content/wiki/` — the articles, one Markdown file each
+- **Astro 7** static build, deployed on Vercel
+- **Starlight** docs theme — sidebar, dark mode, built-in Pagefind search, sitemap
+- Articles live in `src/content/docs/` as Markdown
+- Edited through Pages CMS (`.pages.yml`)
 
-Because content is loaded client-side from the GitHub API, a new article appears as soon as it's committed — no redeploy needed.
+## Local development
+
+```sh
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # outputs to dist/
+npm run preview
+```
 
 ## Adding an article
 
-Through Pages CMS, or by adding `content/wiki/<slug>.md`:
+Create `src/content/docs/<slug>.md`:
 
 ```markdown
 ---
 title: Your title
-section: Departments
-summary: One-line description shown in the directory.
+description: One-line summary shown in search and previews.
 ---
 
 Body in Markdown.
 ```
 
-## Local preview
+Then add it to the sidebar in `astro.config.mjs`:
 
-```sh
-python -m http.server 8000
+```js
+sidebar: [
+  { label: 'City', items: ['your-slug'] },
+]
 ```
 
-Then open <http://localhost:8000/>.
+## Layout
+
+| Path | Purpose |
+|---|---|
+| `astro.config.mjs` | Site metadata, sidebar, integrations |
+| `src/content/docs/` | Articles (Markdown/MDX) |
+| `src/styles/custom.css` | Brand colours |
+| `public/` | Static files copied verbatim (`uploads/`, legacy redirects) |
+| `.pages.yml` | Pages CMS collections |
+
+## Legacy URLs
+
+`public/wiki.html` and `public/wiki-article.html` keep old links working:
+
+- `/wiki.html` → `/`
+- `/wiki-article.html?slug=city-roles` → `/city-roles/`
 
 ## Related
 

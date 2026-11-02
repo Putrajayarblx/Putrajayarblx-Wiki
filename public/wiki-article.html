@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, follow" />
+  <title>Article has moved</title>
+  <script>
+    (function () {
+      var slug = new URLSearchParams(location.search).get('slug');
+      location.replace(slug ? '/' + encodeURIComponent(slug) + '/' : '/');
+    })();
+  </script>
+</head>
+<body>
+  <p>The wiki is now at <a href="/">putrajayarblx-wiki.vercel.app</a>.</p>
+</body>
+</html>

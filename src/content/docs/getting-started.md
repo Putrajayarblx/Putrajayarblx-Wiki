@@ -1,14 +1,13 @@
 ---
 title: Getting started in Putrajaya
-section: Getting Started
-summary: Learn how to join the community and choose your first role.
+description: Learn how to join the community and choose your first role.
 ---
 
 Welcome to Putrajaya of Roblox.
 
 ## Join the community
 
-Start by learning the city’s culture, visiting the community spaces, and reading the local rules before choosing your role.
+Start by learning the city's culture, visiting the community spaces, and reading the local rules before choosing your role.
 
 ## Choose a role
 
