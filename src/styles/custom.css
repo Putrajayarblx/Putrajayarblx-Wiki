@@ -27,7 +27,7 @@
 
   /* Tighter table-of-contents column and mobile TOC bar. */
   --sl-sidebar-width: 16rem;
-  --sl-mobile-toc-height: 2.5rem;
+  --sl-mobile-toc-height: 2.25rem;
 
   --sl-color-accent-low: #d9ecf9;
   --sl-color-accent: #2f7fb8;
@@ -609,28 +609,43 @@ nav.sidebar {
 .right-sidebar h2,
 starlight-toc h2 {
   color: var(--sl-color-text);
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.07em;
+  margin-bottom: 0.35rem;
   text-transform: uppercase;
 }
 
 starlight-toc a {
-  border-radius: 7px;
-  padding: 0.08rem 0.4rem;
-  margin-inline: -0.4rem;
+  border-radius: 6px;
+  padding: 0.06rem 0.35rem;
+  margin-inline: -0.35rem;
   color: var(--pw-muted);
-  font-size: 0.8rem;
-  line-height: 1.45;
+  font-size: 0.76rem;
+  line-height: 1.4;
   transition: background-color 160ms ease;
 }
 
+/* Trim the TOC panel's own padding too. */
+.right-sidebar-panel {
+  padding: 0.5rem 0.6rem 0.75rem;
+}
+
 mobile-starlight-toc summary {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  padding-block: 0.25rem;
 }
 
 mobile-starlight-toc summary .toggle {
   gap: 0.35rem;
+}
+
+/* Starlight expands the TOC column to absorb leftover space on wide screens,
+   which makes it far wider than its content needs. Cap it. */
+@media (min-width: 72rem) {
+  .right-sidebar-container {
+    max-width: 12.5rem;
+  }
 }
 
 starlight-toc a:hover {
