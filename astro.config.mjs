@@ -19,16 +19,6 @@ export default defineConfig({
         baseUrl:
           'https://github.com/Putrajayarblx/Putrajayarblx-Wiki/edit/main/',
       },
-      sidebar: [
-        {
-          label: 'Start here',
-          items: [{ label: 'Getting started', slug: 'getting-started' }],
-        },
-        {
-          label: 'City',
-          items: [{ label: 'Roles and departments', slug: 'city-roles' }],
-        },
-      ],
       customCss: ['./src/styles/custom.css'],
     }),
   ],
