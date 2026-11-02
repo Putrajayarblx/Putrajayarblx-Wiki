@@ -27,6 +27,8 @@ infobox:
 ---
 **Expedite Transport Corporation *(Stylized as expedite)*** is public transportation company founded by RyssNzr and PlaneProMaster with a vision of delivering a satisfying and lightning speed transportation service option to the public. 
 
+Expedite Corporation is based in Putrajaya with bus and taxi services in Kuching and Putrajaya, with plans of further expansion into other parts of Malaysia.
+
 ## History
 
 > ![Official Expedite graphics, displaying the motto "Kekal pilihan anda"](/uploads/ExpediteBusReadAdvert.png)
