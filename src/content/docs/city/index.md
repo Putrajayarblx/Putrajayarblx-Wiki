@@ -1,4 +1,4 @@
-﻿---
+---
 title: City
 sidebar:
   label: City

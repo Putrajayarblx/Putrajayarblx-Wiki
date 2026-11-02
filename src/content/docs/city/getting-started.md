@@ -1,4 +1,4 @@
-﻿---
+---
 title: Getting started in the city
 description: Pick a department, learn the chain of command, and start your first shift.
 ---

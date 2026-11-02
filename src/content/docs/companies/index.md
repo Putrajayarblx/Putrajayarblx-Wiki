@@ -1,4 +1,4 @@
-﻿---
+---
 title: Companies
 sidebar:
   label: Companies

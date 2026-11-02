@@ -1,4 +1,4 @@
-﻿---
+---
 title: Expedite Corporation
 description: A public transport provider company.
 section: Companies

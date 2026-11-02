@@ -1,4 +1,4 @@
-﻿---
+---
 title: Start here
 sidebar:
   label: Start here

@@ -1,4 +1,4 @@
-﻿---
+---
 title: Getting started in Putrajaya
 description: Learn how to join the community and choose your first role.
 section: Start here
