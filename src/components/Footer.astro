@@ -1,37 +1,86 @@
 ---
 import Default from '@astrojs/starlight/components/Footer.astro';
 import PwIcon from './PwIcon.astro';
+
+const route = Astro.locals.starlightRoute;
+const hasSidebar = route.hasSidebar;
+const isMs = (route.locale ?? 'en') === 'ms';
+
+const t = isMs
+  ? {
+      helpful: 'Adakah halaman ini membantu?',
+      yes: 'Ya',
+      no: 'Tidak',
+      thanksYes: 'Terima kasih — gembira ia membantu.',
+      thanksNo: 'Terima kasih — akan disemak.',
+      report: 'Laporkan ralat pada halaman ini',
+      minute: 'min bacaan',
+      body: 'Apakah yang salah?',
+    }
+  : {
+      helpful: 'Was this page helpful?',
+      yes: 'Yes',
+      no: 'No',
+      thanksYes: 'Thanks — glad it helped.',
+      thanksNo: 'Thanks — noted for review.',
+      report: 'Report an error on this page',
+      minute: 'min read',
+      body: 'What is wrong?',
+    };
+
+const issueTitle = `Issue on ${Astro.url.pathname}`;
+const issueBody = `Page: ${Astro.url.href}\n\n${t.body}\n\n`;
+const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
 ---
 
 <Default />
 
-<div class="pw-helpful" data-pw-helpful hidden>
-  <p>Was this page helpful?</p>
+<div
+  class="pw-helpful"
+  data-pw-helpful
+  data-min-label={t.minute}
+  data-thanks-yes={t.thanksYes}
+  data-thanks-no={t.thanksNo}
+  hidden
+>
+  <p>{t.helpful}</p>
   <button class="pw-helpful__btn" type="button" data-pw-vote="yes">
     <PwIcon name="bi-hand-thumbs-up" />
-    Yes
+    {t.yes}
   </button>
   <button class="pw-helpful__btn" type="button" data-pw-vote="no">
     <PwIcon name="bi-hand-thumbs-down" />
-    No
+    {t.no}
   </button>
   <span class="pw-helpful__thanks" data-pw-thanks hidden></span>
 </div>
 
+{
+  hasSidebar && (
+    <a class="pw-report" href={reportHref} target="_blank" rel="noopener noreferrer">
+      <PwIcon name="bi-exclamation-triangle" />
+      {t.report}
+    </a>
+  )
+}
+
 <script>
   const content = document.querySelector('.sl-markdown-content');
   const widget = document.querySelector<HTMLElement>('[data-pw-helpful]');
-  // Only on documentation pages (they have a sidebar), not the splash home.
   const isDocPage = Boolean(document.getElementById('starlight__sidebar'));
 
   if (content && widget && isDocPage) {
+    const minLabel = widget.dataset.minLabel ?? 'min read';
+    const thanksYes = widget.dataset.thanksYes ?? 'Thanks!';
+    const thanksNo = widget.dataset.thanksNo ?? 'Noted.';
+
     const words = (content.textContent ?? '').trim().split(/\s+/).filter(Boolean).length;
     const minutes = Math.max(1, Math.round(words / 220));
     const title = document.querySelector('h1[data-page-title], #_top');
     if (title) {
       const line = document.createElement('p');
       line.className = 'pw-readtime';
-      line.textContent = `${minutes} min read`;
+      line.textContent = `${minutes} ${minLabel}`;
       title.insertAdjacentElement('afterend', line);
     }
 
@@ -40,8 +89,7 @@ import PwIcon from './PwIcon.astro';
     const show = (vote: string) => {
       if (!thanks) return;
       thanks.hidden = false;
-      thanks.textContent =
-        vote === 'yes' ? 'Thanks — glad it helped.' : 'Thanks — noted for review.';
+      thanks.textContent = vote === 'yes' ? thanksYes : thanksNo;
     };
 
     const saved = localStorage.getItem(key);

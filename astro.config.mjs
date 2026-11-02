@@ -8,6 +8,11 @@ export default defineConfig({
       title: 'Putrajaya.rblx Wiki',
       description:
         'A practical, community-maintained reference library for Putrajaya of Roblox.',
+      defaultLocale: 'en',
+      locales: {
+        en: { label: 'English', lang: 'en' },
+        ms: { label: 'Bahasa Melayu', lang: 'ms' },
+      },
       logo: {
         light: './src/assets/logo-mark.png',
         dark: './src/assets/logo-mark-dark.png',

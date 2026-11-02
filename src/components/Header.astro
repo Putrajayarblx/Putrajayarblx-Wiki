@@ -2,11 +2,37 @@
 import Default from '@astrojs/starlight/components/Header.astro';
 import PwIcon from './PwIcon.astro';
 
+const locale = Astro.locals.starlightRoute.locale ?? 'en';
+const isMs = locale === 'ms';
+const base = isMs ? '/ms' : '';
+
+const t = isMs
+  ? {
+      menu: 'Menu',
+      search: 'Cari',
+      dark: 'Mod gelap',
+      light: 'Mod cerah',
+      start: 'Mula di sini',
+      roles: 'Peranan dan jabatan',
+      connect: 'Hubungi',
+      website: 'Laman web',
+    }
+  : {
+      menu: 'Menu',
+      search: 'Search',
+      dark: 'Dark mode',
+      light: 'Light mode',
+      start: 'Getting started',
+      roles: 'Roles and departments',
+      connect: 'Connect',
+      website: 'Website',
+    };
+
 const connect = [
   { icon: 'fa-linktree', label: 'Linktree', href: 'https://linktr.ee/putrajaya.rblx' },
   {
     icon: 'bi-controller',
-    label: 'Roblox community',
+    label: 'Roblox',
     href: 'https://www.roblox.com/communities/33831801/Wilayah-Persekutuan-Putrajaya#!/about',
   },
   { icon: 'fa-discord', label: 'Discord', href: 'https://discord.gg/Ng8rVaE7bX' },
@@ -15,8 +41,8 @@ const connect = [
   { icon: 'fa-tiktok', label: 'TikTok', href: 'https://www.tiktok.com/@putrajaya.rblx' },
   {
     icon: 'bi-globe',
-    label: 'Website',
-    href: 'https://sites.google.com/view/putrajaya-of-roblox-?usp=sharing',
+    label: t.website,
+    href: 'https://putrajayarblx.github.io/putrajaya-of-roblox/',
   },
   { icon: 'bi-github', label: 'GitHub', href: 'https://github.com/Putrajayarblx/Putrajayarblx-Wiki' },
 ];
@@ -40,35 +66,42 @@ const connect = [
 
   <div class="pw-mnav__scrim" data-pw-menu-close hidden></div>
 
-  <nav class="pw-mnav__sheet" id="pw-menu-panel" aria-label="Menu" hidden>
-    <p class="pw-mnav__title">Menu</p>
+  <nav
+    class="pw-mnav__sheet"
+    id="pw-menu-panel"
+    aria-label={t.menu}
+    data-light-label={t.light}
+    data-dark-label={t.dark}
+    hidden
+  >
+    <p class="pw-mnav__title">{t.menu}</p>
 
     <button class="pw-mnav__row" type="button" data-pw-search>
       <PwIcon name="bi-search" />
-      <span>Search</span>
+      <span>{t.search}</span>
       <kbd>Ctrl K</kbd>
     </button>
 
     <button class="pw-mnav__row" type="button" data-pw-theme aria-pressed="false">
       <PwIcon name="bi-moon-stars" class="pw-mnav__theme-moon" />
       <PwIcon name="bi-sun" class="pw-mnav__theme-sun" />
-      <span data-pw-theme-label>Dark mode</span>
+      <span data-pw-theme-label>{t.dark}</span>
       <span class="pw-mnav__switch" aria-hidden="true"><span></span></span>
     </button>
 
     <div class="pw-mnav__divider" role="presentation"></div>
 
-    <a href="/getting-started/">
+    <a href={`${base}/getting-started/`}>
       <PwIcon name="bi-signpost-2" />
-      Getting started
+      {t.start}
     </a>
-    <a href="/city-roles/">
+    <a href={`${base}/city-roles/`}>
       <PwIcon name="bi-people" />
-      Roles and departments
+      {t.roles}
     </a>
 
     <div class="pw-mnav__divider" role="presentation"></div>
-    <p class="pw-mnav__title">Connect</p>
+    <p class="pw-mnav__title">{t.connect}</p>
 
     {
       connect.map((link) => (
@@ -110,9 +143,12 @@ const connect = [
   // ---- mobile menu ----
   document.querySelectorAll('[data-pw-menu]').forEach((menu) => {
     const button = menu.querySelector('.pw-mnav__button');
-    const sheet = menu.querySelector('.pw-mnav__sheet');
+    const sheet = menu.querySelector<HTMLElement>('.pw-mnav__sheet');
     const scrim = menu.querySelector('.pw-mnav__scrim');
     if (!button || !sheet || !scrim) return;
+
+    const lightLabel = sheet.dataset.lightLabel ?? 'Light mode';
+    const darkLabel = sheet.dataset.darkLabel ?? 'Dark mode';
 
     const setOpen = (open: boolean) => {
       sheet.hidden = !open;
@@ -134,7 +170,7 @@ const connect = [
     const themeLabel = sheet.querySelector('[data-pw-theme-label]');
     const syncTheme = () => {
       const dark = root.dataset.theme === 'dark';
-      if (themeLabel) themeLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+      if (themeLabel) themeLabel.textContent = dark ? lightLabel : darkLabel;
       themeButton?.setAttribute('aria-pressed', String(dark));
     };
     themeButton?.addEventListener('click', () => {
