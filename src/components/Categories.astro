@@ -1,5 +1,5 @@
 ---
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import PwIcon from './PwIcon.astro';
@@ -8,27 +8,54 @@ const locale = Astro.locals.starlightRoute?.locale ?? 'en';
 const isMs = locale === 'ms';
 const all = await getCollection('docs');
 const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
-
 const entries = all.filter((entry) => (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)));
-const docsRoot = join(process.cwd(), 'src/content/docs');
 
-// A category landing page is a docs entry that names an actual folder.
-const categories = entries
-  .filter((entry) => existsSync(join(docsRoot, entry.id)))
-  .map((entry) => {
-    const slug = entry.id.split('/').pop() ?? '';
-    let image = entry.data.image;
+const docsRoot = join(process.cwd(), 'src/content/docs');
+const localeRoot = isMs ? join(docsRoot, 'ms') : docsRoot;
+const base = isMs ? '/ms' : '';
+
+// Categories are folders on disk. A folder without index.md still shows up,
+// falling back to its "getting-started" article (or its first page).
+const folders = existsSync(localeRoot)
+  ? readdirSync(localeRoot, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name)
+  : [];
+
+const categories = folders
+  .map((name) => {
+    const folderId = (isMs ? `ms/${name}` : name).toLowerCase();
+    const pages = entries.filter((entry) => {
+      const id = entry.id.toLowerCase();
+      return id === folderId || id.startsWith(`${folderId}/`);
+    });
+    const landing =
+      pages.find((entry) => entry.id.toLowerCase() === folderId) ??
+      pages.find((entry) => entry.id.endsWith('/getting-started')) ??
+      pages[0];
+
+    if (!landing) return null;
+
+    const isLandingFile = landing.id.toLowerCase() === folderId;
+    const href = isLandingFile
+      ? `${base}/${name.toLowerCase()}/`
+      : `${base}/${landing.id.replace(/^ms\//, '').toLowerCase()}/`;
+
+    let image = landing.data.image;
     if (image && /\.(png|jpe?g)$/i.test(image)) {
       const webp = image.replace(/\.(png|jpe?g)$/i, '.webp');
       if (existsSync(join(process.cwd(), 'public', webp))) image = webp;
     }
+
     return {
-      slug,
-      title: entry.data.title,
-      description: entry.data.description ?? '',
+      slug: name.toLowerCase(),
+      title: landing.data.title,
+      description: landing.data.description ?? '',
       image,
+      href,
     };
-  });
+  })
+  .filter((cat): cat is NonNullable<typeof cat> => Boolean(cat));
 
 const order = ['start-here', 'city', 'companies'];
 categories.sort((a, b) => {
@@ -36,14 +63,12 @@ categories.sort((a, b) => {
   const ib = order.indexOf(b.slug);
   return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
 });
-
-const base = isMs ? '/ms' : '';
 ---
 
 <div class="pw-grid pw-cats">
   {
     categories.map((cat) => (
-      <a class="pw-cat" href={`${base}/${cat.slug}/`}>
+      <a class="pw-cat" href={cat.href}>
         {cat.image ? (
           <img class="pw-cat__image" src={cat.image} alt="" loading="lazy" decoding="async" />
         ) : (

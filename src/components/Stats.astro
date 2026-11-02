@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 
@@ -22,11 +22,16 @@ if (isMs) {
 
 const available = [...byKey.values()];
 const docsRoot = join(process.cwd(), 'src/content/docs');
+const localeRoot = isMs ? join(docsRoot, 'ms') : docsRoot;
 const isLanding = (entry: (typeof available)[number]) => existsSync(join(docsRoot, entry.id));
 const articles = available.filter(
   (entry) => !isLanding(entry) && entry.id !== 'index' && entry.id !== 'ms'
 ).length;
-const sections = available.filter((entry) => isLanding(entry)).length || 1;
+const sections = existsSync(localeRoot)
+  ? readdirSync(localeRoot, { withFileTypes: true }).filter(
+      (d) => d.isDirectory() && d.name.toLowerCase() !== 'ms'
+    ).length
+  : 1;
 const languages = 2;
 
 let updated = '2026-11-02';
