@@ -81,9 +81,10 @@ body {
   letter-spacing: -0.006em;
   overflow-x: clip;
   background:
-    radial-gradient(circle at 92% 2%, var(--pw-glow-b), transparent 30rem),
-    radial-gradient(circle at 4% 8%, var(--pw-glow-a), transparent 26rem),
-    var(--sl-color-bg);
+    radial-gradient(1100px 520px at 108% -6%, rgb(120 192 192 / 20%), transparent 62%),
+    radial-gradient(900px 520px at -10% 12%, rgb(63 169 160 / 12%), transparent 58%),
+    radial-gradient(900px 600px at 50% 112%, rgb(240 168 120 / 16%), transparent 62%),
+    linear-gradient(160deg, #fbfdff 0%, #eef7fb 42%, #fdf4ec 100%);
   background-attachment: fixed;
 }
 
@@ -757,10 +758,8 @@ site-search button[data-open-modal] {
   }
 
   html header .site-title img {
-    width: 32px;
-    height: 32px;
-    padding: 4px;
-    border-radius: 10px;
+    width: auto;
+    height: 40px;
   }
 
   header .site-title span {
@@ -776,8 +775,7 @@ site-search button[data-open-modal] {
   }
 
   html header .site-title img {
-    width: 28px;
-    height: 28px;
+    height: 34px;
   }
 }
 
@@ -843,13 +841,19 @@ site-search button[data-open-modal] {
   font-size: 1.15rem;
   cursor: pointer;
   transition:
-    background-color 160ms ease,
-    border-color 160ms ease;
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .pw-mnav__button:hover {
   border-color: var(--sl-color-accent);
   background: color-mix(in srgb, var(--sl-color-accent) 14%, transparent);
+  transform: translateY(-1px);
+}
+
+.pw-mnav__button:active {
+  transform: scale(0.93);
 }
 
 /* `display` rules would otherwise beat the `hidden` attribute. */
@@ -865,6 +869,13 @@ site-search button[data-open-modal] {
   background: rgb(10 22 38 / 38%);
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
+  animation: pw-fade-in 200ms ease;
+}
+
+@keyframes pw-fade-in {
+  from {
+    opacity: 0;
+  }
 }
 
 .pw-mnav__sheet {
@@ -880,13 +891,14 @@ site-search button[data-open-modal] {
   border-radius: 18px;
   background: var(--pw-paper);
   box-shadow: var(--pw-shadow-lg);
-  animation: pw-sheet-in 160ms ease;
+  animation: pw-sheet-in 240ms cubic-bezier(0.2, 0.9, 0.3, 1.05);
+  transform-origin: top right;
 }
 
 @keyframes pw-sheet-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-10px) scale(0.96);
   }
 }
 
@@ -993,30 +1005,42 @@ site-search button[data-open-modal] {
   vertical-align: -0.125em;
 }
 
-/* Framed square tile: the source artwork is cropped under the bridge deck,
-   so a visible tile makes the crop read as intentional. */
+/* Full artwork (including its wordmark), no tile or border. */
 header .site-title img {
-  box-sizing: border-box;
-  width: 44px;
-  height: 44px;
-  padding: 5px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--sl-color-accent) 9%, transparent);
-  object-fit: contain;
+  width: auto;
+  height: 52px;
 }
 
-/* ---------- Menu icon states ---------- */
-.pw-mnav__icon-close,
-.pw-mnav__theme-sun {
-  display: none;
+/* ---------- Menu icon states + animation ---------- */
+.pw-mnav__button .pw-icon {
+  grid-area: 1 / 1;
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.9, 0.3, 1.15),
+    opacity 160ms ease;
+}
+
+.pw-mnav__icon-close {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.55);
+}
+
+.pw-mnav__icon-open {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
 }
 
 .pw-mnav__button[aria-expanded='true'] .pw-mnav__icon-open {
-  display: none;
+  opacity: 0;
+  transform: rotate(90deg) scale(0.55);
 }
 
 .pw-mnav__button[aria-expanded='true'] .pw-mnav__icon-close {
-  display: block;
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.pw-mnav__theme-sun {
+  display: none;
 }
 
 .pw-mnav__row[aria-pressed='true'] .pw-mnav__theme-moon {
