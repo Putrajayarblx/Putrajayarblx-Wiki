@@ -74,6 +74,7 @@
 /* ---------- Page shell ---------- */
 html {
   scroll-padding-top: 6rem;
+  overflow-x: clip;
 }
 
 body {
@@ -253,7 +254,8 @@ nav.sidebar {
   color: var(--sl-color-text);
 }
 
-.hero .image img {
+.hero .image img,
+.hero > img {
   max-width: min(18rem, 70vw);
   height: auto;
   filter: drop-shadow(0 26px 60px rgb(37 71 155 / 22%));
@@ -980,6 +982,13 @@ site-search button[data-open-modal] {
   width: 1em;
   height: 1em;
   vertical-align: -0.125em;
+}
+
+/* The source artwork is cropped just under the bridge deck; soften the edge
+   so the header mark does not look sliced off. */
+header .site-title img {
+  -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
 }
 
 /* ---------- Menu icon states ---------- */
