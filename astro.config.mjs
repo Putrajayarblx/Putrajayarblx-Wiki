@@ -9,10 +9,10 @@ export default defineConfig({
       description:
         'A practical, community-maintained reference library for Putrajaya of Roblox.',
       logo: {
-        src: './src/assets/logo.svg',
+        src: './src/assets/logo-mark.png',
         alt: 'Putrajaya.rblx Wiki',
       },
-      favicon: '/favicon.svg',
+      favicon: '/favicon.png',
       components: {
         SocialIcons: './src/components/SocialIcons.astro',
       },

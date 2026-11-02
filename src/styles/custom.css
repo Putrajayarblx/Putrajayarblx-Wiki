@@ -6,12 +6,13 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  --pw-blue: #25479b;
-  --pw-sky: #6cc4e8;
+  --pw-blue: #123a8f;
+  --pw-sky: #4878c0;
   --pw-teal: #3fa9a0;
-  --pw-mint: #a8d5b4;
-  --pw-amber: #f2a563;
-  --pw-orange: #e8894a;
+  --pw-teal-light: #78c0c0;
+  --pw-mint: #a8c0a8;
+  --pw-amber: #f0a878;
+  --pw-orange: #e08a52;
   --pw-paper: #f7fbfd;
   --pw-ink: #10203a;
   --pw-muted: #566b85;
