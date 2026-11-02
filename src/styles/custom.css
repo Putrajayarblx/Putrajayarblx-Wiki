@@ -756,9 +756,11 @@ site-search button[data-open-modal] {
     gap: 0.55rem;
   }
 
-  header .site-title img {
-    height: 30px;
-    width: auto;
+  html header .site-title img {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    border-radius: 10px;
   }
 
   header .site-title span {
@@ -773,8 +775,9 @@ site-search button[data-open-modal] {
     font-size: 0.92rem;
   }
 
-  header .site-title img {
-    height: 26px;
+  html header .site-title img {
+    width: 28px;
+    height: 28px;
   }
 }
 
@@ -847,6 +850,12 @@ site-search button[data-open-modal] {
 .pw-mnav__button:hover {
   border-color: var(--sl-color-accent);
   background: color-mix(in srgb, var(--sl-color-accent) 14%, transparent);
+}
+
+/* `display` rules would otherwise beat the `hidden` attribute. */
+.pw-mnav__sheet[hidden],
+.pw-mnav__scrim[hidden] {
+  display: none;
 }
 
 .pw-mnav__scrim {
@@ -984,11 +993,16 @@ site-search button[data-open-modal] {
   vertical-align: -0.125em;
 }
 
-/* The source artwork is cropped just under the bridge deck; soften the edge
-   so the header mark does not look sliced off. */
+/* Framed square tile: the source artwork is cropped under the bridge deck,
+   so a visible tile makes the crop read as intentional. */
 header .site-title img {
-  -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  padding: 5px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--sl-color-accent) 9%, transparent);
+  object-fit: contain;
 }
 
 /* ---------- Menu icon states ---------- */
