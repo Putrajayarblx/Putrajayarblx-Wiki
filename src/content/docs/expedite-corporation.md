@@ -1,8 +1,8 @@
 ---
-category: Companies
-landing: false
 title: Expedite Corporation
 description: A public transport provider company.
+category: Companies
+landing: false
 infobox:
   title: Expedite Transport Corporation
   image: /uploads/ExpediteAd1.png
@@ -23,6 +23,7 @@ Expedite Corporation is a public transport company based in Putrajaya. It curren
 
 ## History
 
-The company was founded in 2025 and began operations in Kuching in 2026.
+![](/uploads/ExpediteBusReadAdvert.png)
 
+The company was founded in 2025 and began operations in Kuching in 2026.
 
