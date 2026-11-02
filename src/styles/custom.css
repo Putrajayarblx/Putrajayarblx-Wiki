@@ -26,7 +26,7 @@
     monospace;
 
   /* Tighter table-of-contents column and mobile TOC bar. */
-  --sl-sidebar-width: 16rem;
+  --sl-sidebar-width: 13rem;
   --sl-mobile-toc-height: 2.25rem;
   /* Use more of the horizontal space for article text (default is 45rem). */
   --sl-content-width: 45rem;
@@ -646,7 +646,14 @@ mobile-starlight-toc summary .toggle {
    which makes it far wider than its content needs. Cap it. */
 @media (min-width: 72rem) {
   .right-sidebar-container {
-    max-width: 12.5rem;
+    width: 13rem;
+    max-width: 13rem;
+  }
+
+  /* Compensate for the TOC track being wider than the visible panel,
+     which biases the centred article to the left. */
+  .content-panel {
+    transform: translateX(1.5rem);
   }
 }
 
