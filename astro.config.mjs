@@ -21,13 +21,6 @@ export default defineConfig({
         Footer: './src/components/Footer.astro',
         SocialIcons: './src/components/SocialIcons.astro',
       },
-      social: [
-        {
-          icon: 'github',
-          label: 'GitHub',
-          href: 'https://github.com/Putrajayarblx/Putrajayarblx-Wiki',
-        },
-      ],
       editLink: {
         baseUrl:
           'https://github.com/Putrajayarblx/Putrajayarblx-Wiki/edit/main/',

@@ -1,11 +1,42 @@
 ---
-import Default from '@astrojs/starlight/components/SocialIcons.astro';
 import PwIcon from './PwIcon.astro';
+
+const links = [
+  { icon: 'fa-linktree', label: 'Linktree', href: 'https://linktr.ee/putrajaya.rblx' },
+  {
+    icon: 'bi-controller',
+    label: 'Roblox community',
+    href: 'https://www.roblox.com/communities/33831801/Wilayah-Persekutuan-Putrajaya#!/about',
+  },
+  { icon: 'fa-discord', label: 'Discord', href: 'https://discord.gg/Ng8rVaE7bX' },
+  { icon: 'fa-x-twitter', label: 'X', href: 'https://x.com/PutrajayaOfRBLX' },
+  { icon: 'fa-youtube', label: 'YouTube', href: 'https://www.youtube.com/@PutrajayaOfRoblox' },
+  { icon: 'fa-tiktok', label: 'TikTok', href: 'https://www.tiktok.com/@putrajaya.rblx' },
+  {
+    icon: 'bi-globe',
+    label: 'Website',
+    href: 'https://sites.google.com/view/putrajaya-of-roblox-?usp=sharing',
+  },
+  {
+    icon: 'bi-github',
+    label: 'GitHub',
+    href: 'https://github.com/Putrajayarblx/Putrajayarblx-Wiki',
+  },
+];
 ---
 
-<a class="pw-top-link" href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
-  <PwIcon name="bi-house-door" />
-  <span>Main site</span>
-</a>
-
-<Default />
+<nav class="pw-social" aria-label="Community links">
+  {
+    links.map((link) => (
+      <a
+        href={link.href}
+        title={link.label}
+        aria-label={link.label}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <PwIcon name={link.icon} />
+      </a>
+    ))
+  }
+</nav>

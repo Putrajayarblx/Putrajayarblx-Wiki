@@ -1,6 +1,25 @@
 ---
 import Default from '@astrojs/starlight/components/Header.astro';
 import PwIcon from './PwIcon.astro';
+
+const connect = [
+  { icon: 'fa-linktree', label: 'Linktree', href: 'https://linktr.ee/putrajaya.rblx' },
+  {
+    icon: 'bi-controller',
+    label: 'Roblox community',
+    href: 'https://www.roblox.com/communities/33831801/Wilayah-Persekutuan-Putrajaya#!/about',
+  },
+  { icon: 'fa-discord', label: 'Discord', href: 'https://discord.gg/Ng8rVaE7bX' },
+  { icon: 'fa-x-twitter', label: 'X', href: 'https://x.com/PutrajayaOfRBLX' },
+  { icon: 'fa-youtube', label: 'YouTube', href: 'https://www.youtube.com/@PutrajayaOfRoblox' },
+  { icon: 'fa-tiktok', label: 'TikTok', href: 'https://www.tiktok.com/@putrajaya.rblx' },
+  {
+    icon: 'bi-globe',
+    label: 'Website',
+    href: 'https://sites.google.com/view/putrajaya-of-roblox-?usp=sharing',
+  },
+  { icon: 'bi-github', label: 'GitHub', href: 'https://github.com/Putrajayarblx/Putrajayarblx-Wiki' },
+];
 ---
 
 <Default />
@@ -47,14 +66,18 @@ import PwIcon from './PwIcon.astro';
       <PwIcon name="bi-people" />
       Roles and departments
     </a>
-    <a href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
-      <PwIcon name="bi-house-door" />
-      Main site
-    </a>
-    <a href="https://github.com/Putrajayarblx/Putrajayarblx-Wiki">
-      <PwIcon name="bi-github" />
-      GitHub
-    </a>
+
+    <div class="pw-mnav__divider" role="presentation"></div>
+    <p class="pw-mnav__title">Connect</p>
+
+    {
+      connect.map((link) => (
+        <a href={link.href} target="_blank" rel="noopener noreferrer">
+          <PwIcon name={link.icon} />
+          {link.label}
+        </a>
+      ))
+    }
   </nav>
 </div>
 
@@ -107,7 +130,6 @@ import PwIcon from './PwIcon.astro';
       if (event.key === 'Escape' && !sheet.hidden) setOpen(false);
     });
 
-    // theme: same key Starlight uses
     const themeButton = sheet.querySelector('[data-pw-theme]');
     const themeLabel = sheet.querySelector('[data-pw-theme-label]');
     const syncTheme = () => {
