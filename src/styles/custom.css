@@ -1093,21 +1093,24 @@ header .site-title img {
   font-size: 0.7rem;
 }
 
-/* ---------- Sun-ray watermark ---------- */
+/* Soft gradient wash behind the hero (no repeating rays). */
 .hero::after {
   position: absolute;
-  top: -32%;
-  right: -12%;
+  inset: -30% -8% auto -8%;
   z-index: -1;
-  width: 36rem;
-  height: 36rem;
-  background: repeating-conic-gradient(
-    from 0deg,
-    color-mix(in srgb, var(--pw-amber) 12%, transparent) 0deg 5deg,
-    transparent 5deg 11deg
-  );
-  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 68%);
-  mask-image: radial-gradient(circle, #000 0%, transparent 68%);
+  height: 132%;
+  background:
+    radial-gradient(
+      58% 76% at 76% 18%,
+      color-mix(in srgb, var(--pw-amber) 16%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      52% 70% at 14% 34%,
+      color-mix(in srgb, var(--pw-teal) 13%, transparent) 0%,
+      transparent 72%
+    );
+  filter: blur(6px);
   content: '';
   pointer-events: none;
 }
