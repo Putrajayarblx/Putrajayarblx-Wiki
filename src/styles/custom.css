@@ -2019,3 +2019,60 @@ html[data-pw-width='wide'] {
 .pw-zoom__close:hover {
   background: rgb(255 255 255 / 20%);
 }
+
+/* Articles with an info box: use a two-column grid instead of a float so
+   paragraphs and images fill the text column without leaving a gap. */
+@media (min-width: 60rem) {
+  .sl-markdown-content:has(> .pw-infobox) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    column-gap: 2rem;
+    align-items: start;
+  }
+
+  .sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
+    grid-column: 2;
+    grid-row: 1 / span 100;
+    float: none;
+    width: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  .sl-markdown-content:has(> .pw-infobox) > :not(.pw-infobox) {
+    grid-column: 1;
+  }
+}
+
+/* Articles with an info box: a grid instead of a float, so paragraphs and
+   images fill the text column instead of dropping below the box. */
+.sl-markdown-content:has(> .pw-infobox) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0.75rem;
+}
+
+.sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
+  grid-column: 1;
+  float: none;
+  width: auto;
+  max-width: none;
+  margin: 0 0 0.75rem;
+}
+
+.sl-markdown-content:has(> .pw-infobox) > :not(.pw-infobox) {
+  grid-column: 1;
+}
+
+@media (min-width: 60rem) {
+  .sl-markdown-content:has(> .pw-infobox) {
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    column-gap: 2rem;
+  }
+
+  .sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
+    grid-column: 2;
+    grid-row: 1 / span 100;
+    margin: 0;
+  }
+}
