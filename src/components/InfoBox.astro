@@ -1,0 +1,59 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+interface Row {
+  label: string;
+  value: string;
+  href?: string;
+}
+
+interface Props {
+  title?: string;
+  image?: string;
+  imageAlt?: string;
+  rows?: Row[];
+}
+
+const { title, image, imageAlt = '', rows = [] } = Astro.props;
+
+// Prefer the generated WebP sibling when one exists (see scripts/optimize-uploads.mjs).
+let src = image;
+if (src && /\.(png|jpe?g)$/i.test(src)) {
+  const webp = src.replace(/\.(png|jpe?g)$/i, '.webp');
+  if (existsSync(join(process.cwd(), 'public', webp))) src = webp;
+}
+---
+
+<aside class="pw-infobox" aria-label={title ? `${title} quick facts` : 'Quick facts'}>
+  {title && <p class="pw-infobox__title">{title}</p>}
+  {src && (
+    <img
+      class="pw-infobox__image"
+      src={src}
+      alt={imageAlt}
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+  {
+    rows.length > 0 && (
+      <dl class="pw-infobox__rows">
+        {rows.map((row) => (
+          <>
+            <dt>{row.label}</dt>
+            <dd>
+              {row.href ? (
+                <a href={row.href} target="_blank" rel="noopener noreferrer">
+                  {row.value}
+                </a>
+              ) : (
+                row.value
+              )}
+            </dd>
+          </>
+        ))}
+      </dl>
+    )
+  }
+</aside>

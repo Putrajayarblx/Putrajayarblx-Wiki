@@ -30,6 +30,7 @@ export default defineConfig({
         Footer: './src/components/Footer.astro',
         SocialIcons: './src/components/SocialIcons.astro',
         MobileMenuFooter: './src/components/MobileMenuFooter.astro',
+        MarkdownContent: './src/components/MarkdownContent.astro',
       },
       editLink: {
         baseUrl:

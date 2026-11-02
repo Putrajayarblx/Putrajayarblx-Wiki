@@ -20,6 +20,33 @@ content:
         label: Section
         type: string
         description: Groups the article in the wiki (e.g. Start here, City, Companies).
+      - name: infobox
+        label: Info box
+        type: object
+        description: Optional quick-facts panel shown beside the article.
+        fields:
+          - name: title
+            label: Title
+            type: string
+          - name: image
+            label: Image
+            type: image
+          - name: imageAlt
+            label: Image description
+            type: string
+          - name: rows
+            label: Rows
+            type: list
+            fields:
+              - name: label
+                label: Label
+                type: string
+              - name: value
+                label: Value
+                type: string
+              - name: href
+                label: Link (optional)
+                type: string
       - name: body
         label: Body
         type: rich-text
