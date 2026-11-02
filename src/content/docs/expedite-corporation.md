@@ -1,6 +1,7 @@
 ---
 title: Expedite Corporation
 description: A public transport provider company.
+section: Companies
 ---
 ![An expedite advert](/uploads/ExpediteAd1.png)
 

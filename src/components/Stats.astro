@@ -1,20 +1,29 @@
 ﻿---
 import { getCollection } from 'astro:content';
 import { execSync } from 'node:child_process';
-import { sidebar } from '../data/sidebar';
 
 const locale = Astro.locals.starlightRoute?.locale ?? 'en';
 const isMs = locale === 'ms';
 
 const all = await getCollection('docs');
 const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
-const inLocale = all.filter((entry) => (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)));
-const homeId = isMs ? 'ms' : 'index';
-const articles = inLocale.filter(
-  (entry) => entry.id !== homeId && !entry.id.endsWith('404')
-).length;
+const isDoc = (id: string) => id !== 'index' && id !== 'ms' && !id.endsWith('404');
 
-const sections = sidebar.length;
+// One entry per slug, preferring the current locale and falling back to English.
+const bySlug = new Map<string, (typeof all)[number]>();
+for (const entry of all.filter((e) => isDoc(e.id) && !isMsEntry(e.id))) {
+  bySlug.set(entry.id, entry);
+}
+if (isMs) {
+  for (const entry of all.filter((e) => isDoc(e.id) && isMsEntry(e.id))) {
+    bySlug.set(entry.id.replace(/^ms\//, ''), entry);
+  }
+}
+
+const available = [...bySlug.values()];
+const articles = available.length;
+const sections =
+  new Set(available.map((entry) => entry.data.section).filter(Boolean)).size || 1;
 const languages = 2;
 
 let updated = '2026-11-02';
@@ -44,5 +53,3 @@ const t = isMs
   <div class="pw-stat"><strong>{languages}</strong><span>{t.languages}</span></div>
   <div class="pw-stat"><strong>{updatedLabel}</strong><span>{t.updated}</span></div>
 </div>
-
-

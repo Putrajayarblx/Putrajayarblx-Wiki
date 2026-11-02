@@ -1,6 +1,7 @@
 ---
 title: Peranan dan jabatan bandar
 description: Panduan ringkas tentang peranan yang paling biasa di Putrajaya.
+section: Bandar
 ---
 
 Putrajaya dibina atas struktur roleplay yang kukuh dan perkhidmatan awam yang bermakna.

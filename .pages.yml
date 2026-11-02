@@ -16,6 +16,10 @@ content:
       - name: description
         label: Summary
         type: text
+      - name: section
+        label: Section
+        type: string
+        description: Groups the article in the wiki (e.g. Start here, City, Companies).
       - name: body
         label: Body
         type: rich-text
