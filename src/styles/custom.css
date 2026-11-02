@@ -645,6 +645,11 @@ mobile-starlight-toc summary .toggle {
 /* Starlight expands the TOC column to absorb leftover space on wide screens,
    which makes it far wider than its content needs. Cap it. */
 @media (min-width: 72rem) {
+  /* Desktop fills the width; the Appearance panel is a mobile-only control. */
+  :root {
+    --sl-content-width: 60rem;
+  }
+
   .right-sidebar-container {
     width: 13rem;
     max-width: 13rem;
@@ -1721,13 +1726,6 @@ header .site-title img {
   }
 }
 
-/* Very wide screens: move the info box into the gap between the text column
-   and the TOC, so the article keeps its full reading width. */
-@media (min-width: 110rem) {
-  .pw-infobox {
-    margin-inline-end: -20rem;
-  }
-}
 
 /* ---------- Appearance panel ---------- */
 .pw-appearance {
@@ -1735,6 +1733,10 @@ header .site-title img {
   right: 1rem;
   bottom: 1rem;
   z-index: 96;
+}
+
+.pw-appearance[data-in-rail='true'] .pw-appearance__toggle {
+  display: none;
 }
 
 .pw-appearance__toggle {
@@ -1836,6 +1838,30 @@ header .site-title img {
   accent-color: var(--sl-color-accent);
 }
 
+/* Desktop: panel lives inline under the table of contents. */
+.pw-appearance__panel--rail {
+  position: static;
+  width: 13rem;
+  max-width: 13rem;
+  margin: 1.1rem 0 0;
+  padding: 0.75rem 0 0;
+  border: 0;
+  border-top: 1px solid var(--sl-color-hairline);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+.pw-appearance__panel--rail .pw-appearance__hide {
+  display: none;
+}
+
+/* Desktop already uses the wide column; hide the width choice there. */
+.pw-appearance__panel--rail fieldset:nth-of-type(2) {
+  display: none;
+}
+
 /* Text size */
 html[data-pw-text='small'] .sl-markdown-content {
   font-size: 0.92rem;
@@ -1845,7 +1871,7 @@ html[data-pw-text='large'] .sl-markdown-content {
   font-size: 1.08rem;
 }
 
-/* Width */
+/* Width (mobile) */
 html[data-pw-width='wide'] {
   --sl-content-width: 60rem;
 }

@@ -89,6 +89,29 @@ import PwIcon from './PwIcon.astro';
       applyTheme(color);
     };
 
+    // Desktop: host the panel in the right rail under the TOC so the space
+    // is used. Mobile: keep it as a floating popover.
+    const rail = document.querySelector('.right-sidebar-panel');
+    const desktop = window.matchMedia('(min-width: 72rem)');
+
+    const place = () => {
+      const useRail = desktop.matches && rail;
+      if (useRail) {
+        rail.appendChild(panel);
+        panel.classList.add('pw-appearance__panel--rail');
+        panel.hidden = false;
+        box.dataset.inRail = 'true';
+      } else {
+        box.appendChild(panel);
+        panel.classList.remove('pw-appearance__panel--rail');
+        panel.hidden = true;
+        box.dataset.inRail = 'false';
+      }
+    };
+
+    place();
+    desktop.addEventListener('change', place);
+
     const setOpen = (open: boolean) => {
       panel.hidden = !open;
       toggle.setAttribute('aria-expanded', String(open));
