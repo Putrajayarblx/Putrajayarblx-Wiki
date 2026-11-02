@@ -1,7 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { existsSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 
 const locale = Astro.locals.starlightRoute?.locale ?? 'en';
@@ -9,29 +7,18 @@ const isMs = locale === 'ms';
 
 const all = await getCollection('docs');
 const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
-const is404 = (id: string) => id.endsWith('404');
+const entries = all.filter((entry) => (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)));
 
-const key = (id: string) => id.replace(/^ms\//, '').replace(/^index$/, 'home');
+const docs = entries.filter(
+  (entry) =>
+    entry.id !== 'index' &&
+    entry.id !== 'ms' &&
+    !entry.id.endsWith('404') &&
+    Boolean(entry.data.category)
+);
 
-// One entry per page, preferring the current locale with English fallback.
-const byKey = new Map<string, (typeof all)[number]>();
-for (const entry of all.filter((e) => !isMsEntry(e.id) && !is404(e.id))) byKey.set(key(entry.id), entry);
-if (isMs) {
-  for (const entry of all.filter((e) => isMsEntry(e.id) && !is404(e.id))) byKey.set(key(entry.id), entry);
-}
-
-const available = [...byKey.values()];
-const docsRoot = join(process.cwd(), 'src/content/docs');
-const localeRoot = isMs ? join(docsRoot, 'ms') : docsRoot;
-const isLanding = (entry: (typeof available)[number]) => existsSync(join(docsRoot, entry.id));
-const articles = available.filter(
-  (entry) => !isLanding(entry) && entry.id !== 'index' && entry.id !== 'ms'
-).length;
-const sections = existsSync(localeRoot)
-  ? readdirSync(localeRoot, { withFileTypes: true }).filter(
-      (d) => d.isDirectory() && d.name.toLowerCase() !== 'ms'
-    ).length
-  : 1;
+const articles = docs.filter((entry) => !entry.data.landing).length;
+const sections = new Set(docs.map((entry) => entry.data.category)).size || 1;
 const languages = 2;
 
 let updated = '2026-11-02';
@@ -61,4 +48,3 @@ const t = isMs
   <div class="pw-stat"><strong>{languages}</strong><span>{t.languages}</span></div>
   <div class="pw-stat"><strong>{updatedLabel}</strong><span>{t.updated}</span></div>
 </div>
-

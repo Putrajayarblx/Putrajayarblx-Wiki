@@ -9,6 +9,8 @@ export const collections = {
     schema: docsSchema({
       extend: z.object({
         section: z.string().optional(),
+        category: z.string().optional(),
+        landing: z.boolean().optional(),
         image: z.string().optional(),
         infobox: z
           .object({

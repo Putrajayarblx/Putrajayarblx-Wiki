@@ -1,7 +1,8 @@
 ---
+category: Companies
+landing: false
 title: Expedite Corporation
 description: A public transport provider company.
-section: Companies
 infobox:
   title: Expedite Transport Corporation
   image: /uploads/ExpediteAd1.png

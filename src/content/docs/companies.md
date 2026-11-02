@@ -1,4 +1,6 @@
 ---
+category: Companies
+landing: true
 title: Getting started with companies
 description: How to register a business, hire staff and keep it running.
 ---

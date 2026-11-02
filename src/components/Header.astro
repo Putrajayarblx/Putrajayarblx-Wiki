@@ -133,13 +133,32 @@ const connect = [
   window.addEventListener('resize', onScroll);
 
   // ---- any search trigger (hero, menu) opens Starlight's modal ----
-  const openSearch = () =>
-    document.querySelector<HTMLButtonElement>('site-search button[data-open-modal]')?.click();
+  // Open Starlight's search via its keyboard shortcut. Clicking the header
+  // button races with Pagefind's async init and gets swallowed on first click.
+  const openSearch = () => {
+    const dialog = document.querySelector<HTMLDialogElement>('site-search dialog');
+    if (dialog?.open) return;
+
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true })
+    );
+
+    if (!dialog?.open) {
+      try {
+        dialog?.showModal();
+      } catch {
+        /* already open */
+      }
+    }
+  };
   document.querySelectorAll('[data-pw-search]').forEach((el) => {
-    el.addEventListener('click', () => {
+    el.addEventListener('click', (event) => {
+      // Keep the click from bubbling to Starlight's "click outside" handler,
+      // which would close the dialog immediately after we open it.
+      event.stopPropagation();
       const sheet = el.closest('.pw-mnav__sheet');
       if (sheet instanceof HTMLElement) sheet.hidden = true;
-      openSearch();
+      window.setTimeout(openSearch, 0);
     });
   });
 

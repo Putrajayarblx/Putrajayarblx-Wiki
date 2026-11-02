@@ -16,6 +16,14 @@ content:
       - name: description
         label: Summary
         type: text
+      - name: category
+        label: Category
+        type: string
+        description: Groups the article in the sidebar and on the homepage.
+      - name: landing
+        label: Category landing page
+        type: boolean
+        description: Use this article as the category card and landing page.
       - name: image
         label: Category image
         type: image

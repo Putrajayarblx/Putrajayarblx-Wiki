@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { sidebar } from './src/data/sidebar.mjs';
 import remarkUploads from './src/plugins/remark-uploads.mjs';
 
 export default defineConfig({
@@ -23,6 +24,7 @@ export default defineConfig({
         alt: 'Putrajaya.rblx Wiki',
       },
       favicon: '/favicon.png',
+      sidebar,
       lastUpdated: true,
       components: {
         Head: './src/components/Head.astro',

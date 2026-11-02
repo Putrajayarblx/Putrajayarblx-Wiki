@@ -1,5 +1,5 @@
 ---
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import PwIcon from './PwIcon.astro';
@@ -8,60 +8,45 @@ const locale = Astro.locals.starlightRoute?.locale ?? 'en';
 const isMs = locale === 'ms';
 const all = await getCollection('docs');
 const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
+
 const entries = all.filter((entry) => (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)));
+const docs = entries.filter(
+  (entry) =>
+    entry.id !== 'index' &&
+    entry.id !== 'ms' &&
+    !entry.id.endsWith('404') &&
+    Boolean(entry.data.category)
+);
 
-const docsRoot = join(process.cwd(), 'src/content/docs');
-const localeRoot = isMs ? join(docsRoot, 'ms') : docsRoot;
-const base = isMs ? '/ms' : '';
+const groups = new Map<string, typeof docs>();
+for (const doc of docs) {
+  const category = doc.data.category as string;
+  if (!groups.has(category)) groups.set(category, []);
+  groups.get(category).push(doc);
+}
 
-// Categories are folders on disk. A folder without index.md still shows up,
-// falling back to its "getting-started" article (or its first page).
-const folders = existsSync(localeRoot)
-  ? readdirSync(localeRoot, { withFileTypes: true })
-      .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => dirent.name)
-  : [];
+const preferred = ['Start here', 'City', 'Companies'];
+const sorted = [...groups.entries()].sort((a, b) => {
+  const ia = preferred.indexOf(a[0]);
+  const ib = preferred.indexOf(b[0]);
+  return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib) || a[0].localeCompare(b[0]);
+});
 
-const categories = folders
-  .map((name) => {
-    const folderId = (isMs ? `ms/${name}` : name).toLowerCase();
-    const pages = entries.filter((entry) => {
-      const id = entry.id.toLowerCase();
-      return id === folderId || id.startsWith(`${folderId}/`);
-    });
-    const landing =
-      pages.find((entry) => entry.id.toLowerCase() === folderId) ??
-      pages.find((entry) => entry.id.endsWith('/getting-started')) ??
-      pages[0];
-
-    if (!landing) return null;
-
-    const isLandingFile = landing.id.toLowerCase() === folderId;
-    const href = isLandingFile
-      ? `${base}/${name.toLowerCase()}/`
-      : `${base}/${landing.id.replace(/^ms\//, '').toLowerCase()}/`;
-
-    let image = landing.data.image;
-    if (image && /\.(png|jpe?g)$/i.test(image)) {
-      const webp = image.replace(/\.(png|jpe?g)$/i, '.webp');
-      if (existsSync(join(process.cwd(), 'public', webp))) image = webp;
-    }
-
-    return {
-      slug: name.toLowerCase(),
-      title: landing.data.title,
-      description: landing.data.description ?? '',
-      image,
-      href,
-    };
-  })
-  .filter((cat): cat is NonNullable<typeof cat> => Boolean(cat));
-
-const order = ['start-here', 'city', 'companies'];
-categories.sort((a, b) => {
-  const ia = order.indexOf(a.slug);
-  const ib = order.indexOf(b.slug);
-  return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+const categories = sorted.map(([name, items]) => {
+  const landing = items.find((doc) => doc.data.landing) ?? items[0];
+  let image = landing.data.image;
+  if (image && /\.(png|jpe?g)$/i.test(image)) {
+    const webp = image.replace(/\.(png|jpe?g)$/i, '.webp');
+    if (existsSync(join(process.cwd(), 'public', webp))) image = webp;
+  }
+  return {
+    name,
+    slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    title: landing.data.title,
+    description: landing.data.description ?? '',
+    image,
+    href: `${isMs ? '/ms' : ''}/${landing.id}/`,
+  };
 });
 ---
 

@@ -1,7 +1,8 @@
 ---
+category: City
+landing: false
 title: City roles and departments
 description: A quick guide to the most common roles in Putrajaya.
-section: City
 ---
 
 Putrajaya is built around strong roleplay structures and meaningful public service.
