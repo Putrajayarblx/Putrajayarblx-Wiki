@@ -25,6 +25,10 @@
   --sl-font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo,
     monospace;
 
+  /* Tighter table-of-contents column and mobile TOC bar. */
+  --sl-sidebar-width: 16rem;
+  --sl-mobile-toc-height: 2.5rem;
+
   --sl-color-accent-low: #d9ecf9;
   --sl-color-accent: #2f7fb8;
   --sl-color-accent-high: #1b4a80;
@@ -605,7 +609,7 @@ nav.sidebar {
 .right-sidebar h2,
 starlight-toc h2 {
   color: var(--sl-color-text);
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -613,9 +617,20 @@ starlight-toc h2 {
 
 starlight-toc a {
   border-radius: 7px;
-  padding: 0.15rem 0.45rem;
-  margin-inline: -0.45rem;
+  padding: 0.08rem 0.4rem;
+  margin-inline: -0.4rem;
+  color: var(--pw-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
   transition: background-color 160ms ease;
+}
+
+mobile-starlight-toc summary {
+  font-size: 0.82rem;
+}
+
+mobile-starlight-toc summary .toggle {
+  gap: 0.35rem;
 }
 
 starlight-toc a:hover {
