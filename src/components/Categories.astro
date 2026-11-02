@@ -42,7 +42,7 @@ const categories = sorted.map(([name, items]) => {
   return {
     name,
     slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-    title: landing.data.title,
+    title: name,
     description: landing.data.description ?? '',
     image,
     href: `${isMs ? '/ms' : ''}/${landing.id}/`,
