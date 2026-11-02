@@ -1646,6 +1646,7 @@ header .site-title img {
 
 .pw-infobox__rows dd {
   margin: 0;
+  padding: 0;
   color: var(--pw-muted);
 }
 
