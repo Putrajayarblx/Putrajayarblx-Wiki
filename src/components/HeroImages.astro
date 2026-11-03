@@ -1,0 +1,85 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { getCollection } from 'astro:content';
+
+const locale = Astro.locals.starlightRoute?.locale ?? 'en';
+const isMs = locale === 'ms';
+const all = await getCollection('docs');
+const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
+
+const hasImage = (entry: (typeof all)[number]) =>
+  entry.id !== 'index' &&
+  entry.id !== 'ms' &&
+  !entry.id.endsWith('404') &&
+  Boolean(entry.data.category) &&
+  Boolean(entry.data.landing) &&
+  Boolean(entry.data.image);
+
+const resolve = (image: string) => {
+  if (/\.(png|jpe?g)$/i.test(image)) {
+    const webp = image.replace(/\.(png|jpe?g)$/i, '.webp');
+    if (existsSync(join(process.cwd(), 'public', webp))) return webp;
+  }
+  return image;
+};
+
+// Prefer the current locale, then fill up from the other locale so a
+// partly translated wiki still shows three cards.
+const local = all.filter((entry) => (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)));
+const candidates = [...local.filter(hasImage), ...all.filter(hasImage)];
+
+const seen = new Set<string>();
+const categories = candidates
+  .map((entry) => ({
+    name: entry.data.category as string,
+    image: resolve(entry.data.image as string),
+  }))
+  .filter((category) => {
+    if (seen.has(category.name)) return false;
+    seen.add(category.name);
+    return true;
+  });
+---
+
+{
+  categories.length >= 3 && (
+    <>
+      <script type="application/json" id="pw-category-images" set:html={JSON.stringify(categories)} />
+      <script>
+        const source = document.getElementById('pw-category-images');
+        const art = document.querySelector('.pw-art');
+
+        if (source && art) {
+          try {
+            const all = JSON.parse(source.textContent || '[]') as {
+              name: string;
+              image: string;
+            }[];
+            const picks = [...all].sort(() => Math.random() - 0.5).slice(0, 3);
+
+            art.removeAttribute('aria-hidden');
+            art.innerHTML = '';
+            picks.forEach((category, index) => {
+              const figure = document.createElement('figure');
+              figure.className = `pw-shot pw-shot--${index + 1}`;
+
+              const img = document.createElement('img');
+              img.src = category.image;
+              img.alt = `${category.name} — wiki category`;
+              img.loading = 'eager';
+
+              const caption = document.createElement('figcaption');
+              caption.textContent = category.name;
+
+              figure.append(img, caption);
+              art.append(figure);
+            });
+          } catch {
+            /* keep the static fallback art */
+          }
+        }
+      </script>
+    </>
+  )
+}

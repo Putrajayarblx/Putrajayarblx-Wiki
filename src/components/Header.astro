@@ -3,6 +3,7 @@ import Default from '@astrojs/starlight/components/Header.astro';
 import PwIcon from './PwIcon.astro';
 import Appearance from './Appearance.astro';
 import ImageZoom from './ImageZoom.astro';
+import HeroImages from './HeroImages.astro';
 import { getCollection } from 'astro:content';
 
 const locale = Astro.locals.starlightRoute.locale ?? 'en';
@@ -142,6 +143,8 @@ const connect = [
 <Appearance />
 
 <ImageZoom />
+
+<HeroImages />
 
 <script>
   const root = document.documentElement;

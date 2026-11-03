@@ -1,6 +1,7 @@
 ---
 category: Start here
 landing: true
+image: /uploads/category-start-here.png
 title: Bermula di Putrajaya
 description: Segala yang diperlukan warganegara baharu dalam sepuluh minit pertama.
 ---

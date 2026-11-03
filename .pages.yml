@@ -27,7 +27,7 @@ content:
       - name: image
         label: Category image
         type: image
-        description: Used on the homepage card. Only needed on a category landing page.
+        description: Used on the homepage category card and the rotating hero images. Only needed on a category landing page.
       - name: section
         label: Section
         type: string

@@ -1,6 +1,7 @@
 ---
 category: Companies
 landing: true
+image: /uploads/ExpediteAd1.png
 title: Getting started with companies
 description: How to register a business, hire staff and keep it running.
 ---

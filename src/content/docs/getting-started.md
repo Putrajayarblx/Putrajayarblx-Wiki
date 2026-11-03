@@ -1,6 +1,7 @@
 ---
 category: Start here
 landing: true
+image: /uploads/category-start-here.png
 title: Getting started in Putrajaya
 description: Everything a new citizen needs in their first ten minutes.
 ---

@@ -1,6 +1,7 @@
 ---
 category: City
 landing: true
+image: /uploads/category-city.png
 title: Getting started in the city
 description: Pick a department, learn the chain of command, and start your first shift.
 ---
