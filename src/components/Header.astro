@@ -152,7 +152,7 @@ const connect = [
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
     if (bar) bar.style.transform = `scaleX(${ratio})`;
-    root.classList.toggle('pw-scrolled', window.scrollY > 6);
+    root.classList.toggle('pw-scrolled', window.scrollY > 6 && window.innerWidth >= 1152);
   };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
