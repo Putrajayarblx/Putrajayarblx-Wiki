@@ -2396,6 +2396,26 @@ html[data-pw-width='wide'] {
   animation: pw-glow-pulse 8s ease-in-out infinite;
 }
 
+.pw-art::after {
+  content: "";
+  position: absolute;
+  inset: 7%;
+  z-index: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 38deg,
+    color-mix(in srgb, var(--pw-teal) 38%, transparent) 90deg,
+    transparent 142deg 218deg,
+    color-mix(in srgb, var(--pw-amber) 32%, transparent) 270deg,
+    transparent 322deg
+  );
+  filter: blur(30px);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: pw-aurora-spin 24s linear infinite;
+}
+
 .pw-shot {
   position: absolute;
   margin: 0;
@@ -2406,7 +2426,10 @@ html[data-pw-width='wide'] {
   background: var(--sl-color-bg-soft, #eef6fb);
   animation: pw-art-float 7s ease-in-out infinite;
   animation-fill-mode: backwards;
-  transition: box-shadow 240ms ease;
+  transition:
+    box-shadow 240ms ease,
+    opacity 240ms ease,
+    filter 240ms ease;
 }
 
 .pw-shot::after {
@@ -2423,6 +2446,23 @@ html[data-pw-width='wide'] {
   transform: translateX(-130%);
   transition: transform 750ms ease;
   pointer-events: none;
+}
+
+.pw-shot::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: 1;
+  background: linear-gradient(
+    115deg,
+    transparent 42%,
+    rgb(255 255 255 / 16%) 50%,
+    transparent 58%
+  );
+  transform: translateX(-160%);
+  pointer-events: none;
+  animation: pw-auto-sheen 11s ease-in-out infinite;
+  animation-delay: var(--sweep, 0s);
 }
 
 .pw-shot img {
@@ -2447,6 +2487,11 @@ html[data-pw-width='wide'] {
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .pw-art:hover .pw-shot:not(:hover) {
+    opacity: 0.78;
+    filter: saturate(0.82);
+  }
+
   .pw-shot:hover {
     box-shadow: 0 30px 70px rgb(16 32 58 / 32%);
   }
@@ -2462,6 +2507,7 @@ html[data-pw-width='wide'] {
 
 .pw-shot--1 {
   --rot: -6deg;
+  --sweep: 1s;
   top: 0;
   left: 0;
   z-index: 1;
@@ -2471,6 +2517,7 @@ html[data-pw-width='wide'] {
 
 .pw-shot--2 {
   --rot: 4deg;
+  --sweep: 4.5s;
   top: 26%;
   right: 0;
   z-index: 2;
@@ -2482,6 +2529,7 @@ html[data-pw-width='wide'] {
 
 .pw-shot--3 {
   --rot: -3deg;
+  --sweep: 8s;
   bottom: 0;
   left: 4%;
   z-index: 3;
@@ -2489,6 +2537,42 @@ html[data-pw-width='wide'] {
   aspect-ratio: 16 / 10;
   animation-delay: 2s;
   animation-duration: 6.5s;
+}
+
+@keyframes pw-aurora-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pw-auto-sheen {
+  0%,
+  74% {
+    transform: translateX(-160%);
+  }
+  88%,
+  100% {
+    transform: translateX(160%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pw-art {
+    translate: 0 calc(var(--pw-scroll, 0) * -18px);
+    scale: calc(1 - var(--pw-scroll, 0) * 0.05);
+  }
+
+  .pw-shot--1 {
+    translate: 0 calc(var(--pw-scroll, 0) * -24px);
+  }
+
+  .pw-shot--2 {
+    translate: 0 calc(var(--pw-scroll, 0) * 18px);
+  }
+
+  .pw-shot--3 {
+    translate: 0 calc(var(--pw-scroll, 0) * -12px);
+  }
 }
 
 @keyframes pw-glow-pulse {
@@ -2581,13 +2665,30 @@ html[data-pw-width='wide'] {
     animation: none;
   }
 
-  .pw-art::before {
+  .pw-art::before,
+  .pw-art::after {
+    animation: none;
+  }
+
+  .pw-shot {
+    transition: none;
+  }
+
+  .pw-shot::before {
     animation: none;
   }
 
   .pw-shot img,
   .pw-shot::after {
     transition: none;
+  }
+
+  .pw-shot:hover img {
+    transform: none;
+  }
+
+  .pw-shot:hover::after {
+    transform: translateX(-130%);
   }
 }
 
