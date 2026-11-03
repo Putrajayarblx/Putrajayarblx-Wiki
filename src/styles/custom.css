@@ -1041,13 +1041,23 @@ site-search button[data-open-modal] {
 }
 
 @media (max-width: 50rem) {
-  html:not([data-has-sidebar]) .pw-mnav {
+  .pw-mnav {
     display: block;
   }
 
-  html:not([data-has-sidebar]) header.header {
+  header.header {
     padding-inline-end: calc(var(--sl-nav-pad-x, 1rem) + 2.9rem);
   }
+
+  /* One menu only: our drawer replaces Starlight's sidebar toggle. */
+  .sl-menu-button {
+    display: none !important;
+  }
+}
+
+.pw-mnav__group {
+  display: grid;
+  gap: 0.1rem;
 }
 
 /* ---------- Inline icons ---------- */

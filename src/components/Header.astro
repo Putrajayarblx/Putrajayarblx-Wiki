@@ -3,6 +3,7 @@ import Default from '@astrojs/starlight/components/Header.astro';
 import PwIcon from './PwIcon.astro';
 import Appearance from './Appearance.astro';
 import ImageZoom from './ImageZoom.astro';
+import { getCollection } from 'astro:content';
 
 const locale = Astro.locals.starlightRoute.locale ?? 'en';
 const isMs = locale === 'ms';
@@ -29,6 +30,38 @@ const t = isMs
       connect: 'Connect',
       website: 'Website',
     };
+
+const allDocs = await getCollection('docs');
+const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
+const wikiDocs = allDocs.filter(
+  (entry) =>
+    (isMs ? isMsEntry(entry.id) : !isMsEntry(entry.id)) &&
+    entry.id !== 'index' &&
+    entry.id !== 'ms' &&
+    !entry.id.endsWith('404') &&
+    Boolean(entry.data.category)
+);
+const navGroups = new Map<string, typeof wikiDocs>();
+for (const doc of wikiDocs) {
+  const category = doc.data.category as string;
+  if (!navGroups.has(category)) navGroups.set(category, []);
+  navGroups.get(category)!.push(doc);
+}
+const preferredCategories = ['Start here', 'City', 'Companies'];
+const nav = [...navGroups.entries()]
+  .sort((a, b) => {
+    const ia = preferredCategories.indexOf(a[0]);
+    const ib = preferredCategories.indexOf(b[0]);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib) || a[0].localeCompare(b[0]);
+  })
+  .map(([label, items]) => ({
+    label,
+    items: items.sort(
+      (a, b) =>
+        Number(Boolean(b.data.landing)) - Number(Boolean(a.data.landing)) ||
+        a.data.title.localeCompare(b.data.title)
+    ),
+  }));
 
 const connect = [
   { icon: 'fa-linktree', label: 'Linktree', href: 'https://linktr.ee/putrajaya.rblx' },
@@ -93,14 +126,19 @@ const connect = [
 
     <div class="pw-mnav__divider" role="presentation"></div>
 
-    <a href={`${base}/getting-started/`}>
-      <PwIcon name="bi-signpost-2" />
-      {t.start}
-    </a>
-    <a href={`${base}/city-roles/`}>
-      <PwIcon name="bi-people" />
-      {t.roles}
-    </a>
+    {
+      nav.map((group) => (
+        <div class="pw-mnav__group">
+          <p class="pw-mnav__title">{group.label}</p>
+          {group.items.map((doc) => (
+            <a href={`${base}/${doc.id}/`}>
+              <PwIcon name="bi-journal-text" />
+              {doc.data.title}
+            </a>
+          ))}
+        </div>
+      ))
+    }
 
     <div class="pw-mnav__divider" role="presentation"></div>
     <p class="pw-mnav__title">{t.connect}</p>
