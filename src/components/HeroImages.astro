@@ -5,6 +5,8 @@ import { getCollection } from 'astro:content';
 
 const locale = Astro.locals.starlightRoute?.locale ?? 'en';
 const isMs = locale === 'ms';
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isHome = path === '/' || path === '/ms';
 const all = await getCollection('docs');
 const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
 
@@ -43,7 +45,7 @@ const categories = candidates
 ---
 
 {
-  categories.length >= 3 && (
+  isHome && categories.length >= 3 && (
     <>
       <script type="application/json" id="pw-category-images" set:html={JSON.stringify(categories)} />
       <script>
