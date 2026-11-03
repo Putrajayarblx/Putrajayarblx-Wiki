@@ -1872,10 +1872,7 @@ header .site-title img {
   display: none;
 }
 
-/* Desktop already uses the wide column; hide the width choice there. */
-.pw-appearance__panel--rail fieldset:nth-of-type(2) {
-  display: none;
-}
+
 
 /* Text size */
 html[data-pw-text='small'] .sl-markdown-content {
