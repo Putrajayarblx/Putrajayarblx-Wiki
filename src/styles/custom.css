@@ -2300,3 +2300,25 @@ html[data-pw-width='wide'] {
     display: none;
   }
 }
+
+/* Desktop articles: the panel is moved into the right rail by script. */
+@media (min-width: 72rem) {
+  .pw-appearance__panel--rail {
+    display: block;
+    position: static;
+    width: var(--sl-sidebar-width, 16rem);
+    max-width: var(--sl-sidebar-width, 16rem);
+    margin: 1.1rem 0 0;
+    padding: 0.75rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--sl-color-hairline);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    animation: none;
+  }
+
+  .pw-appearance__panel--rail .pw-appearance__hide {
+    display: none;
+  }
+}

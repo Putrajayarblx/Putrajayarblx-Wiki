@@ -135,6 +135,24 @@ import PwIcon from './PwIcon.astro';
       });
     });
 
+    // Desktop articles: host the panel under the TOC in the right rail.
+    const rail = document.querySelector('.right-sidebar-panel');
+    const desktop = window.matchMedia('(min-width: 72rem)');
+    const place = () => {
+      const useRail = desktop.matches && rail;
+      if (useRail) {
+        rail.appendChild(panel);
+        panel.classList.add('pw-appearance__panel--rail');
+        panel.hidden = false;
+      } else {
+        box.appendChild(panel);
+        panel.classList.remove('pw-appearance__panel--rail');
+        panel.hidden = true;
+      }
+    };
+    place();
+    desktop.addEventListener('change', place);
+
     sync();
   }
 
