@@ -50,7 +50,7 @@ const categories = candidates
       <script type="application/json" id="pw-category-images" set:html={JSON.stringify(categories)} />
       <script>
         const source = document.getElementById('pw-category-images');
-        const art = document.querySelector('.pw-art');
+        const art = document.querySelector<HTMLElement>('.pw-art');
 
         if (source && art) {
           try {
@@ -60,6 +60,7 @@ const categories = candidates
             }[];
             const picks = [...all].sort(() => Math.random() - 0.5).slice(0, 3);
 
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             art.removeAttribute('aria-hidden');
             art.innerHTML = '';
             picks.forEach((category, index) => {
@@ -76,7 +77,79 @@ const categories = candidates
 
               figure.append(img, caption);
               art.append(figure);
+
+              if (!reduceMotion && typeof figure.animate === 'function') {
+                const rotation =
+                  getComputedStyle(figure).getPropertyValue('--rot').trim() || '0deg';
+                figure.animate(
+                  [
+                    {
+                      opacity: 0,
+                      transform: `rotate(${rotation}) translateY(30px) scale(0.88)`,
+                    },
+                    {
+                      opacity: 1,
+                      transform: `rotate(${rotation}) translateY(0) scale(1)`,
+                    },
+                  ],
+                  {
+                    duration: 780,
+                    delay: index * 110,
+                    easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                    fill: 'backwards',
+                  }
+                );
+              }
             });
+
+            if (
+              !reduceMotion &&
+              window.matchMedia('(hover: hover) and (pointer: fine)').matches
+            ) {
+              let targetX = 0;
+              let targetY = 0;
+              let currentX = 0;
+              let currentY = 0;
+              let frame = 0;
+
+              const tick = () => {
+                currentX += (targetX - currentX) * 0.12;
+                currentY += (targetY - currentY) * 0.12;
+                art.style.transform = `perspective(900px) rotateX(${currentY.toFixed(2)}deg) rotateY(${currentX.toFixed(2)}deg)`;
+
+                if (
+                  Math.abs(targetX - currentX) > 0.01 ||
+                  Math.abs(targetY - currentY) > 0.01
+                ) {
+                  frame = requestAnimationFrame(tick);
+                } else {
+                  frame = 0;
+                }
+              };
+
+              const kick = () => {
+                if (!frame) frame = requestAnimationFrame(tick);
+              };
+
+              art.addEventListener('pointermove', (event) => {
+                const rect = art.getBoundingClientRect();
+                const px = (event.clientX - rect.left) / rect.width - 0.5;
+                const py = (event.clientY - rect.top) / rect.height - 0.5;
+                targetX = px * 9;
+                targetY = -py * 7;
+                art.style.setProperty('--pw-mx', `${(px + 0.5) * 100}%`);
+                art.style.setProperty('--pw-my', `${(py + 0.5) * 100}%`);
+                kick();
+              });
+
+              art.addEventListener('pointerleave', () => {
+                targetX = 0;
+                targetY = 0;
+                art.style.setProperty('--pw-mx', '50%');
+                art.style.setProperty('--pw-my', '50%');
+                kick();
+              });
+            }
           } catch {
             /* keep the static fallback art */
           }

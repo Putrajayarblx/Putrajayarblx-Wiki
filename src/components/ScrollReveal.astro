@@ -1,0 +1,89 @@
+---
+---
+
+<script>
+  const root = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if ('IntersectionObserver' in window && !reduce.matches) {
+    try {
+      const blocks = [
+        ...document.querySelectorAll('.sl-markdown-content .pw-article-body > *'),
+      ].filter((el) => !el.matches('.pw-grid, .pw-stats, .pw-connect, .pw-faq'));
+
+      const extras = [
+        ...document.querySelectorAll(
+          [
+            '.sl-markdown-content .pw-article-body .pw-grid > *',
+            '.sl-markdown-content .pw-article-body .pw-stats > .pw-stat',
+            '.sl-markdown-content .pw-article-body .pw-faq > div',
+            '.sl-markdown-content .pw-article-body .pw-connect__link',
+            '.sl-markdown-content > .pw-infobox',
+          ].join(',')
+        ),
+      ];
+
+      const targets = [...new Set([...blocks, ...extras])];
+      // Only hide elements the reader has not seen yet. This avoids any
+      // flash of hidden content on the first paint.
+      const below = targets.filter(
+        (el) => el.getBoundingClientRect().top > window.innerHeight
+      );
+
+      if (below.length > 0) {
+        root.classList.add('pw-motion');
+
+        const groups = new Map<Element, HTMLElement[]>();
+        for (const el of below) {
+          const parent = el.parentElement;
+          if (!parent) continue;
+          if (!groups.has(parent)) groups.set(parent, []);
+          groups.get(parent)!.push(el as HTMLElement);
+        }
+
+        for (const list of groups.values()) {
+          list.forEach((el, index) => {
+            el.classList.add('pw-reveal');
+            el.style.setProperty('--pw-delay', `${Math.min(index, 5) * 45}ms`);
+          });
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              const el = entry.target as HTMLElement;
+              el.classList.add('pw-inview');
+              observer.unobserve(el);
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+        );
+
+        for (const el of below) observer.observe(el);
+
+        // Scroll fallback: guarantees elements reveal even if an observer
+        // callback is missed (for example while restoring a deep scroll).
+        const revealVisible = () => {
+          for (const el of below) {
+            if (el.classList.contains('pw-inview')) continue;
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.92) {
+              el.classList.add('pw-inview');
+              observer.unobserve(el);
+            }
+          }
+        };
+
+        window.addEventListener('scroll', revealVisible, { passive: true });
+        window.addEventListener('resize', revealVisible);
+        revealVisible();
+      }
+    } catch {
+      root.classList.remove('pw-motion');
+      for (const el of document.querySelectorAll('.pw-reveal')) {
+        el.classList.remove('pw-reveal');
+      }
+    }
+  }
+</script>

@@ -4,6 +4,7 @@ import PwIcon from './PwIcon.astro';
 import Appearance from './Appearance.astro';
 import ImageZoom from './ImageZoom.astro';
 import HeroImages from './HeroImages.astro';
+import ScrollReveal from './ScrollReveal.astro';
 import { getCollection } from 'astro:content';
 
 const locale = Astro.locals.starlightRoute.locale ?? 'en';
@@ -145,6 +146,8 @@ const connect = [
 <ImageZoom />
 
 <HeroImages />
+
+<ScrollReveal />
 
 <script>
   const root = document.documentElement;
