@@ -1,5 +1,6 @@
 ---
 title: Get started
-category: Sarawak
+category: SarawakRBLX
 landing: true
+image: /uploads/SarawakWallpaper3.png
 ---
