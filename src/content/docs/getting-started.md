@@ -1,11 +1,10 @@
 ---
-category: Start here
-landing: true
-image: /uploads/category-start-here.png
 title: Getting started in Putrajaya
 description: Everything a new citizen needs in their first ten minutes.
+category: Putrajaya
+landing: true
+image: /uploads/UpdateBanner.png
 ---
-
 New to Putrajaya of Roblox? This is the front door: how to join, what to read first, and the habits that make roleplay work.
 
 :::note
