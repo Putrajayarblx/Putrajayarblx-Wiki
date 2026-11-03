@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import Default from '@astrojs/starlight/components/Footer.astro';
 import PwIcon from './PwIcon.astro';
+import wikiLogo from '../assets/logo-mark.png';
 
 const route = Astro.locals.starlightRoute;
 const hasSidebar = route.hasSidebar;
@@ -28,6 +29,11 @@ const qrPng = '/uploads/WPPLinktreeQRwhiteBG.png';
 const qrWebp = '/uploads/WPPLinktreeQRwhiteBG.webp';
 const qrSrc = existsSync(join(process.cwd(), 'public', qrWebp)) ? qrWebp : qrPng;
 const linksHref = 'https://linktr.ee/putrajaya.rblx';
+
+// Uploaded as CropperdPDO.png; use the optimized copy when available.
+const pdoPng = '/uploads/CropperdPDO.png';
+const pdoWebp = '/uploads/CropperdPDO.webp';
+const pdoSrc = existsSync(join(process.cwd(), 'public', pdoWebp)) ? pdoWebp : pdoPng;
 
 // Malay headings have different slugs; keep the footer anchors stable.
 const cookiesHash = isMs ? 'cookie' : 'cookies';
@@ -212,12 +218,21 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
         <img src={qrSrc} alt={t.qrAlt} width="112" height="112" />
         <span>{t.scan}</span>
       </a>
-      <div class="pw-footer__mark">
-        <img src="/logo.svg" alt="" width="28" height="28" />
-        <span>
-          <strong>Putrajaya.rblx</strong>
-          <small>Wiki</small>
-        </span>
+      <div class="pw-footer__marks">
+        <div class="pw-footer__mark pw-footer__mark--wiki">
+          <img src={wikiLogo.src} alt="" width={wikiLogo.width} height={wikiLogo.height} />
+          <span>
+            <strong>Putrajaya.rblx</strong>
+            <small>Wiki</small>
+          </span>
+        </div>
+        <div class="pw-footer__mark pw-footer__mark--pdo">
+          <img src={pdoSrc} alt="" width="34" height="34" />
+          <span>
+            <strong>Putrajaya</strong>
+            <small>Development Office</small>
+          </span>
+        </div>
       </div>
     </div>
   </div>

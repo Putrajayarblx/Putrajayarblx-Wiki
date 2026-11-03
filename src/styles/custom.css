@@ -2481,6 +2481,16 @@ html[data-pw-width='wide'] {
   gap: 0.55rem;
 }
 
+.pw-footer__marks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.pw-footer__marks .pw-footer__mark {
+  flex: 1;
+}
+
 .pw-footer__qr,
 .pw-footer__mark {
   display: flex;
@@ -2515,10 +2525,28 @@ html[data-pw-width='wide'] {
   box-shadow: none;
 }
 
-.pw-footer__mark img {
+.pw-footer__mark--wiki img {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: auto;
+  height: 30px;
+}
+
+.pw-footer__mark--pdo {
+  border-color: #10203a;
+  background: #10203a;
+  color: #fff;
+}
+
+.pw-footer__mark--pdo img {
+  display: block;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+:root[data-theme='dark'] .pw-footer__mark--pdo {
+  border-color: color-mix(in srgb, var(--sl-color-accent) 40%, transparent);
+  background: #0b1830;
 }
 
 .pw-footer__mark span {
@@ -2542,6 +2570,14 @@ html[data-pw-width='wide'] {
   text-transform: uppercase;
 }
 
+.pw-footer__mark--pdo strong {
+  color: #fff;
+}
+
+.pw-footer__mark--pdo small {
+  color: rgb(255 255 255 / 72%);
+}
+
 @media (max-width: 50rem) {
   .pw-footer__inner {
     flex-direction: column;
@@ -2549,5 +2585,9 @@ html[data-pw-width='wide'] {
 
   .pw-footer__aside {
     flex-direction: row;
+  }
+
+  body:has(.pw-mobilebar) .pw-footer {
+    padding-bottom: 7.5rem;
   }
 }
