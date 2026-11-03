@@ -126,21 +126,6 @@ const connect = [
 
     <div class="pw-mnav__divider" role="presentation"></div>
 
-    {
-      nav.map((group) => (
-        <div class="pw-mnav__group">
-          <p class="pw-mnav__title">{group.label}</p>
-          {group.items.map((doc) => (
-            <a href={`${base}/${doc.id}/`}>
-              <PwIcon name="bi-journal-text" />
-              {doc.data.title}
-            </a>
-          ))}
-        </div>
-      ))
-    }
-
-    <div class="pw-mnav__divider" role="presentation"></div>
     <p class="pw-mnav__title">{t.connect}</p>
 
     {

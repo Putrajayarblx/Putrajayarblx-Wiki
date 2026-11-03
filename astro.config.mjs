@@ -33,6 +33,7 @@ export default defineConfig({
         SocialIcons: './src/components/SocialIcons.astro',
         MobileMenuFooter: './src/components/MobileMenuFooter.astro',
         MarkdownContent: './src/components/MarkdownContent.astro',
+        MobileTableOfContents: './src/components/MobileTableOfContents.astro',
       },
       editLink: {
         baseUrl:
