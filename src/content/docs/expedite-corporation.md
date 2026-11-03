@@ -40,7 +40,7 @@ The corporation operates with a board of directors consisting of RyssNzr and Pla
 > An official Expedite graphics poster, displaying the motto "Kekal pilihan anda" ("Always your choice")
 
 Expedite Transport Corporation was established in 2025 with the aim of becoming a transportation operator in Malaysia. Based in Putrajaya, the corporation was founded to contribute to the development of public transportation and urban mobility.  
-  
+
 In 2026, Expedite began it's long-delayed operations in Kuching, Sarawak replacing the now defunct BasMY in a merger agreement as part of Ministry of Transport Sarawak (MOTS) initiative of reviving the public transportation sector in Sarawak. This milestone also marks the debut of the company as a public transport company. Expedite also became the first transport company to be a member of Sarawak Public Transport Committee (SPTC).
 
 
@@ -52,10 +52,4 @@ The corporation operates within the public transportation sector. Its activities
 > ![Expedite advertisement](/uploads/ExpediteAd5(1).png)
 >
 > An advertisement depicting two Expedite busses stopped at a bus stop whilst operating in Kuching.
-
-
-
-  
-  
-
 
