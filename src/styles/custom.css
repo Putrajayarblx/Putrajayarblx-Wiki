@@ -2530,12 +2530,8 @@ html[data-pw-width='wide'] {
 
 .pw-footer__mark--pdo img {
   display: block;
-  box-sizing: border-box;
-  width: 36px;
-  height: 36px;
-  padding: 4px;
-  border-radius: 7px;
-  background: #10203a;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
 }
 
