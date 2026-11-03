@@ -8,5 +8,7 @@ const infobox = data.infobox;
 
 <Default>
   {infobox && <InfoBox {...infobox} />}
-  <slot />
+  <div class="pw-article-body">
+    <slot />
+  </div>
 </Default>

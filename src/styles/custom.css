@@ -1728,6 +1728,54 @@ header .site-title img {
   }
 }
 
+/* Two-column articles: the body is one flow and the infobox is a sticky
+   right column. This keeps the page height equal to the taller column and
+   avoids the empty rows produced by making the infobox span many rows. */
+.sl-markdown-content > .pw-article-body {
+  min-width: 0;
+  margin-top: 0;
+}
+
+@media (min-width: 60rem) {
+  .sl-markdown-content:has(> .pw-infobox) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    column-gap: 2rem;
+    row-gap: 0;
+    align-items: start;
+  }
+
+  .sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: calc(var(--sl-nav-height, 4rem) + 1.25rem);
+    float: none;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    align-self: start;
+  }
+
+  .sl-markdown-content:has(> .pw-infobox) > .pw-article-body {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 59.99rem) {
+  .sl-markdown-content:has(> .pw-infobox) {
+    display: block;
+  }
+
+  .sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
+    float: none;
+    width: auto;
+    max-width: none;
+    margin: 0.5rem 0 1.5rem;
+  }
+}
+
 
 /* Below the sidebar breakpoint Starlight lays the article out full width,
    leaving it hugging the left edge. Centre the reading column. */
@@ -2044,63 +2092,6 @@ html[data-pw-width='wide'] {
 
 .pw-zoom__close:hover {
   background: rgb(255 255 255 / 20%);
-}
-
-/* Articles with an info box: use a two-column grid instead of a float so
-   paragraphs and images fill the text column without leaving a gap. */
-@media (min-width: 60rem) {
-  .sl-markdown-content:has(> .pw-infobox) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 19rem;
-    column-gap: 2rem;
-    align-items: start;
-  }
-
-  .sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
-    grid-column: 2;
-    grid-row: 1 / span 100;
-    float: none;
-    width: auto;
-    max-width: none;
-    margin: 0;
-  }
-
-  .sl-markdown-content:has(> .pw-infobox) > :not(.pw-infobox) {
-    grid-column: 1;
-  }
-}
-
-/* Articles with an info box: a grid instead of a float, so paragraphs and
-   images fill the text column instead of dropping below the box. */
-.sl-markdown-content:has(> .pw-infobox) {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 0.75rem;
-}
-
-.sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
-  grid-column: 1;
-  float: none;
-  width: auto;
-  max-width: none;
-  margin: 0 0 0.75rem;
-}
-
-.sl-markdown-content:has(> .pw-infobox) > :not(.pw-infobox) {
-  grid-column: 1;
-}
-
-@media (min-width: 60rem) {
-  .sl-markdown-content:has(> .pw-infobox) {
-    grid-template-columns: minmax(0, 1fr) 19rem;
-    column-gap: 2rem;
-  }
-
-  .sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
-    grid-column: 2;
-    grid-row: 1 / span 100;
-    margin: 0;
-  }
 }
 
 /* ---------- Mobile "Wiki navigation" bar (under On this page) ---------- */
@@ -2532,9 +2523,9 @@ html[data-pw-width='wide'] {
 }
 
 .pw-footer__mark--pdo {
-  border-color: #10203a;
-  background: #10203a;
-  color: #fff;
+  border-color: var(--sl-color-hairline);
+  background: #fff;
+  color: #10203a;
 }
 
 .pw-footer__mark--pdo img {
@@ -2542,11 +2533,7 @@ html[data-pw-width='wide'] {
   width: 34px;
   height: 34px;
   object-fit: contain;
-}
-
-:root[data-theme='dark'] .pw-footer__mark--pdo {
-  border-color: color-mix(in srgb, var(--sl-color-accent) 40%, transparent);
-  background: #0b1830;
+  filter: invert(1);
 }
 
 .pw-footer__mark span {
@@ -2571,11 +2558,11 @@ html[data-pw-width='wide'] {
 }
 
 .pw-footer__mark--pdo strong {
-  color: #fff;
+  color: #10203a;
 }
 
 .pw-footer__mark--pdo small {
-  color: rgb(255 255 255 / 72%);
+  color: #10203a;
 }
 
 @media (max-width: 50rem) {
