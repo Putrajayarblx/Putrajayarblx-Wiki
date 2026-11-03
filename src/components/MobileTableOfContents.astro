@@ -54,12 +54,17 @@ const tocItems = toc?.items ?? [];
     <div class="pw-mobilebar__dropdown">
       {
         nav.map((group) => (
-          <div class="pw-mobilebar__group">
-            <p class="pw-mobilebar__title">{group.label}</p>
-            {group.items.map((doc) => (
-              <a href={`${base}/${doc.id}/`}>{doc.data.title}</a>
-            ))}
-          </div>
+          <details class="pw-mobilebar__group" open>
+            <summary class="pw-mobilebar__title">
+              <span>{group.label}</span>
+              <PwIcon name="bi-chevron-down" class="pw-mobilebar__caret" />
+            </summary>
+            <div class="pw-mobilebar__links">
+              {group.items.map((doc) => (
+                <a href={`${base}/${doc.id}/`}>{doc.data.title}</a>
+              ))}
+            </div>
+          </details>
         ))
       }
     </div>
