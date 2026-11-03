@@ -1,10 +1,27 @@
 ---
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import Default from '@astrojs/starlight/components/Footer.astro';
 import PwIcon from './PwIcon.astro';
 
 const route = Astro.locals.starlightRoute;
 const hasSidebar = route.hasSidebar;
 const isMs = (route.locale ?? 'en') === 'ms';
+const base = isMs ? '/ms' : '';
+
+// Build metadata for the technical footer line.
+const pkg = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf8')) as {
+  dependencies?: Record<string, string>;
+};
+const version = (name: string) =>
+  pkg.dependencies?.[name]?.replace(/^[^\d]*/, '') ?? '';
+
+const astroVersion = version('astro');
+const starlightVersion = version('@astrojs/starlight');
+const commit = (process.env.VERCEL_GIT_COMMIT_SHA ?? '').slice(0, 7);
+const commitUrl = commit
+  ? `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/commit/${commit}`
+  : null;
 
 const t = isMs
   ? {
@@ -16,6 +33,24 @@ const t = isMs
       report: 'Laporkan ralat pada halaman ini',
       minute: 'min bacaan',
       body: 'Apakah yang salah?',
+      rendered: 'Halaman dijana pada masa binaan dengan',
+      commit: 'sumber',
+      licenseBefore: 'Teks tersedia di bawah',
+      licenseLabel: 'Lesen Creative Commons Attribution-ShareAlike 4.0',
+      licenseAfter:
+        '; terma tambahan mungkin terpakai. Putrajaya.rblx Wiki ialah projek komuniti dan tidak bergabung dengan Roblox Corporation.',
+      footerNav: 'Pengaki wiki',
+      privacy: 'Dasar privasi',
+      about: 'Tentang wiki',
+      disclaimers: 'Penafian',
+      contact: 'Hubungi',
+      contributing: 'Menyumbang',
+      developers: 'Pembangun',
+      statistics: 'Statistik',
+      cookies: 'Kenyataan cookie',
+      top: 'Kembali ke atas',
+      scan: 'Imbas untuk membuka wiki',
+      qrAlt: 'Kod QR untuk Putrajaya.rblx Wiki',
     }
   : {
       helpful: 'Was this page helpful?',
@@ -26,6 +61,24 @@ const t = isMs
       report: 'Report an error on this page',
       minute: 'min read',
       body: 'What is wrong?',
+      rendered: 'Page rendered at build time with',
+      commit: 'source',
+      licenseBefore: 'Text is available under the',
+      licenseLabel: 'Creative Commons Attribution-ShareAlike 4.0 License',
+      licenseAfter:
+        '; additional terms may apply. Putrajaya.rblx Wiki is a community project and is not affiliated with Roblox Corporation.',
+      footerNav: 'Wiki footer',
+      privacy: 'Privacy policy',
+      about: 'About the wiki',
+      disclaimers: 'Disclaimers',
+      contact: 'Contact',
+      contributing: 'Contributing',
+      developers: 'Developers',
+      statistics: 'Statistics',
+      cookies: 'Cookie statement',
+      top: 'Back to top',
+      scan: 'Scan to open the wiki',
+      qrAlt: 'QR code for the Putrajaya.rblx Wiki',
     };
 
 const issueTitle = `Issue on ${Astro.url.pathname}`;
@@ -63,6 +116,89 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
     </a>
   )
 }
+
+<footer class="pw-footer">
+  <div class="pw-footer__inner">
+    <div class="pw-footer__copy">
+      <p class="pw-footer__render">
+        {t.rendered}{' '}
+        <a href="https://astro.build/" target="_blank" rel="noopener noreferrer">
+          Astro {astroVersion}
+        </a>
+        {' · '}
+        <a href="https://starlight.astro.build/" target="_blank" rel="noopener noreferrer">
+          Starlight {starlightVersion}
+        </a>
+        {' · '}
+        <a href="https://pagefind.app/" target="_blank" rel="noopener noreferrer">Pagefind</a>
+        {' · '}
+        <a href="https://vercel.com/" target="_blank" rel="noopener noreferrer">Vercel</a>
+        {
+          commit && commitUrl && (
+            <>
+              {' · '}
+              <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+                {t.commit} {commit}
+              </a>
+            </>
+          )
+        }
+      </p>
+
+      <p class="pw-footer__license">
+        {t.licenseBefore}{' '}
+        <a
+          href="https://creativecommons.org/licenses/by-sa/4.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t.licenseLabel}
+        </a>
+        {t.licenseAfter}
+      </p>
+
+      <nav class="pw-footer__links" aria-label={t.footerNav}>
+        <a href={`${base}/privacy/`}>{t.privacy}</a>
+        <a href={`${base}/`}>{t.about}</a>
+        <a href={`${base}/privacy/#disclaimer`}>{t.disclaimers}</a>
+        <a href="https://discord.gg/Ng8rVaE7bX" target="_blank" rel="noopener noreferrer">
+          {t.contact}
+        </a>
+        <a
+          href="https://github.com/Putrajayarblx/Putrajayarblx-Wiki/blob/main/CONTRIBUTING.md"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t.contributing}
+        </a>
+        <a
+          href="https://github.com/Putrajayarblx/Putrajayarblx-Wiki"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t.developers}
+        </a>
+        <a href={`${base}/#stats`}>{t.statistics}</a>
+        <a href={`${base}/privacy/#cookies`}>{t.cookies}</a>
+        <a href="#_top">{t.top}</a>
+      </nav>
+    </div>
+
+    <div class="pw-footer__aside">
+      <a class="pw-footer__qr" href={`${base}/`} aria-label={t.scan}>
+        <img src="/qr-wiki.svg" alt={t.qrAlt} width="96" height="96" />
+        <span>{t.scan}</span>
+      </a>
+      <div class="pw-footer__mark">
+        <img src="/logo.svg" alt="" width="28" height="28" />
+        <span>
+          <strong>Putrajaya.rblx</strong>
+          <small>Wiki</small>
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
   const content = document.querySelector('.sl-markdown-content');

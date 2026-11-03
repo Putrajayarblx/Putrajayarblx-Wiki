@@ -1235,6 +1235,10 @@ header .site-title img {
   font-size: 0.85rem;
 }
 
+.pw-helpful[hidden] {
+  display: none;
+}
+
 .pw-helpful {
   display: flex;
   flex-wrap: wrap;
@@ -2407,5 +2411,139 @@ html[data-pw-width='wide'] {
 @media (prefers-reduced-motion: reduce) {
   .pw-shot {
     animation: none;
+  }
+}
+
+/* ---------- Wikipedia-style site footer ---------- */
+.pw-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--sl-color-hairline);
+  color: var(--pw-muted);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.pw-footer__inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.pw-footer__copy {
+  min-width: 0;
+}
+
+.pw-footer p {
+  margin: 0;
+}
+
+.pw-footer__render {
+  margin-bottom: 0.5rem !important;
+  color: var(--pw-muted);
+}
+
+.pw-footer__render a,
+.pw-footer__license a,
+.pw-footer__links a {
+  color: var(--sl-color-accent);
+  text-decoration: none;
+}
+
+.pw-footer__render a:hover,
+.pw-footer__license a:hover,
+.pw-footer__links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pw-footer__license {
+  max-width: 70ch;
+}
+
+.pw-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.9rem;
+  margin-top: 0.7rem;
+  font-size: 0.76rem;
+}
+
+.pw-footer__aside {
+  display: flex;
+  flex-shrink: 0;
+  align-items: stretch;
+  gap: 0.55rem;
+}
+
+.pw-footer__qr,
+.pw-footer__mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.55rem;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 10px;
+  background: #fff;
+  color: #10203a;
+  font-size: 0.62rem;
+  font-weight: 650;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+}
+
+.pw-footer__qr:hover {
+  border-color: var(--sl-color-accent);
+  text-decoration: none;
+}
+
+.pw-footer__qr img {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.pw-footer__mark img {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+.pw-footer__mark span {
+  display: block;
+}
+
+.pw-footer__mark strong {
+  display: block;
+  color: #10203a;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+
+.pw-footer__mark small {
+  display: block;
+  color: #4a5b70;
+  font-size: 0.56rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 50rem) {
+  .pw-footer__inner {
+    flex-direction: column;
+  }
+
+  .pw-footer__aside {
+    flex-direction: row;
   }
 }
