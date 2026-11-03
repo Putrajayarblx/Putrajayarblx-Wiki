@@ -2417,11 +2417,15 @@ html[data-pw-width='wide'] {
 /* ---------- Wikipedia-style site footer ---------- */
 .pw-footer {
   margin-top: 2.5rem;
-  padding-top: 1.1rem;
+  padding: 1.1rem 0 1.5rem;
   border-top: 1px solid var(--sl-color-hairline);
   color: var(--pw-muted);
   font-size: 0.8rem;
   line-height: 1.65;
+}
+
+#stats {
+  scroll-margin-top: calc(var(--sl-nav-height, 4rem) + 1rem);
 }
 
 .pw-footer__inner {
