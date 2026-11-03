@@ -48,7 +48,7 @@ const tocItems = toc?.items ?? [];
   <details class="pw-mobilebar__panel" data-pw-panel>
     <summary>
       <PwIcon name="bi-journal-text" />
-      <span>Wiki nav</span>
+      <span>Navigation</span>
       <PwIcon name="bi-chevron-down" class="pw-mobilebar__caret" />
     </summary>
     <div class="pw-mobilebar__dropdown">
@@ -76,12 +76,12 @@ const tocItems = toc?.items ?? [];
           <ul class="pw-mobilebar__toc">
             {tocItems.map((item) => (
               <li>
-                <a href={item.href}>{item.label}</a>
+                <a href={`#${item.slug}`}>{item.text}</a>
                 {item.children.length > 0 && (
                   <ul>
                     {item.children.map((child) => (
                       <li>
-                        <a href={child.href}>{child.label}</a>
+                        <a href={`#${child.slug}`}>{child.text}</a>
                       </li>
                     ))}
                   </ul>

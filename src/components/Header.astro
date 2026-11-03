@@ -168,6 +168,11 @@ const connect = [
     const dialog = document.querySelector<HTMLDialogElement>('site-search dialog');
     if (dialog?.open) return;
 
+    // Close any open mobile menu and its scrim before the search modal opens.
+    document.querySelectorAll('[data-pw-menu]').forEach((menu) => {
+      menu.dispatchEvent(new CustomEvent('pw:close-menu'));
+    });
+
     document.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true })
     );
@@ -185,8 +190,7 @@ const connect = [
       // Keep the click from bubbling to Starlight's "click outside" handler,
       // which would close the dialog immediately after we open it.
       event.stopPropagation();
-      const sheet = el.closest('.pw-mnav__sheet');
-      if (sheet instanceof HTMLElement) sheet.hidden = true;
+      el.closest('[data-pw-menu]')?.dispatchEvent(new CustomEvent('pw:close-menu'));
       window.setTimeout(openSearch, 0);
     });
   });
@@ -210,6 +214,7 @@ const connect = [
 
     button.addEventListener('click', () => setOpen(sheet.hidden));
     scrim.addEventListener('click', () => setOpen(false));
+    menu.addEventListener('pw:close-menu', () => setOpen(false));
     sheet.addEventListener('click', (event) => {
       if (event.target instanceof Element && event.target.closest('a')) setOpen(false);
     });
@@ -226,8 +231,10 @@ const connect = [
     };
     themeButton?.addEventListener('click', () => {
       const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-      root.dataset.theme = next;
       localStorage.setItem('starlight-theme', next);
+      // Keep the Appearance panel and the next page in sync with this toggle.
+      localStorage.setItem('pw-color', next);
+      root.dataset.theme = next;
       syncTheme();
     });
     syncTheme();

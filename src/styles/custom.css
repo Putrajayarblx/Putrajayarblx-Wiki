@@ -277,6 +277,17 @@ nav.sidebar {
   filter: drop-shadow(0 26px 60px rgb(37 71 155 / 22%));
 }
 
+/* Give the category-image collage more room than Starlight's default hero art. */
+@media (min-width: 50rem) {
+  .hero:has(.pw-art) {
+    grid-template-columns: 6fr 5fr;
+  }
+
+  .hero:has(.pw-art) > .hero-html {
+    width: min(100%, 30rem);
+  }
+}
+
 /* ---------- Badge row ---------- */
 .pw-badge-row {
   display: flex;
@@ -1533,8 +1544,12 @@ header .site-title img {
 }
 
 @media (max-width: 50rem) {
+  .hero:has(.pw-art) > .hero-html {
+    width: min(100%, 22rem);
+  }
+
   .pw-art {
-    width: min(100%, 18rem);
+    width: 100%;
     margin-inline: auto;
   }
 }
@@ -2198,8 +2213,6 @@ html[data-pw-width='wide'] {
   border-top: 1px solid var(--sl-color-hairline);
   border-bottom: 1px solid var(--sl-color-hairline-shade);
   background: var(--sl-color-bg-nav);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
 }
 
 .pw-mobilebar__panel {
