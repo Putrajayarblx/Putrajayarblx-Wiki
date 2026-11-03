@@ -1748,8 +1748,6 @@ header .site-title img {
   .sl-markdown-content:has(> .pw-infobox) > .pw-infobox {
     grid-column: 2;
     grid-row: 1;
-    position: sticky;
-    top: calc(var(--sl-nav-height, 4rem) + 1.25rem);
     float: none;
     width: auto;
     max-width: none;
