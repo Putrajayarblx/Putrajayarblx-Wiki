@@ -154,8 +154,14 @@ const categories = candidates
             if (!reduceMotion) {
               let ticking = false;
               const updateScroll = () => {
-                const rect = art.getBoundingClientRect();
-                const progress = Math.min(1, Math.max(0, -rect.top / rect.height));
+                // Measure the untransformed hero, not the tilted collage,
+                // so the parallax does not feed back into itself.
+                const anchor = art.closest('.hero') ?? art;
+                const rect = anchor.getBoundingClientRect();
+                const progress = Math.min(
+                  1,
+                  Math.max(0, -rect.top / Math.max(1, rect.height))
+                );
                 art.style.setProperty('--pw-scroll', progress.toFixed(4));
               };
               const onScroll = () => {
