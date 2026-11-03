@@ -101,6 +101,7 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
 <div
   class="pw-helpful"
   data-pw-helpful
+  data-pagefind-ignore
   data-min-label={t.minute}
   data-thanks-yes={t.thanksYes}
   data-thanks-no={t.thanksNo}
@@ -120,14 +121,20 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
 
 {
   hasSidebar && (
-    <a class="pw-report" href={reportHref} target="_blank" rel="noopener noreferrer">
+    <a
+      class="pw-report"
+      href={reportHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-pagefind-ignore
+    >
       <PwIcon name="bi-exclamation-triangle" />
       {t.report}
     </a>
   )
 }
 
-<footer class="pw-footer">
+<footer class="pw-footer" data-pagefind-ignore>
   <div class="pw-footer__inner">
     <div class="pw-footer__copy">
       <p class="pw-footer__render">
