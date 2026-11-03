@@ -1743,6 +1743,15 @@ header .site-title img {
   right: 1rem;
   bottom: 1rem;
   z-index: 96;
+  display: none;
+}
+
+/* Mobile-only, and only on article pages (which render the mobile nav bar). */
+@media (max-width: 50rem) {
+  body:has(.pw-mobilebar) .pw-appearance {
+    display: block;
+    bottom: 4.5rem;
+  }
 }
 
 .pw-appearance[data-in-rail='true'] .pw-appearance__toggle {

@@ -44,6 +44,47 @@ import PwIcon from './PwIcon.astro';
 <script>
   const root = document.documentElement;
   const box = document.querySelector('[data-appearance]');
+  const KEY_COLOR = 'pw-color';
+  const KEY_THEME = 'starlight-theme';
+  const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const selects = () =>
+    document.querySelectorAll<HTMLSelectElement>('starlight-theme-select select');
+  const colorInputs = () =>
+    document.querySelectorAll<HTMLInputElement>('input[name="pw-color"]');
+
+  // Single source of truth: every theme control goes through this.
+  const applyColor = (mode: string) => {
+    if (mode === 'auto') localStorage.removeItem(KEY_THEME);
+    else localStorage.setItem(KEY_THEME, mode);
+    localStorage.setItem(KEY_COLOR, mode);
+
+    const dark = mode === 'dark' || (mode === 'auto' && darkQuery.matches);
+    root.dataset.theme = dark ? 'dark' : 'light';
+    root.dataset.pwColor = mode;
+
+    selects().forEach((select) => {
+      select.value = mode;
+    });
+    colorInputs().forEach((input) => {
+      input.checked = input.value === mode;
+    });
+  };
+
+  // If another control (header select or mobile menu) flips the theme,
+  // reflect it in the other controls without losing the stored mode.
+  new MutationObserver(() => {
+    const dark = root.dataset.theme === 'dark';
+    const stored = localStorage.getItem(KEY_COLOR) ?? 'auto';
+    selects().forEach((select) => {
+      select.value = stored;
+    });
+    colorInputs().forEach((input) => {
+      if (stored === 'auto') input.checked = input.value === 'auto';
+      else if (input.value === 'auto') input.checked = false;
+      else input.checked = input.value === (dark ? 'dark' : 'light');
+    });
+  }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
   if (box) {
     const toggle = box.querySelector<HTMLButtonElement>('.pw-appearance__toggle');
@@ -51,66 +92,28 @@ import PwIcon from './PwIcon.astro';
     const close = box.querySelector<HTMLButtonElement>('[data-appearance-close]');
     const inputs = [...box.querySelectorAll<HTMLInputElement>('input[type=radio]')];
 
-    const KEY_TEXT = 'pw-text';
-    const KEY_WIDTH = 'pw-width';
-    const KEY_COLOR = 'pw-color';
-    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-    const applyTheme = (mode: string) => {
-      if (mode === 'auto') localStorage.removeItem('starlight-theme');
-      else localStorage.setItem('starlight-theme', mode);
-      const dark = mode === 'dark' || (mode === 'auto' && darkQuery.matches);
-      root.dataset.theme = dark ? 'dark' : 'light';
-      root.dataset.pwColor = mode;
-    };
-
     const applyText = (size: string) => {
       root.dataset.pwText = size;
-      localStorage.setItem(KEY_TEXT, size);
+      localStorage.setItem('pw-text', size);
     };
 
     const applyWidth = (width: string) => {
       root.dataset.pwWidth = width;
-      localStorage.setItem(KEY_WIDTH, width);
+      localStorage.setItem('pw-width', width);
     };
 
     const sync = () => {
-      const text = localStorage.getItem(KEY_TEXT) ?? 'standard';
-      const width = localStorage.getItem(KEY_WIDTH) ?? 'standard';
+      const text = localStorage.getItem('pw-text') ?? 'standard';
+      const width = localStorage.getItem('pw-width') ?? 'standard';
       const color = localStorage.getItem(KEY_COLOR) ?? 'auto';
       root.dataset.pwText = text;
       root.dataset.pwWidth = width;
-      root.dataset.pwColor = color;
       for (const input of inputs) {
         if (input.name === 'pw-text') input.checked = input.value === text;
         if (input.name === 'pw-width') input.checked = input.value === width;
-        if (input.name === 'pw-color') input.checked = input.value === color;
       }
-      applyTheme(color);
+      applyColor(color);
     };
-
-    // Desktop: host the panel in the right rail under the TOC so the space
-    // is used. Mobile: keep it as a floating popover.
-    const rail = document.querySelector('.right-sidebar-panel');
-    const desktop = window.matchMedia('(min-width: 72rem)');
-
-    const place = () => {
-      const useRail = desktop.matches && rail;
-      if (useRail) {
-        rail.appendChild(panel);
-        panel.classList.add('pw-appearance__panel--rail');
-        panel.hidden = false;
-        box.dataset.inRail = 'true';
-      } else {
-        box.appendChild(panel);
-        panel.classList.remove('pw-appearance__panel--rail');
-        panel.hidden = true;
-        box.dataset.inRail = 'false';
-      }
-    };
-
-    place();
-    desktop.addEventListener('change', place);
 
     const setOpen = (open: boolean) => {
       panel.hidden = !open;
@@ -128,18 +131,23 @@ import PwIcon from './PwIcon.astro';
         if (!input.checked) return;
         if (input.name === 'pw-text') applyText(input.value);
         if (input.name === 'pw-width') applyWidth(input.value);
-        if (input.name === 'pw-color') {
-          localStorage.setItem(KEY_COLOR, input.value);
-          root.dataset.pwColor = input.value;
-          applyTheme(input.value);
-        }
+        if (input.name === 'pw-color') applyColor(input.value);
       });
-    });
-
-    darkQuery.addEventListener('change', () => {
-      if ((localStorage.getItem(KEY_COLOR) ?? 'auto') === 'auto') applyTheme('auto');
     });
 
     sync();
   }
+
+  // Keep the header select and mobile menu in sync too.
+  document.addEventListener('change', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.closest('starlight-theme-select')) {
+      const select = target as HTMLSelectElement;
+      applyColor(select.value);
+    }
+  });
+
+  darkQuery.addEventListener('change', () => {
+    if ((localStorage.getItem(KEY_COLOR) ?? 'auto') === 'auto') applyColor('auto');
+  });
 </script>
