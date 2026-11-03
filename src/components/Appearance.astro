@@ -104,7 +104,7 @@ import PwIcon from './PwIcon.astro';
 
     const sync = () => {
       const text = localStorage.getItem('pw-text') ?? 'standard';
-      const width = localStorage.getItem('pw-width') ?? 'standard';
+      const width = localStorage.getItem('pw-width') ?? 'wide';
       const color = localStorage.getItem(KEY_COLOR) ?? 'auto';
       root.dataset.pwText = text;
       root.dataset.pwWidth = width;

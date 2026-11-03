@@ -645,10 +645,6 @@ mobile-starlight-toc summary .toggle {
 /* Starlight expands the TOC column to absorb leftover space on wide screens,
    which makes it far wider than its content needs. Cap it. */
 @media (min-width: 72rem) {
-  /* Desktop fills the width; the Appearance panel is a mobile-only control. */
-  :root {
-    --sl-content-width: 60rem;
-  }
 
   .right-sidebar-container {
     width: 16rem;
@@ -1890,7 +1886,11 @@ html[data-pw-text='large'] .sl-markdown-content {
   font-size: 1.08rem;
 }
 
-/* Width (mobile) */
+/* Width: Standard is the classic reading measure, Wide fills the space. */
+html[data-pw-width='standard'] {
+  --sl-content-width: 45rem;
+}
+
 html[data-pw-width='wide'] {
   --sl-content-width: 60rem;
 }
