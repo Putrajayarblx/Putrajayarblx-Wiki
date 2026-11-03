@@ -1,5 +1,5 @@
 ---
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import Default from '@astrojs/starlight/components/Footer.astro';
 import PwIcon from './PwIcon.astro';
@@ -22,6 +22,12 @@ const commit = (process.env.VERCEL_GIT_COMMIT_SHA ?? '').slice(0, 7);
 const commitUrl = commit
   ? `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/commit/${commit}`
   : null;
+
+// The upload pipeline creates a WebP copy; fall back to the original upload.
+const qrPng = '/uploads/WPPLinktreeQRwhiteBG.png';
+const qrWebp = '/uploads/WPPLinktreeQRwhiteBG.webp';
+const qrSrc = existsSync(join(process.cwd(), 'public', qrWebp)) ? qrWebp : qrPng;
+const linksHref = 'https://linktr.ee/putrajaya.rblx';
 
 const t = isMs
   ? {
@@ -49,8 +55,8 @@ const t = isMs
       statistics: 'Statistik',
       cookies: 'Kenyataan cookie',
       top: 'Kembali ke atas',
-      scan: 'Imbas untuk membuka wiki',
-      qrAlt: 'Kod QR untuk Putrajaya.rblx Wiki',
+      scan: 'Imbas untuk pautan komuniti',
+      qrAlt: 'Kod QR untuk pautan komuniti Putrajaya.rblx',
     }
   : {
       helpful: 'Was this page helpful?',
@@ -77,8 +83,8 @@ const t = isMs
       statistics: 'Statistics',
       cookies: 'Cookie statement',
       top: 'Back to top',
-      scan: 'Scan to open the wiki',
-      qrAlt: 'QR code for the Putrajaya.rblx Wiki',
+      scan: 'Scan for community links',
+      qrAlt: 'QR code for Putrajaya.rblx community links',
     };
 
 const issueTitle = `Issue on ${Astro.url.pathname}`;
@@ -185,8 +191,14 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
     </div>
 
     <div class="pw-footer__aside">
-      <a class="pw-footer__qr" href={`${base}/`} aria-label={t.scan}>
-        <img src="/qr-wiki.svg" alt={t.qrAlt} width="96" height="96" />
+      <a
+        class="pw-footer__qr"
+        href={linksHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t.scan}
+      >
+        <img src={qrSrc} alt={t.qrAlt} width="112" height="112" />
         <span>{t.scan}</span>
       </a>
       <div class="pw-footer__mark">
