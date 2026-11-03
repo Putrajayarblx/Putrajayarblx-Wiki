@@ -2530,10 +2530,13 @@ html[data-pw-width='wide'] {
 
 .pw-footer__mark--pdo img {
   display: block;
-  width: 34px;
-  height: 34px;
+  box-sizing: border-box;
+  width: 36px;
+  height: 36px;
+  padding: 4px;
+  border-radius: 7px;
+  background: #10203a;
   object-fit: contain;
-  filter: invert(1);
 }
 
 .pw-footer__mark span {
