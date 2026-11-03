@@ -29,6 +29,10 @@ const qrWebp = '/uploads/WPPLinktreeQRwhiteBG.webp';
 const qrSrc = existsSync(join(process.cwd(), 'public', qrWebp)) ? qrWebp : qrPng;
 const linksHref = 'https://linktr.ee/putrajaya.rblx';
 
+// Malay headings have different slugs; keep the footer anchors stable.
+const cookiesHash = isMs ? 'cookie' : 'cookies';
+const disclaimerHash = isMs ? 'penafian' : 'disclaimer';
+
 const t = isMs
   ? {
       helpful: 'Adakah halaman ini membantu?',
@@ -166,7 +170,7 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
       <nav class="pw-footer__links" aria-label={t.footerNav}>
         <a href={`${base}/privacy/`}>{t.privacy}</a>
         <a href={`${base}/`}>{t.about}</a>
-        <a href={`${base}/privacy/#disclaimer`}>{t.disclaimers}</a>
+        <a href={`${base}/privacy/#${disclaimerHash}`}>{t.disclaimers}</a>
         <a href="https://discord.gg/Ng8rVaE7bX" target="_blank" rel="noopener noreferrer">
           {t.contact}
         </a>
@@ -185,7 +189,7 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
           {t.developers}
         </a>
         <a href={`${base}/#stats`}>{t.statistics}</a>
-        <a href={`${base}/privacy/#cookies`}>{t.cookies}</a>
+        <a href={`${base}/privacy/#${cookiesHash}`}>{t.cookies}</a>
         <a href="#_top">{t.top}</a>
       </nav>
     </div>
