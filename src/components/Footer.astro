@@ -101,7 +101,7 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
 <div
   class="pw-helpful"
   data-pw-helpful
-  data-pagefind-ignore
+  data-pagefind-ignore="all"
   data-min-label={t.minute}
   data-thanks-yes={t.thanksYes}
   data-thanks-no={t.thanksNo}
@@ -126,7 +126,7 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
       href={reportHref}
       target="_blank"
       rel="noopener noreferrer"
-      data-pagefind-ignore
+      data-pagefind-ignore="all"
     >
       <PwIcon name="bi-exclamation-triangle" />
       {t.report}
@@ -134,8 +134,8 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
   )
 }
 
-<footer class="pw-footer" data-pagefind-ignore>
-  <div class="pw-footer__inner">
+<footer class="pw-footer" data-pagefind-ignore="all">
+  <div class="pw-footer__inner" data-pagefind-ignore="all">
     <div class="pw-footer__copy">
       <p class="pw-footer__render">
         {t.rendered}{' '}
