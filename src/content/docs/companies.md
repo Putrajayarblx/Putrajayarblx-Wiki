@@ -1,11 +1,10 @@
 ---
-category: Companies
-landing: true
-image: /uploads/ExpediteAd1.png
 title: Getting started with companies
 description: How to register a business, hire staff and keep it running.
+category: Companies
+landing: true
+image: /uploads/ExpediteAd5(1).png
 ---
-
 Companies are player-run businesses: transport, retail, hospitality and services. This guide covers the basics of starting one.
 
 ## Registering
