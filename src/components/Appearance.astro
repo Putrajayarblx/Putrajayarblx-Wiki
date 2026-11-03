@@ -63,9 +63,7 @@ import PwIcon from './PwIcon.astro';
     root.dataset.theme = dark ? 'dark' : 'light';
     root.dataset.pwColor = mode;
 
-    selects().forEach((select) => {
-      select.value = mode;
-    });
+
     colorInputs().forEach((input) => {
       input.checked = input.value === mode;
     });
@@ -157,11 +155,18 @@ import PwIcon from './PwIcon.astro';
   }
 
   // Keep the header select and mobile menu in sync too.
+  const bindSelects = () => {
+    selects().forEach((select) => {
+      if (select.dataset.pwBound) return;
+      select.dataset.pwBound = 'true';
+      select.addEventListener('change', () => applyColor(select.value));
+    });
+  };
+  bindSelects();
   document.addEventListener('change', (event) => {
     const target = event.target as HTMLElement;
     if (target.closest('starlight-theme-select')) {
-      const select = target as HTMLSelectElement;
-      applyColor(select.value);
+      applyColor((target as HTMLSelectElement).value);
     }
   });
 

@@ -2319,3 +2319,13 @@ html[data-pw-width='wide'] {
     display: none;
   }
 }
+
+/* Mobile: keep the header pinned regardless of ancestor overflow rules. */
+@media (max-width: 71.99rem) {
+  header.header {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 30;
+  }
+}
