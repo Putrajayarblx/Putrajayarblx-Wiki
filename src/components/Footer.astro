@@ -98,20 +98,41 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
       for (const button of buttons) {
         const selected = button.dataset.pwVote === vote;
         button.setAttribute('aria-pressed', String(selected));
-        button.disabled = true;
       }
       show(vote);
     };
 
-    const saved = localStorage.getItem(key);
+    // Storage can be unavailable (private mode, blocked cookies). The
+    // widget should still work without it.
+    const read = () => {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    };
+    const save = (vote: string) => {
+      try {
+        localStorage.setItem(key, vote);
+      } catch {
+        /* ignore */
+      }
+    };
+
+    let saved = read();
     widget.hidden = false;
     if (saved) mark(saved);
 
     for (const button of buttons) {
       button.addEventListener('click', () => {
-        if (button.disabled) return;
         const vote = button.dataset.pwVote ?? '';
-        localStorage.setItem(key, vote);
+        const previous = saved;
+        if (vote === previous) {
+          mark(vote);
+          return;
+        }
+        save(vote);
+        saved = vote;
         mark(vote);
 
         // Record the vote as a Vercel Web Analytics custom event.
@@ -122,7 +143,7 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
         ).va;
         analytics?.('event', {
           name: 'helpful',
-          data: { vote, path: location.pathname },
+          data: { vote, path: location.pathname, changed: previous !== null },
         });
       });
     }

@@ -1284,14 +1284,6 @@ header .site-title img {
   color: var(--sl-color-accent-high);
 }
 
-.pw-helpful__btn:disabled {
-  cursor: default;
-}
-
-.pw-helpful__btn:disabled[aria-pressed='false'] {
-  opacity: 0.45;
-}
-
 .pw-helpful__thanks {
   color: var(--sl-color-accent);
   font-size: 0.88rem;
