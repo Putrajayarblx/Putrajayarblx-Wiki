@@ -12,7 +12,7 @@ const t = isMs
       yes: 'Ya',
       no: 'Tidak',
       thanksYes: 'Terima kasih — gembira ia membantu.',
-      thanksNo: 'Terima kasih — akan disemak.',
+      thanksNo: 'Terima kasih — maklum balas direkodkan.',
       report: 'Laporkan ralat pada halaman ini',
       minute: 'min bacaan',
       body: 'Apakah yang salah?',
@@ -22,7 +22,7 @@ const t = isMs
       yes: 'Yes',
       no: 'No',
       thanksYes: 'Thanks — glad it helped.',
-      thanksNo: 'Thanks — noted for review.',
+      thanksNo: 'Thanks — your feedback was recorded.',
       report: 'Report an error on this page',
       minute: 'min read',
       body: 'What is wrong?',
@@ -44,15 +44,15 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
   hidden
 >
   <p>{t.helpful}</p>
-  <button class="pw-helpful__btn" type="button" data-pw-vote="yes">
+  <button class="pw-helpful__btn" type="button" data-pw-vote="yes" aria-pressed="false">
     <PwIcon name="bi-hand-thumbs-up" />
     {t.yes}
   </button>
-  <button class="pw-helpful__btn" type="button" data-pw-vote="no">
+  <button class="pw-helpful__btn" type="button" data-pw-vote="no" aria-pressed="false">
     <PwIcon name="bi-hand-thumbs-down" />
     {t.no}
   </button>
-  <span class="pw-helpful__thanks" data-pw-thanks hidden></span>
+  <span class="pw-helpful__thanks" data-pw-thanks aria-live="polite" hidden></span>
 </div>
 
 {
@@ -86,22 +86,45 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
 
     const key = `pw-helpful:${location.pathname}`;
     const thanks = widget.querySelector<HTMLElement>('[data-pw-thanks]');
+    const buttons = [...widget.querySelectorAll<HTMLButtonElement>('[data-pw-vote]')];
+
     const show = (vote: string) => {
       if (!thanks) return;
       thanks.hidden = false;
       thanks.textContent = vote === 'yes' ? thanksYes : thanksNo;
     };
 
+    const mark = (vote: string) => {
+      for (const button of buttons) {
+        const selected = button.dataset.pwVote === vote;
+        button.setAttribute('aria-pressed', String(selected));
+        button.disabled = true;
+      }
+      show(vote);
+    };
+
     const saved = localStorage.getItem(key);
     widget.hidden = false;
-    if (saved) show(saved);
+    if (saved) mark(saved);
 
-    widget.querySelectorAll<HTMLButtonElement>('[data-pw-vote]').forEach((button) => {
+    for (const button of buttons) {
       button.addEventListener('click', () => {
+        if (button.disabled) return;
         const vote = button.dataset.pwVote ?? '';
         localStorage.setItem(key, vote);
-        show(vote);
+        mark(vote);
+
+        // Record the vote as a Vercel Web Analytics custom event.
+        const analytics = (
+          window as unknown as {
+            va?: (type: string, payload?: unknown) => void;
+          }
+        ).va;
+        analytics?.('event', {
+          name: 'helpful',
+          data: { vote, path: location.pathname },
+        });
       });
-    });
+    }
   }
 </script>

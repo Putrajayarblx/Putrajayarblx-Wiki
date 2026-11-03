@@ -1273,9 +1273,23 @@ header .site-title img {
     color 160ms ease;
 }
 
-.pw-helpful__btn:hover {
+.pw-helpful__btn:hover:not(:disabled) {
   border-color: var(--sl-color-accent);
   color: var(--sl-color-accent);
+}
+
+.pw-helpful__btn[aria-pressed='true'] {
+  border-color: var(--sl-color-accent);
+  background: color-mix(in srgb, var(--sl-color-accent) 12%, transparent);
+  color: var(--sl-color-accent-high);
+}
+
+.pw-helpful__btn:disabled {
+  cursor: default;
+}
+
+.pw-helpful__btn:disabled[aria-pressed='false'] {
+  opacity: 0.45;
 }
 
 .pw-helpful__thanks {

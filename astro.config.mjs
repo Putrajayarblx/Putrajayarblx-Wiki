@@ -19,8 +19,7 @@ export default defineConfig({
         ms: { label: 'Bahasa Melayu', lang: 'ms' },
       },
       logo: {
-        light: './src/assets/logo-mark.png',
-        dark: './src/assets/logo-mark-dark.png',
+        src: './src/assets/logo-mark.png',
         alt: 'Putrajaya.rblx Wiki',
       },
       favicon: '/favicon.png',
