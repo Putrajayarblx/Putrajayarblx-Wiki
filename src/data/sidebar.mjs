@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { articleSlug, categorySlug } from './slugs.mjs';
 
 const dir = join(process.cwd(), 'src/content/docs');
 
@@ -21,7 +22,14 @@ const files = readdirSync(dir).filter(
 );
 
 const docs = files
-  .map((file) => ({ slug: file.replace(/\.mdx?$/, ''), ...readFrontmatter(file) }))
+  .map((file) => {
+    const data = readFrontmatter(file);
+    const fileBase = file.replace(/\.mdx?$/, '');
+    const route = data.category
+      ? `${categorySlug(data.category)}/${articleSlug(fileBase, data)}`
+      : fileBase;
+    return { ...data, route, label: data.title ?? fileBase };
+  })
   .filter((doc) => doc.category);
 
 const groups = new Map();
@@ -45,5 +53,5 @@ export const sidebar = groupsSorted.map(([label, items]) => ({
         Number(b.landing === 'true') - Number(a.landing === 'true') ||
         (a.title ?? '').localeCompare(b.title ?? '')
     )
-    .map((doc) => ({ label: doc.title ?? doc.slug, slug: doc.slug })),
+    .map((doc) => ({ label: doc.label, slug: doc.route })),
 }));

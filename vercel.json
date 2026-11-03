@@ -1,0 +1,32 @@
+{
+  "redirects": [
+    { "source": "/city/", "destination": "/city/getting-started/", "statusCode": 301 },
+    { "source": "/city", "destination": "/city/getting-started/", "statusCode": 301 },
+    { "source": "/companies/", "destination": "/companies/getting-started/", "statusCode": 301 },
+    { "source": "/companies", "destination": "/companies/getting-started/", "statusCode": 301 },
+    { "source": "/getting-started/", "destination": "/putrajaya/getting-started/", "statusCode": 301 },
+    { "source": "/getting-started", "destination": "/putrajaya/getting-started/", "statusCode": 301 },
+    { "source": "/get-started/", "destination": "/sarawak-rblx/getting-started/", "statusCode": 301 },
+    { "source": "/get-started", "destination": "/sarawak-rblx/getting-started/", "statusCode": 301 },
+    { "source": "/city-roles/", "destination": "/city/city-roles/", "statusCode": 301 },
+    { "source": "/city-roles", "destination": "/city/city-roles/", "statusCode": 301 },
+    { "source": "/expedite-corporation/", "destination": "/companies/expedite-corporation/", "statusCode": 301 },
+    { "source": "/expedite-corporation", "destination": "/companies/expedite-corporation/", "statusCode": 301 },
+    { "source": "/start-here/", "destination": "/putrajaya/getting-started/", "statusCode": 301 },
+    { "source": "/start-here", "destination": "/putrajaya/getting-started/", "statusCode": 301 },
+    { "source": "/ms/city/", "destination": "/ms/city/getting-started/", "statusCode": 301 },
+    { "source": "/ms/city", "destination": "/ms/city/getting-started/", "statusCode": 301 },
+    { "source": "/ms/companies/", "destination": "/ms/companies/getting-started/", "statusCode": 301 },
+    { "source": "/ms/companies", "destination": "/ms/companies/getting-started/", "statusCode": 301 },
+    { "source": "/ms/getting-started/", "destination": "/ms/putrajaya/getting-started/", "statusCode": 301 },
+    { "source": "/ms/getting-started", "destination": "/ms/putrajaya/getting-started/", "statusCode": 301 },
+    { "source": "/ms/get-started/", "destination": "/ms/sarawak-rblx/getting-started/", "statusCode": 301 },
+    { "source": "/ms/get-started", "destination": "/ms/sarawak-rblx/getting-started/", "statusCode": 301 },
+    { "source": "/ms/city-roles/", "destination": "/ms/city/city-roles/", "statusCode": 301 },
+    { "source": "/ms/city-roles", "destination": "/ms/city/city-roles/", "statusCode": 301 },
+    { "source": "/ms/expedite-corporation/", "destination": "/ms/companies/expedite-corporation/", "statusCode": 301 },
+    { "source": "/ms/expedite-corporation", "destination": "/ms/companies/expedite-corporation/", "statusCode": 301 },
+    { "source": "/ms/start-here/", "destination": "/ms/putrajaya/getting-started/", "statusCode": 301 },
+    { "source": "/ms/start-here", "destination": "/ms/putrajaya/getting-started/", "statusCode": 301 }
+  ]
+}

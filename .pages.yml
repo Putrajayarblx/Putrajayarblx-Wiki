@@ -19,11 +19,15 @@ content:
       - name: category
         label: Category
         type: string
-        description: Groups the article in the sidebar and on the homepage.
+        description: Groups the article and forms the first URL segment. Renaming it changes every URL in that category.
       - name: landing
         label: Category landing page
         type: boolean
-        description: Use this article as the category card and landing page.
+        description: Use this article as the category card and landing page. Its URL uses /category/getting-started/ unless a slug is set.
+      - name: slug
+        label: URL slug (optional)
+        type: string
+        description: Last part of the URL. Defaults to the filename, or "getting-started" for a category landing page.
       - name: image
         label: Category image
         type: image

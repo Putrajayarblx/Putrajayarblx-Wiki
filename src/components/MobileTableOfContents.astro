@@ -5,7 +5,6 @@ import PwIcon from './PwIcon.astro';
 const { toc } = Astro.locals.starlightRoute;
 const locale = Astro.locals.starlightRoute.locale ?? 'en';
 const isMs = locale === 'ms';
-const base = isMs ? '/ms' : '';
 
 const allDocs = await getCollection('docs');
 const isMsEntry = (id: string) => id === 'ms' || id.startsWith('ms/');
@@ -61,7 +60,7 @@ const tocItems = toc?.items ?? [];
             </summary>
             <div class="pw-mobilebar__links">
               {group.items.map((doc) => (
-                <a href={`${base}/${doc.id}/`}>{doc.data.title}</a>
+                <a href={`/${doc.id}/`}>{doc.data.title}</a>
               ))}
             </div>
           </details>

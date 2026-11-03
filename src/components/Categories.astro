@@ -25,6 +25,18 @@ for (const doc of docs) {
   groups.get(category).push(doc);
 }
 
+// Fall back to the English landing page when a locale has no local hub.
+// The route still gets the /ms/ prefix so the language stays put.
+const englishLandings = all.filter(
+  (entry) =>
+    !isMsEntry(entry.id) &&
+    entry.id !== 'index' &&
+    entry.id !== 'ms' &&
+    !entry.id.endsWith('404') &&
+    Boolean(entry.data.category) &&
+    Boolean(entry.data.landing)
+);
+
 const preferred = ['Start here', 'City', 'Companies'];
 const sorted = [...groups.entries()].sort((a, b) => {
   const ia = preferred.indexOf(a[0]);
@@ -33,19 +45,32 @@ const sorted = [...groups.entries()].sort((a, b) => {
 });
 
 const categories = sorted.map(([name, items]) => {
-  const landing = items.find((doc) => doc.data.landing) ?? items[0];
-  let image = landing.data.image;
+  const localLanding = items.find((doc) => doc.data.landing);
+  const fallbackLanding =
+    !localLanding && isMs
+      ? englishLandings.find((entry) => entry.data.category === name)
+      : undefined;
+  const source = localLanding ?? fallbackLanding ?? items[0];
+
+  let image = source.data.image;
   if (image && /\.(png|jpe?g)$/i.test(image)) {
     const webp = image.replace(/\.(png|jpe?g)$/i, '.webp');
     if (existsSync(join(process.cwd(), 'public', webp))) image = webp;
   }
+
+  const href = localLanding
+    ? `/${localLanding.id}/`
+    : fallbackLanding
+      ? `/ms/${fallbackLanding.id}/`
+      : `/${items[0].id}/`;
+
   return {
     name,
     slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
     title: name,
-    description: landing.data.description ?? '',
+    description: source.data.description ?? '',
     image,
-    href: `${isMs ? '/ms' : ''}/${landing.id}/`,
+    href,
   };
 });
 ---

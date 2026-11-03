@@ -24,5 +24,5 @@ Roles can include public service, business ownership, hospitality, law, transpor
 Successful roleplay depends on respect, consistency, and contribution. Build trust, support others, and be an active part of the city.
 
 :::tip
-You do not need to apply to be a citizen. Department recruitment happens separately — see the [City](/city/) section.
+You do not need to apply to be a citizen. Department recruitment happens separately — see the [City](/city/getting-started/) section.
 :::
