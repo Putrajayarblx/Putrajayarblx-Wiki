@@ -14,6 +14,7 @@ const strings = {
     searchLabel: 'Search places on the map',
     searchPlaceholder: 'Search places…',
     filterLabel: 'Filter places by category',
+    toolsLabel: 'Map tools',
     mapLabel: 'Interactive map of Putrajaya',
     mapAlt: 'Map of Putrajaya showing roads, water and districts',
     hintMouse: 'Drag to pan · Scroll to zoom',
@@ -23,6 +24,8 @@ const strings = {
     copied: 'Copied!',
     zoomIn: 'Zoom in',
     zoomOut: 'Zoom out',
+    fullscreen: 'Full screen',
+    exitFullscreen: 'Exit full screen',
     measure: {
       title: 'Measure',
       distance: 'Distance',
@@ -53,11 +56,47 @@ const strings = {
       fromPoi: 'Measure from here',
       studNote: '1 stud = 0.28 m',
     },
+    draw: {
+      title: 'Draw',
+      free: 'Free draw',
+      line: 'Line',
+      colour: 'Colour',
+      width: 'Width',
+      thin: 'Thin',
+      medium: 'Medium',
+      thick: 'Thick',
+      hintFree: 'Drag on the map to draw. Release to finish a stroke. Choose Finish when you are done.',
+      hintLine: 'Click to add points. Double-click or Finish to close the line.',
+      undo: 'Undo',
+      finish: 'Finish',
+      clear: 'Clear',
+      close: 'Close',
+      empty: 'No drawings yet.',
+    },
+    download: {
+      title: 'Download map',
+      places: 'Places',
+      all: 'All places',
+      none: 'No places',
+      selected: 'Choose places',
+      search: 'Search places…',
+      selectAll: 'Select all',
+      clear: 'Clear',
+      cancel: 'Cancel',
+      run: 'Download PNG',
+      preparing: 'Preparing…',
+      note: 'Exports the full map with your drawings.',
+      empty: 'No places found.',
+      selectedCount: 'places selected',
+      selectedCountOne: 'place selected',
+      error: 'Could not create the image. Please try again.',
+    },
   },
   ms: {
     searchLabel: 'Cari tempat pada peta',
     searchPlaceholder: 'Cari tempat…',
     filterLabel: 'Tapis tempat mengikut kategori',
+    toolsLabel: 'Alat peta',
     mapLabel: 'Peta interaktif Putrajaya',
     mapAlt: 'Peta Putrajaya yang menunjukkan jalan, air dan daerah',
     hintMouse: 'Seret untuk geser · Tatal untuk zum',
@@ -67,6 +106,8 @@ const strings = {
     copied: 'Disalin!',
     zoomIn: 'Zum masuk',
     zoomOut: 'Zum keluar',
+    fullscreen: 'Skrin penuh',
+    exitFullscreen: 'Keluar skrin penuh',
     measure: {
       title: 'Ukur',
       distance: 'Jarak',
@@ -96,6 +137,41 @@ const strings = {
       empty: 'Belum ada ukuran.',
       fromPoi: 'Ukur dari sini',
       studNote: '1 stud = 0.28 m',
+    },
+    draw: {
+      title: 'Lukis',
+      free: 'Lukis bebas',
+      line: 'Garisan',
+      colour: 'Warna',
+      width: 'Lebar',
+      thin: 'Nipis',
+      medium: 'Sederhana',
+      thick: 'Tebal',
+      hintFree: 'Seret pada peta untuk melukis. Lepaskan untuk menamatkan garisan. Pilih Selesai apabila siap.',
+      hintLine: 'Klik untuk tambah titik. Klik dua kali atau Selesai untuk menutup garisan.',
+      undo: 'Batal',
+      finish: 'Selesai',
+      clear: 'Kosongkan',
+      close: 'Tutup',
+      empty: 'Belum ada lukisan.',
+    },
+    download: {
+      title: 'Muat turun peta',
+      places: 'Tempat',
+      all: 'Semua tempat',
+      none: 'Tiada tempat',
+      selected: 'Pilih tempat',
+      search: 'Cari tempat…',
+      selectAll: 'Pilih semua',
+      clear: 'Kosongkan',
+      cancel: 'Batal',
+      run: 'Muat turun PNG',
+      preparing: 'Menyediakan…',
+      note: 'Mengeksport peta penuh dengan lukisan anda.',
+      empty: 'Tiada tempat ditemui.',
+      selectedCount: 'tempat dipilih',
+      selectedCountOne: 'tempat dipilih',
+      error: 'Tidak dapat mencipta imej. Sila cuba lagi.',
     },
   },
 }[locale];
@@ -280,6 +356,15 @@ const iconFiles: Record<string, string> = {
 
 const categories = Object.entries(categoryLabels[locale]).map(([id, label]) => ({ id, label }));
 
+const drawColours = [
+  { value: '#ffd24a', en: 'Yellow', ms: 'Kuning' },
+  { value: '#ff5a5f', en: 'Red', ms: 'Merah' },
+  { value: '#4cc9f0', en: 'Cyan', ms: 'Sian' },
+  { value: '#7ae582', en: 'Green', ms: 'Hijau' },
+  { value: '#ffffff', en: 'White', ms: 'Putih' },
+  { value: '#10203a', en: 'Navy', ms: 'Biru gelap' },
+];
+
 const localizedPois = pois.map((poi) => {
   const typeLabel = typeLabels[locale][poi.t] ?? poi.catLabel;
   let label = poi.label;
@@ -319,6 +404,8 @@ const payload = JSON.stringify({
     distanceUnits: distanceUnits[locale],
     areaUnits: areaUnits[locale],
   },
+  draw: strings.draw,
+  download: strings.download,
 });
 ---
 
@@ -405,7 +492,65 @@ const payload = JSON.stringify({
       <p class="pw-measure__note">{strings.measure.studNote}</p>
     </div>
 
-    <div class="pw-measure__tools" role="group" aria-label={strings.measure.title}>
+    <div class="pw-draw__panel" data-draw-panel role="group" aria-label={strings.draw.title} hidden>
+      <div class="pw-draw__head">
+        <span class="pw-draw__heading">
+          <span class="pw-draw__eyebrow">{strings.draw.title}</span>
+          <strong data-draw-title>{strings.draw.free}</strong>
+        </span>
+        <button
+          type="button"
+          class="pw-draw__close"
+          data-draw-close
+          aria-label={strings.draw.close}
+          title={strings.draw.close}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="pw-draw__colours" role="group" aria-label={strings.draw.colour}>
+        <span class="pw-draw__label">{strings.draw.colour}</span>
+        <div class="pw-draw__swatches">
+          {
+            drawColours.map((colour) => (
+              <button
+                type="button"
+                class:list={{ 'is-active': colour.value === '#ffd24a' }}
+                data-draw-colour={colour.value}
+                style={`--swatch:${colour.value}`}
+                aria-label={locale === 'ms' ? colour.ms : colour.en}
+                aria-pressed={colour.value === '#ffd24a' ? 'true' : 'false'}
+                title={locale === 'ms' ? colour.ms : colour.en}
+              ></button>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="pw-draw__widths" role="group" aria-label={strings.draw.width}>
+        <span class="pw-draw__label">{strings.draw.width}</span>
+        <div class="pw-draw__width-buttons">
+          <button type="button" data-draw-width="3" aria-pressed="false">{strings.draw.thin}</button>
+          <button type="button" class="is-active" data-draw-width="6" aria-pressed="true">
+            {strings.draw.medium}
+          </button>
+          <button type="button" data-draw-width="10" aria-pressed="false">{strings.draw.thick}</button>
+        </div>
+      </div>
+
+      <p class="pw-draw__hint" data-draw-hint>{strings.draw.hintFree}</p>
+
+      <div class="pw-draw__actions">
+        <button type="button" data-draw-undo disabled>{strings.draw.undo}</button>
+        <button type="button" class="is-primary" data-draw-finish>{strings.draw.finish}</button>
+        <button type="button" data-draw-clear disabled>{strings.draw.clear}</button>
+      </div>
+    </div>
+
+    <div class="pw-measure__tools" role="group" aria-label={strings.toolsLabel}>
       <button
         type="button"
         class="pw-measure__tool"
@@ -455,8 +600,147 @@ const payload = JSON.stringify({
           <path d="M9.8 9.8a3 3 0 0 0 4.4 4.4"></path>
         </svg>
       </button>
+
+      <span class="pw-measure__divider" aria-hidden="true"></span>
+
+      <button
+        type="button"
+        class="pw-measure__tool"
+        data-draw-mode="free"
+        aria-pressed="false"
+        aria-label={strings.draw.free}
+        title={strings.draw.free}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 20l4.6-1 9.9-9.9a2.1 2.1 0 0 0-3-3L5.6 16 4 20Z"></path>
+          <path d="m13.5 6.5 3 3"></path>
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        class="pw-measure__tool"
+        data-draw-mode="line"
+        aria-pressed="false"
+        aria-label={strings.draw.line}
+        title={strings.draw.line}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 19 19 5"></path>
+          <circle cx="5" cy="19" r="2"></circle>
+          <circle cx="19" cy="5" r="2"></circle>
+        </svg>
+      </button>
+
+      <span class="pw-measure__divider" aria-hidden="true"></span>
+
+      <button
+        type="button"
+        class="pw-measure__tool pw-measure__tool--download"
+        data-download-open
+        aria-label={strings.download.title}
+        title={strings.download.title}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12"></path>
+          <path d="m7 10 5 5 5-5"></path>
+          <path d="M5 20h14"></path>
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        class="pw-measure__tool pw-measure__tool--fullscreen"
+        data-fullscreen-toggle
+        data-label-enter={strings.fullscreen}
+        data-label-exit={strings.exitFullscreen}
+        aria-pressed="false"
+        aria-label={strings.fullscreen}
+        title={strings.fullscreen}
+      >
+        <svg class="pw-fullscreen-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 4H4v5"></path>
+          <path d="M15 4h5v5"></path>
+          <path d="M20 15v5h-5"></path>
+          <path d="M4 15v5h5"></path>
+        </svg>
+        <svg class="pw-fullscreen-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 9h5V4"></path>
+          <path d="M20 9h-5V4"></path>
+          <path d="M20 15h-5v5"></path>
+          <path d="M4 15h5v5"></path>
+        </svg>
+      </button>
     </div>
   </div>
+
+  <dialog class="pw-download" data-download-dialog aria-labelledby="pw-download-title">
+    <form method="dialog" class="pw-download__form" data-download-form>
+      <div class="pw-download__head">
+        <div>
+          <h2 id="pw-download-title">{strings.download.title}</h2>
+        </div>
+        <button
+          type="button"
+          class="pw-download__close"
+          data-download-close
+          aria-label={strings.draw.close}
+          title={strings.draw.close}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </div>
+
+      <p class="pw-download__note">{strings.download.note}</p>
+
+      <fieldset class="pw-download__modes">
+        <legend>{strings.download.places}</legend>
+        <div class="pw-download__mode-list">
+          <label>
+            <input type="radio" name="pw-download-places" value="all" checked />
+            <span>{strings.download.all}</span>
+          </label>
+          <label>
+            <input type="radio" name="pw-download-places" value="none" />
+            <span>{strings.download.none}</span>
+          </label>
+          <label>
+            <input type="radio" name="pw-download-places" value="selected" />
+            <span>{strings.download.selected}</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="pw-download__picker" data-download-picker hidden>
+        <label class="pw-download__search">
+          <span class="sr-only">{strings.download.search}</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input type="search" placeholder={strings.download.search} autocomplete="off" data-download-search />
+        </label>
+
+        <div class="pw-download__picker-tools">
+          <button type="button" data-download-select-all>{strings.download.selectAll}</button>
+          <button type="button" data-download-clear>{strings.download.clear}</button>
+          <span data-download-count aria-live="polite"></span>
+        </div>
+
+        <div class="pw-download__list" data-download-list></div>
+        <p class="pw-download__empty" data-download-empty hidden>{strings.download.empty}</p>
+      </div>
+
+      <p class="pw-download__error" data-download-error role="alert" hidden></p>
+
+      <div class="pw-download__actions">
+        <button type="button" class="pw-download__cancel" data-download-close>{strings.download.cancel}</button>
+        <button type="button" class="pw-download__run" data-download-run>{strings.download.run}</button>
+      </div>
+    </form>
+  </dialog>
 
   <p class="pw-map__empty" data-map-empty hidden>{strings.empty}</p>
 
@@ -491,7 +775,34 @@ const payload = JSON.stringify({
   const measureClose = root?.querySelector<HTMLButtonElement>('[data-measure-close]');
   const measureCollapse = root?.querySelector<HTMLButtonElement>('[data-measure-collapse]');
   const measureToolButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-measure-mode]') ?? [])];
-  const poisToggle = root?.querySelector<HTMLButtonElement>('[data-pois-toggle]');  const source = document.getElementById('pw-map-data');
+  const poisToggle = root?.querySelector<HTMLButtonElement>('[data-pois-toggle]');
+
+  const drawPanel = root?.querySelector<HTMLElement>('[data-draw-panel]');
+  const drawTitle = root?.querySelector<HTMLElement>('[data-draw-title]');
+  const drawHint = root?.querySelector<HTMLElement>('[data-draw-hint]');
+  const drawUndo = root?.querySelector<HTMLButtonElement>('[data-draw-undo]');
+  const drawFinish = root?.querySelector<HTMLButtonElement>('[data-draw-finish]');
+  const drawClear = root?.querySelector<HTMLButtonElement>('[data-draw-clear]');
+  const drawClose = root?.querySelector<HTMLButtonElement>('[data-draw-close]');
+  const drawToolButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-draw-mode]') ?? [])];
+  const drawColourButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-draw-colour]') ?? [])];
+  const drawWidthButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-draw-width]') ?? [])];
+
+  const downloadOpen = root?.querySelector<HTMLButtonElement>('[data-download-open]');
+  const downloadDialog = root?.querySelector<HTMLDialogElement>('[data-download-dialog]');
+  const downloadPicker = root?.querySelector<HTMLElement>('[data-download-picker]');
+  const downloadSearch = root?.querySelector<HTMLInputElement>('[data-download-search]');
+  const downloadList = root?.querySelector<HTMLElement>('[data-download-list]');
+  const downloadEmpty = root?.querySelector<HTMLElement>('[data-download-empty]');
+  const downloadCount = root?.querySelector<HTMLElement>('[data-download-count]');
+  const downloadRun = root?.querySelector<HTMLButtonElement>('[data-download-run]');
+  const downloadError = root?.querySelector<HTMLElement>('[data-download-error]');
+  const downloadSelectAll = root?.querySelector<HTMLButtonElement>('[data-download-select-all]');
+  const downloadClear = root?.querySelector<HTMLButtonElement>('[data-download-clear]');
+  const downloadModeInputs = [...(root?.querySelectorAll<HTMLInputElement>('input[name="pw-download-places"]') ?? [])];
+  const fullscreenToggle = root?.querySelector<HTMLButtonElement>('[data-fullscreen-toggle]');
+
+  const source = document.getElementById('pw-map-data');
 
   type Poi = {
     id: string;
@@ -554,6 +865,41 @@ const payload = JSON.stringify({
       studNote: string;
       distanceUnits: Unit[];
       areaUnits: Unit[];
+    };
+    draw: {
+      title: string;
+      free: string;
+      line: string;
+      colour: string;
+      width: string;
+      thin: string;
+      medium: string;
+      thick: string;
+      hintFree: string;
+      hintLine: string;
+      undo: string;
+      finish: string;
+      clear: string;
+      close: string;
+      empty: string;
+    };
+    download: {
+      title: string;
+      places: string;
+      all: string;
+      none: string;
+      selected: string;
+      search: string;
+      selectAll: string;
+      clear: string;
+      cancel: string;
+      run: string;
+      preparing: string;
+      note: string;
+      empty: string;
+      selectedCount: string;
+      selectedCountOne: string;
+      error: string;
     };
   };
 
@@ -1314,6 +1660,7 @@ const payload = JSON.stringify({
 
     const startMeasure = (mode: MeasureMode, seed?: L.LatLng) => {
       commitActive();
+      if (drawMode) exitDraw();
       const wasHidden = measurePanel?.hidden ?? true;
       measureMode = mode;
       measureActive = { kind: mode, points: seed ? [seed] : [] };
@@ -1430,8 +1777,402 @@ const payload = JSON.stringify({
       if (previewPoint) drawPreview(previewPoint);
     });
 
+    // ---------- Drawing tools ----------
+    const drawCopy = data.draw;
+    const drawPane = map.createPane('pwDrawPane');
+    drawPane.style.zIndex = '460';
+    drawPane.style.pointerEvents = 'none';
+
+    const drawLayer = L.layerGroup().addTo(map);
+    const drawPreviewLayer = L.layerGroup().addTo(map);
+
+    type DrawMode = 'free' | 'line';
+    type Drawing = {
+      id: number;
+      mode: DrawMode;
+      color: string;
+      width: number;
+      worldWidth: number;
+      points: L.LatLng[];
+    };
+
+    const drawings: Drawing[] = [];
+    let drawMode: DrawMode | null = null;
+    let activeDrawing: Drawing | null = null;
+    let activePolyline: L.Polyline | null = null;
+    let drawColor = '#ffd24a';
+    let drawWidth = 6;
+    let drawSequence = 0;
+    let strokeActive = false;
+    let strokePointerId: number | null = null;
+
+    const screenWidthToWorld = (pixels: number) => {
+      const start = map.containerPointToLatLng([0, 0]);
+      const end = map.containerPointToLatLng([pixels, 0]);
+      return Math.abs(end.lng - start.lng);
+    };
+
+    const makeDrawing = (mode: DrawMode, points: L.LatLng[] = []): Drawing => ({
+      id: ++drawSequence,
+      mode,
+      color: drawColor,
+      width: drawWidth,
+      worldWidth: screenWidthToWorld(drawWidth),
+      points,
+    });
+
+    const drawingOptions = (drawing: Drawing): L.PolylineOptions => ({
+      pane: 'pwDrawPane',
+      color: drawing.color,
+      weight: drawing.width,
+      opacity: 1,
+      lineCap: 'round',
+      lineJoin: 'round',
+      interactive: false,
+      className: 'pw-drawing',
+    });
+
+    const addDrawingShape = (drawing: Drawing, group: L.LayerGroup) => {
+      if (!drawing.points.length) return null;
+      if (drawing.points.length === 1) {
+        group.addLayer(
+          L.circleMarker(drawing.points[0], {
+            pane: 'pwDrawPane',
+            radius: Math.max(1.5, drawing.width / 2),
+            stroke: false,
+            fill: true,
+            fillColor: drawing.color,
+            fillOpacity: 1,
+            interactive: false,
+            className: 'pw-drawing pw-drawing-dot',
+          })
+        );
+        return null;
+      }
+      return L.polyline(drawing.points, drawingOptions(drawing)).addTo(group);
+    };
+
+    const updateDrawPanel = () => {
+      if (drawTitle) drawTitle.textContent = drawMode === 'line' ? drawCopy.line : drawCopy.free;
+      if (drawHint) drawHint.textContent = drawMode === 'line' ? drawCopy.hintLine : drawCopy.hintFree;
+      if (drawFinish) drawFinish.disabled = drawMode === 'line' && (activeDrawing?.points.length ?? 0) < 2;
+      if (drawUndo) drawUndo.disabled = !(activeDrawing?.points.length) && !drawings.length;
+      if (drawClear) drawClear.disabled = !drawings.length && !(activeDrawing?.points.length);
+
+      for (const tool of drawToolButtons) {
+        const active = tool.dataset.drawMode === drawMode;
+        tool.classList.toggle('is-active', active);
+        tool.setAttribute('aria-pressed', String(active));
+      }
+      for (const button of drawColourButtons) {
+        const active = button.dataset.drawColour === drawColor;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+      }
+      for (const button of drawWidthButtons) {
+        const active = Number(button.dataset.drawWidth) === drawWidth;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+      }
+
+      root?.classList.toggle('is-drawing', Boolean(drawMode));
+      root?.classList.toggle('is-draw-free', drawMode === 'free');
+      root?.classList.toggle('is-draw-line', drawMode === 'line');
+    };
+
+    const renderDrawings = () => {
+      drawLayer.clearLayers();
+      activePolyline = null;
+
+      for (const drawing of drawings) addDrawingShape(drawing, drawLayer);
+
+      if (activeDrawing && activeDrawing.points.length) {
+        activePolyline = addDrawingShape(activeDrawing, drawLayer);
+        if (activeDrawing.mode === 'line') {
+          for (const point of activeDrawing.points) {
+            drawLayer.addLayer(
+              L.circleMarker(point, {
+                pane: 'pwDrawPane',
+                radius: 3.5,
+                color: '#10203a',
+                weight: 2,
+                fillColor: '#ffffff',
+                fillOpacity: 1,
+                interactive: false,
+                className: 'pw-drawing-vertex',
+              })
+            );
+          }
+        }
+      }
+
+      updateDrawPanel();
+    };
+
+    let drawPreviewFrame = 0;
+    let drawPreviewPoint: L.LatLng | null = null;
+
+    const clearDrawPreview = () => {
+      drawPreviewPoint = null;
+      if (drawPreviewFrame) {
+        cancelAnimationFrame(drawPreviewFrame);
+        drawPreviewFrame = 0;
+      }
+      drawPreviewLayer.clearLayers();
+    };
+
+    const renderDrawPreview = (cursor: L.LatLng) => {
+      drawPreviewLayer.clearLayers();
+      if (!activeDrawing || activeDrawing.mode !== 'line' || !activeDrawing.points.length) return;
+      drawPreviewLayer.addLayer(
+        L.polyline([...activeDrawing.points, cursor], {
+          pane: 'pwDrawPane',
+          color: activeDrawing.color,
+          weight: activeDrawing.width,
+          opacity: 0.72,
+          dashArray: `${Math.max(4, activeDrawing.width)} ${Math.max(3, activeDrawing.width * 0.8)}`,
+          lineCap: 'round',
+          lineJoin: 'round',
+          interactive: false,
+          className: 'pw-drawing-preview',
+        })
+      );
+    };
+
+    const scheduleDrawPreview = (cursor: L.LatLng) => {
+      drawPreviewPoint = cursor;
+      if (drawPreviewFrame) return;
+      drawPreviewFrame = requestAnimationFrame(() => {
+        drawPreviewFrame = 0;
+        if (drawPreviewPoint) renderDrawPreview(drawPreviewPoint);
+      });
+    };
+
+    const commitActiveDrawing = () => {
+      if (!activeDrawing) return false;
+      const minimum = activeDrawing.mode === 'line' ? 2 : 1;
+      const committed = activeDrawing.points.length >= minimum;
+      if (committed) drawings.push(activeDrawing);
+      activeDrawing = null;
+      clearDrawPreview();
+      return committed;
+    };
+
+    const closeActiveLine = () => {
+      if (!activeDrawing || activeDrawing.mode !== 'line' || activeDrawing.points.length < 2) {
+        return false;
+      }
+      drawings.push(activeDrawing);
+      activeDrawing = makeDrawing('line');
+      clearDrawPreview();
+      renderDrawings();
+      return true;
+    };
+
+    const startDraw = (mode: DrawMode) => {
+      if (drawMode === mode) {
+        exitDraw();
+        return;
+      }
+      exitMeasure();
+      commitActiveDrawing();
+      drawMode = mode;
+      activeDrawing = mode === 'line' ? makeDrawing('line') : null;
+      if (drawPanel) drawPanel.hidden = false;
+      map.doubleClickZoom.disable();
+      if (mode === 'free') map.dragging.disable();
+      else map.dragging.enable();
+      map.closePopup();
+      clearDrawPreview();
+      renderDrawings();
+    };
+
+    const exitDraw = () => {
+      commitActiveDrawing();
+      drawMode = null;
+      activeDrawing = null;
+      clearDrawPreview();
+      if (drawPanel) drawPanel.hidden = true;
+      map.dragging.enable();
+      map.doubleClickZoom.enable();
+      renderDrawings();
+    };
+
+    const undoDraw = () => {
+      if (activeDrawing?.points.length) activeDrawing.points.pop();
+      else if (drawings.length) drawings.pop();
+      clearDrawPreview();
+      renderDrawings();
+    };
+
+    const clearDraw = () => {
+      drawings.length = 0;
+      if (activeDrawing) activeDrawing.points = [];
+      clearDrawPreview();
+      renderDrawings();
+    };
+
+    const drawContainer = map.getContainer();
+
+    const beginStroke = (event: PointerEvent) => {
+      if (drawMode !== 'free' || !event.isPrimary) return;
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      event.preventDefault();
+      event.stopPropagation();
+
+      activeDrawing = makeDrawing('free', [map.mouseEventToLatLng(event)]);
+      strokeActive = true;
+      strokePointerId = event.pointerId;
+      try {
+        drawContainer.setPointerCapture(event.pointerId);
+      } catch {
+        /* Pointer capture can fail if the pointer was already released. */
+      }
+      root?.classList.add('is-stroking');
+      renderDrawings();
+    };
+
+    const extendStroke = (event: PointerEvent) => {
+      if (!strokeActive || drawMode !== 'free' || !activeDrawing) return;
+      event.preventDefault();
+      const point = map.mouseEventToLatLng(event);
+      const last = activeDrawing.points[activeDrawing.points.length - 1];
+      if (!last) return;
+      const lastPoint = map.latLngToContainerPoint(last);
+      const nextPoint = map.latLngToContainerPoint(point);
+      if (lastPoint.distanceTo(nextPoint) < 2) return;
+      activeDrawing.points.push(point);
+      if (activePolyline) activePolyline.setLatLngs(activeDrawing.points);
+      else renderDrawings();
+    };
+
+    const endStroke = () => {
+      if (!strokeActive) return;
+      strokeActive = false;
+      if (strokePointerId !== null) {
+        try {
+          drawContainer.releasePointerCapture(strokePointerId);
+        } catch {
+          /* The pointer may already have been released by the browser. */
+        }
+        strokePointerId = null;
+      }
+      root?.classList.remove('is-stroking');
+      if (activeDrawing) {
+        if (activeDrawing.points.length) drawings.push(activeDrawing);
+        activeDrawing = null;
+      }
+      renderDrawings();
+    };
+
+    drawContainer.addEventListener('pointerdown', beginStroke, { passive: false });
+    drawContainer.addEventListener('pointermove', extendStroke, { passive: false });
+    drawContainer.addEventListener('pointerup', endStroke);
+    drawContainer.addEventListener('pointercancel', endStroke);
+    drawContainer.addEventListener('lostpointercapture', endStroke);
+
+    let lastLineClick: L.LatLng | null = null;
+    let lastLineClickTime = 0;
+
+    map.on('click', (event) => {
+      if (drawMode !== 'line') return;
+      const now = Date.now();
+      if (lastLineClick && now - lastLineClickTime < 400) {
+        const previous = map.latLngToContainerPoint(lastLineClick);
+        const current = map.latLngToContainerPoint(event.latlng);
+        if (previous.distanceTo(current) < 5) {
+          lastLineClick = event.latlng;
+          lastLineClickTime = now;
+          return;
+        }
+      }
+      lastLineClick = event.latlng;
+      lastLineClickTime = now;
+      if (!activeDrawing) {
+        activeDrawing = makeDrawing('line');
+      }
+      if (!activeDrawing.points.length) {
+        activeDrawing.worldWidth = screenWidthToWorld(activeDrawing.width);
+      }
+      activeDrawing.points.push(event.latlng);
+      clearDrawPreview();
+      renderDrawings();
+    });
+
+    map.on('dblclick', () => {
+      if (drawMode === 'line') closeActiveLine();
+    });
+
+    map.on('mousemove', (event) => {
+      if (drawMode !== 'line' || !activeDrawing || !activeDrawing.points.length) return;
+      scheduleDrawPreview(event.latlng);
+    });
+
+    map.on('mouseout', () => {
+      if (drawMode === 'line') clearDrawPreview();
+    });
+
+    for (const tool of drawToolButtons) {
+      tool.addEventListener('click', () => {
+        const mode = tool.dataset.drawMode as DrawMode | undefined;
+        if (!mode) return;
+        startDraw(mode);
+      });
+    }
+
+    for (const button of drawColourButtons) {
+      button.addEventListener('click', () => {
+        const colour = button.dataset.drawColour;
+        if (!colour) return;
+        drawColor = colour;
+        if (activeDrawing) activeDrawing.color = colour;
+        renderDrawings();
+      });
+    }
+
+    for (const button of drawWidthButtons) {
+      button.addEventListener('click', () => {
+        const width = Number(button.dataset.drawWidth);
+        if (!Number.isFinite(width) || width <= 0) return;
+        drawWidth = width;
+        if (activeDrawing) {
+          activeDrawing.width = width;
+          activeDrawing.worldWidth = screenWidthToWorld(width);
+        }
+        renderDrawings();
+      });
+    }
+
+    drawClose?.addEventListener('click', exitDraw);
+    drawFinish?.addEventListener('click', () => {
+      if (drawMode === 'line') closeActiveLine();
+      else exitDraw();
+    });
+    drawUndo?.addEventListener('click', undoDraw);
+    drawClear?.addEventListener('click', clearDraw);
+
     document.addEventListener('keydown', (event) => {
-      if (!measureMode) return;
+      if (!drawMode || downloadDialog?.open) return;
+      if (event.key === 'Escape') {
+        if (activeDrawing?.points.length) {
+          activeDrawing = null;
+          clearDrawPreview();
+          renderDrawings();
+        } else {
+          exitDraw();
+        }
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        if (drawMode === 'line') closeActiveLine();
+        else exitDraw();
+      }
+    });
+
+    renderDrawings();
+
+    document.addEventListener('keydown', (event) => {
+      if (!measureMode || downloadDialog?.open) return;
       if (event.key === 'Escape') {
         if (measureActive?.points.length) {
           measureActive = null;
@@ -1442,6 +2183,593 @@ const payload = JSON.stringify({
         }
       }
       if (event.key === 'Enter') finishMeasure();
+    });
+
+    // ---------- Download map ----------
+    const downloadCopy = data.download;
+    type PlacesMode = 'all' | 'none' | 'selected';
+    let placesMode: PlacesMode = 'all';
+    const selectedPlaceIds = new Set<string>(data.pois.map((poi) => poi.id));
+    let downloadListBuilt = false;
+    let downloadQuery = '';
+
+    const placeIconMarkup = (poi: Poi) => {
+      if (poi.iconFile === 'generic') {
+        const pinColor = esc(poi.poiColor || '#78909C');
+        return `<svg class="pw-download__place-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-7 7c0 4.6 7 12 7 12s7-7.4 7-12a7 7 0 0 0-7-7Z" fill="${pinColor}" stroke="#16233a" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.6" fill="#fff"/></svg>`;
+      }
+      return `<img class="pw-download__place-icon" src="/MapIcons/${poi.iconFile}" alt="" width="22" height="22" loading="lazy" />`;
+    };
+
+    const buildDownloadList = () => {
+      if (downloadListBuilt || !downloadList) return;
+      downloadList.innerHTML = data.pois
+        .map((poi) => {
+          const searchText = `${poi.label} ${poi.catLabel}`.toLowerCase();
+          return `
+            <label class="pw-download__place" data-download-place="${poi.id}" data-download-search-text="${esc(searchText)}">
+              <input type="checkbox" data-download-id="${poi.id}"${selectedPlaceIds.has(poi.id) ? ' checked' : ''} />
+              ${placeIconMarkup(poi)}
+              <span class="pw-download__place-text">
+                <strong>${esc(poi.label)}</strong>
+                <small>${esc(poi.catLabel)}</small>
+              </span>
+            </label>
+          `;
+        })
+        .join('');
+      downloadListBuilt = true;
+    };
+
+    const updateDownloadCount = () => {
+      if (!downloadCount) return;
+      const label =
+        selectedPlaceIds.size === 1 ? downloadCopy.selectedCountOne : downloadCopy.selectedCount;
+      downloadCount.textContent = `${selectedPlaceIds.size} ${label}`;
+    };
+
+    const filterDownloadList = () => {
+      if (!downloadList) return;
+      const needle = downloadQuery.trim().toLowerCase();
+      let shown = 0;
+      for (const item of downloadList.querySelectorAll<HTMLElement>('[data-download-place]')) {
+        const matches = !needle || (item.dataset.downloadSearchText ?? '').includes(needle);
+        item.hidden = !matches;
+        if (matches) shown += 1;
+      }
+      if (downloadEmpty) downloadEmpty.hidden = shown > 0;
+    };
+
+    const setPlacesMode = (mode: PlacesMode) => {
+      placesMode = mode;
+      for (const input of downloadModeInputs) input.checked = input.value === mode;
+      if (downloadPicker) downloadPicker.hidden = mode !== 'selected';
+      updateDownloadCount();
+    };
+
+    const openDownload = () => {
+      if (!downloadDialog) return;
+      if (drawMode) exitDraw();
+      if (downloadError) downloadError.hidden = true;
+      buildDownloadList();
+      filterDownloadList();
+      setPlacesMode(placesMode);
+      if (!downloadDialog.open) downloadDialog.showModal();
+      if (placesMode === 'selected') {
+        requestAnimationFrame(() => downloadSearch?.focus());
+      }
+    };
+
+    downloadList?.addEventListener('change', (event) => {
+      const input = (event.target as Element).closest<HTMLInputElement>('input[data-download-id]');
+      if (!input) return;
+      const id = input.dataset.downloadId;
+      if (!id) return;
+      if (input.checked) selectedPlaceIds.add(id);
+      else selectedPlaceIds.delete(id);
+      updateDownloadCount();
+    });
+
+    downloadSearch?.addEventListener('input', () => {
+      downloadQuery = downloadSearch.value;
+      filterDownloadList();
+    });
+
+    for (const input of downloadModeInputs) {
+      input.addEventListener('change', () => {
+        if (!input.checked) return;
+        const mode = input.value as PlacesMode;
+        setPlacesMode(mode);
+        if (mode === 'selected') {
+          requestAnimationFrame(() => downloadSearch?.focus());
+        }
+      });
+    }
+
+    downloadSelectAll?.addEventListener('click', () => {
+      if (!downloadList) return;
+      for (const item of downloadList.querySelectorAll<HTMLElement>('[data-download-place]')) {
+        if (item.hidden) continue;
+        const input = item.querySelector<HTMLInputElement>('input[data-download-id]');
+        if (!input?.dataset.downloadId) continue;
+        input.checked = true;
+        selectedPlaceIds.add(input.dataset.downloadId);
+      }
+      updateDownloadCount();
+    });
+
+    downloadClear?.addEventListener('click', () => {
+      selectedPlaceIds.clear();
+      for (const input of downloadList?.querySelectorAll<HTMLInputElement>('input[data-download-id]') ?? []) {
+        input.checked = false;
+      }
+      updateDownloadCount();
+    });
+
+    for (const button of downloadDialog?.querySelectorAll<HTMLButtonElement>('[data-download-close]') ?? []) {
+      button.addEventListener('click', () => downloadDialog?.close());
+    }
+
+    downloadDialog?.addEventListener('submit', (event) => {
+      event.preventDefault();
+    });
+
+    downloadDialog?.addEventListener('click', (event) => {
+      if (event.target === downloadDialog) downloadDialog.close();
+    });
+
+    downloadDialog?.addEventListener('close', () => {
+      if (downloadError) downloadError.hidden = true;
+    });
+
+    const MAP_EXPORT_WIDTH = 2400;
+    const MAP_EXPORT_HEIGHT = 1245;
+    const EXPORT_REFERENCE_WIDTH = 1200;
+
+    const imageCache = new Map<string, Promise<HTMLImageElement>>();
+    const loadImage = (src: string) => {
+      const cached = imageCache.get(src);
+      if (cached) return cached;
+      const promise = new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error(`Could not load ${src}`));
+        image.src = src;
+      });
+      imageCache.set(src, promise);
+      return promise;
+    };
+
+    const drawExportPin = (
+      ctx: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      size: number,
+      color: string
+    ) => {
+      const scale = size / 24;
+      ctx.save();
+      ctx.translate(x - 12 * scale, y - 12 * scale);
+      ctx.scale(scale, scale);
+      ctx.beginPath();
+      ctx.moveTo(12, 2.5);
+      ctx.bezierCurveTo(8.13, 2.5, 5, 5.63, 5, 9.5);
+      ctx.bezierCurveTo(5, 14.1, 12, 21.5, 12, 21.5);
+      ctx.bezierCurveTo(12, 21.5, 19, 14.1, 19, 9.5);
+      ctx.bezierCurveTo(19, 5.63, 15.87, 2.5, 12, 2.5);
+      ctx.closePath();
+      ctx.fillStyle = color || '#78909C';
+      ctx.strokeStyle = '#16233a';
+      ctx.lineWidth = 2;
+      ctx.fill();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(12, 9.5, 2.6, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.restore();
+    };
+
+    const drawExportPlaces = async (
+      ctx: CanvasRenderingContext2D,
+      chosen: Poi[],
+      width: number,
+      height: number,
+      scale: number,
+      toX: (x: number) => number,
+      toY: (z: number) => number
+    ) => {
+      const iconSize = 30 * scale;
+      const iconRadius = iconSize / 2;
+      const labelHeight = 18 * scale;
+      const font = `700 ${12 * scale}px "Public Sans", system-ui, sans-serif`;
+      const padX = 6 * scale;
+      const padY = 3 * scale;
+      const gap = 5 * scale;
+      const images = new Map<string, HTMLImageElement | null>();
+
+      await Promise.all(
+        [...new Set(chosen.filter((poi) => poi.iconFile !== 'generic').map((poi) => poi.iconFile))].map(
+          async (file) => {
+            try {
+              images.set(file, await loadImage(`/MapIcons/${file}`));
+            } catch {
+              images.set(file, null);
+            }
+          }
+        )
+      );
+
+      const points = chosen.map((poi) => ({
+        poi,
+        x: toX(poi.x),
+        y: toY(poi.z),
+      }));
+
+      for (const point of points) {
+        if (point.poi.iconFile === 'generic') {
+          drawExportPin(ctx, point.x, point.y, iconSize, point.poi.poiColor);
+          continue;
+        }
+        const image = images.get(point.poi.iconFile);
+        if (image) {
+          const ratio = Math.min(iconSize / image.naturalWidth, iconSize / image.naturalHeight);
+          const imageWidth = image.naturalWidth * ratio;
+          const imageHeight = image.naturalHeight * ratio;
+          ctx.drawImage(
+            image,
+            point.x - imageWidth / 2,
+            point.y - imageHeight / 2,
+            imageWidth,
+            imageHeight
+          );
+        } else {
+          drawExportPin(ctx, point.x, point.y, iconSize, point.poi.poiColor);
+        }
+      }
+
+      ctx.save();
+      ctx.font = font;
+      ctx.textBaseline = 'middle';
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = Math.max(2, 2.2 * scale);
+
+      type Rect = { left: number; top: number; right: number; bottom: number };
+      const overlaps = (a: Rect, b: Rect) =>
+        a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+      const rectFor = (
+        side: 'right' | 'left' | 'top' | 'bottom',
+        x: number,
+        y: number,
+        rectWidth: number,
+        rectHeight: number,
+        distance: number
+      ): Rect => {
+        if (side === 'right') {
+          const left = x + iconRadius + distance;
+          return { left, top: y - rectHeight / 2, right: left + rectWidth, bottom: y + rectHeight / 2 };
+        }
+        if (side === 'left') {
+          const right = x - iconRadius - distance;
+          return { left: right - rectWidth, top: y - rectHeight / 2, right, bottom: y + rectHeight / 2 };
+        }
+        if (side === 'bottom') {
+          const top = y + iconRadius + distance;
+          return { left: x - rectWidth / 2, top, right: x + rectWidth / 2, bottom: top + rectHeight };
+        }
+        const bottom = y - iconRadius - distance;
+        return { left: x - rectWidth / 2, top: bottom - rectHeight, right: x + rectWidth / 2, bottom };
+      };
+
+      const placed: Rect[] = [];
+      const iconRects = points.map((point) => ({
+        left: point.x - iconRadius,
+        top: point.y - iconRadius,
+        right: point.x + iconRadius,
+        bottom: point.y + iconRadius,
+      }));
+      const sides = ['right', 'left', 'bottom', 'top'] as const;
+      const distances = [gap, gap * 2.1, gap * 3.4];
+      const ordered = [...points].sort(
+        (a, b) =>
+          (a.x - width / 2) ** 2 +
+          (a.y - height / 2) ** 2 -
+          ((b.x - width / 2) ** 2 + (b.y - height / 2) ** 2)
+      );
+
+      for (const point of ordered) {
+        const text = point.poi.label;
+        const rectWidth = ctx.measureText(text).width + padX * 2;
+        const rectHeight = labelHeight + padY * 2;
+        let rect: Rect | null = null;
+        let side: (typeof sides)[number] = 'right';
+
+        for (const distance of distances) {
+          for (const candidate of sides) {
+            const candidateRect = rectFor(
+              candidate,
+              point.x,
+              point.y,
+              rectWidth,
+              rectHeight,
+              distance
+            );
+            if (
+              candidateRect.left < 2 ||
+              candidateRect.top < 2 ||
+              candidateRect.right > width - 2 ||
+              candidateRect.bottom > height - 2
+            ) {
+              continue;
+            }
+            if (iconRects.some((icon) => overlaps(candidateRect, icon))) continue;
+            if (placed.some((other) => overlaps(candidateRect, other))) continue;
+            rect = candidateRect;
+            side = candidate;
+            break;
+          }
+          if (rect) break;
+        }
+
+        // If there is no clear space left, leave the icon unlabelled rather
+        // than printing text on top of another place.
+        if (!rect) continue;
+
+        placed.push(rect);
+        let textX = point.x;
+        let textAlign: CanvasTextAlign = 'left';
+        if (side === 'right') {
+          textX = rect.left + padX;
+          textAlign = 'left';
+        } else if (side === 'left') {
+          textX = rect.right - padX;
+          textAlign = 'right';
+        } else {
+          textX = point.x;
+          textAlign = 'center';
+        }
+        const textY = (rect.top + rect.bottom) / 2;
+        ctx.textAlign = textAlign;
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.68)';
+        ctx.strokeText(text, textX, textY);
+        ctx.fillStyle = point.poi.textColor || '#FFFFFF';
+        ctx.fillText(text, textX, textY);
+      }
+
+      ctx.restore();
+    };
+
+    const exportMapCanvas = async () => {
+      if ('fonts' in document) await document.fonts.ready.catch(() => {});
+      const width = MAP_EXPORT_WIDTH;
+      const height = MAP_EXPORT_HEIGHT;
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Canvas is unavailable.');
+
+      const { minX, maxX, minZ, maxZ } = data.bounds;
+      const toX = (x: number) => ((x - minX) / (maxX - minX)) * width;
+      const toY = (z: number) => ((z - minZ) / (maxZ - minZ)) * height;
+      const scale = width / EXPORT_REFERENCE_WIDTH;
+      const worldScale = width / (maxX - minX);
+
+      ctx.fillStyle = '#a4ce8d';
+      ctx.fillRect(0, 0, width, height);
+      const base = await loadImage('/minimap.svg');
+      ctx.drawImage(base, 0, 0, width, height);
+
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      for (const drawing of drawings) {
+        if (!drawing.points.length) continue;
+        ctx.strokeStyle = drawing.color;
+        ctx.fillStyle = drawing.color;
+        ctx.lineWidth = Math.max(1.5, drawing.worldWidth * worldScale);
+        if (drawing.points.length === 1) {
+          const point = drawing.points[0];
+          ctx.beginPath();
+          ctx.arc(
+            toX(point.lng),
+            toY(-point.lat),
+            Math.max(1.5, (drawing.worldWidth * worldScale) / 2),
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+          continue;
+        }
+        ctx.beginPath();
+        drawing.points.forEach((point, index) => {
+          const x = toX(point.lng);
+          const y = toY(-point.lat);
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      const chosen =
+        placesMode === 'all'
+          ? data.pois
+          : placesMode === 'none'
+            ? []
+            : data.pois.filter((poi) => selectedPlaceIds.has(poi.id));
+
+      if (chosen.length) {
+        await drawExportPlaces(ctx, chosen, width, height, scale, toX, toY);
+      }
+
+      return canvas;
+    };
+
+    const downloadMapPng = async () => {
+      const canvas = await exportMapCanvas();
+      const blob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob((result) => {
+          if (result) resolve(result);
+          else reject(new Error('Could not encode the map image.'));
+        }, 'image/png');
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download =
+        document.documentElement.lang === 'ms' ? 'peta-putrajaya.png' : 'putrajaya-map.png';
+      link.rel = 'noopener';
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 4000);
+    };
+
+    const runDownload = async () => {
+      if (!downloadRun) return;
+      const label = downloadRun.textContent ?? downloadCopy.run;
+      downloadRun.disabled = true;
+      downloadRun.textContent = downloadCopy.preparing;
+      downloadDialog?.setAttribute('aria-busy', 'true');
+      if (downloadError) downloadError.hidden = true;
+      try {
+        await downloadMapPng();
+        downloadDialog?.close();
+      } catch (error) {
+        console.error(error);
+        if (downloadError) {
+          downloadError.textContent = downloadCopy.error;
+          downloadError.hidden = false;
+        }
+      } finally {
+        downloadRun.disabled = false;
+        downloadRun.textContent = label;
+        downloadDialog?.removeAttribute('aria-busy');
+      }
+    };
+
+    downloadOpen?.addEventListener('click', openDownload);
+    downloadRun?.addEventListener('click', runDownload);
+    updateDownloadCount();
+
+    // ---------- Fullscreen ----------
+    let cssFullscreen = false;
+    let fullscreenBusy = false;
+    let fullscreenParent: HTMLElement | null = null;
+    let fullscreenNext: Node | null = null;
+    let fullscreenPlaceholder: HTMLElement | null = null;
+    const isNativeFullscreen = () => document.fullscreenElement === root;
+
+    const mountFullscreen = () => {
+      if (!root || !root.parentElement || root.parentElement === document.body) return;
+      fullscreenParent = root.parentElement;
+      fullscreenNext = root.nextSibling;
+
+      const placeholder = document.createElement('div');
+      placeholder.className = 'pw-map__placeholder';
+      placeholder.setAttribute('aria-hidden', 'true');
+      placeholder.style.height = `${root.offsetHeight}px`;
+      placeholder.style.margin = getComputedStyle(root).margin;
+      fullscreenParent.insertBefore(placeholder, root);
+      fullscreenPlaceholder = placeholder;
+      document.body.append(root);
+    };
+
+    const unmountFullscreen = () => {
+      if (!root || !fullscreenParent) return;
+      const parent = fullscreenParent;
+      const next = fullscreenNext;
+      fullscreenParent = null;
+      fullscreenNext = null;
+      if (next && next.parentNode === parent) parent.insertBefore(root, next);
+      else parent.append(root);
+      fullscreenPlaceholder?.remove();
+      fullscreenPlaceholder = null;
+    };
+
+    const syncFullscreen = () => {
+      const active = isNativeFullscreen() || cssFullscreen;
+      root?.classList.toggle('is-fullscreen', active);
+      document.documentElement.classList.toggle('pw-map-fs-lock', active);
+
+      if (fullscreenToggle) {
+        fullscreenToggle.setAttribute('aria-pressed', String(active));
+        const label = active
+          ? (fullscreenToggle.dataset.labelExit ?? '')
+          : (fullscreenToggle.dataset.labelEnter ?? '');
+        if (label) {
+          fullscreenToggle.setAttribute('aria-label', label);
+          fullscreenToggle.setAttribute('title', label);
+        }
+      }
+
+      window.setTimeout(() => {
+        map.invalidateSize();
+        if (map.getZoom() <= map.getMinZoom() + 0.01) fitMap();
+        measureLabels();
+        scheduleLabelUpdate();
+      }, 140);
+    };
+
+    const toggleFullscreen = async () => {
+      if (fullscreenBusy) return;
+      fullscreenBusy = true;
+      try {
+        if (isNativeFullscreen() || cssFullscreen) {
+          cssFullscreen = false;
+          if (isNativeFullscreen() && document.exitFullscreen) {
+            try {
+              await document.exitFullscreen();
+            } catch {
+              /* The browser may already have left fullscreen. */
+            }
+          }
+          syncFullscreen();
+          unmountFullscreen();
+          return;
+        }
+
+        mountFullscreen();
+
+        if (root && document.fullscreenEnabled && typeof root.requestFullscreen === 'function') {
+          try {
+            await root.requestFullscreen();
+            if (isNativeFullscreen()) {
+              syncFullscreen();
+              return;
+            }
+          } catch {
+            /* iOS and some embedded browsers do not expose element fullscreen. */
+          }
+        }
+
+        cssFullscreen = true;
+        syncFullscreen();
+      } finally {
+        fullscreenBusy = false;
+      }
+    };
+
+    fullscreenToggle?.addEventListener('click', () => {
+      void toggleFullscreen();
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      const native = isNativeFullscreen();
+      if (!native) cssFullscreen = false;
+      syncFullscreen();
+      if (!native) unmountFullscreen();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !cssFullscreen) return;
+      if (downloadDialog?.open) return;
+      cssFullscreen = false;
+      syncFullscreen();
+      unmountFullscreen();
     });
 
     for (const button of filterButtons) {
@@ -1493,7 +2821,7 @@ const payload = JSON.stringify({
     });
 
     map.on('popupopen', () => {
-      if (measureMode) {
+      if (measureMode || drawMode) {
         map.closePopup();
         return;
       }
@@ -1551,6 +2879,44 @@ const payload = JSON.stringify({
     position: absolute;
     inset: 0;
     background: #a4ce8d;
+  }
+
+  .pw-map.is-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #a4ce8d;
+  }
+
+  .pw-map__placeholder {
+    display: block;
+    width: 100%;
+  }
+
+  html.pw-map-fs-lock,
+  html.pw-map-fs-lock body {
+    overflow: hidden;
+  }
+
+  .pw-map.is-fullscreen .pw-map__overlay {
+    top: max(0.8rem, env(safe-area-inset-top));
+    left: max(0.8rem, env(safe-area-inset-left));
+    right: max(0.8rem, env(safe-area-inset-right));
+  }
+
+  .pw-map.is-fullscreen .pw-measure__tools {
+    right: max(0.8rem, env(safe-area-inset-right));
+  }
+
+  .pw-map.is-fullscreen .pw-map__hint {
+    bottom: max(0.8rem, env(safe-area-inset-bottom));
   }
 
   .pw-map__overlay {
@@ -1899,7 +3265,15 @@ const payload = JSON.stringify({
     color: #fff;
   }
 
-  .pw-measure__panel {
+  .pw-measure__divider {
+    width: 1.35rem;
+    height: 1px;
+    margin: 0.15rem auto 0.05rem;
+    background: var(--sl-color-hairline);
+  }
+
+  .pw-measure__panel,
+  .pw-draw__panel {
     position: absolute;
     top: 50%;
     right: 3.9rem;
@@ -1918,7 +3292,8 @@ const payload = JSON.stringify({
     backdrop-filter: blur(12px);
   }
 
-  .pw-measure__panel[hidden] {
+  .pw-measure__panel[hidden],
+  .pw-draw__panel[hidden] {
     display: none;
   }
 
@@ -2040,13 +3415,15 @@ const payload = JSON.stringify({
     line-height: 1.35;
   }
 
-  .pw-measure__actions {
+  .pw-measure__actions,
+  .pw-draw__actions {
     display: flex;
     gap: 0.3rem;
     margin-top: 0.55rem;
   }
 
-  .pw-measure__actions button {
+  .pw-measure__actions button,
+  .pw-draw__actions button {
     flex: 1;
     padding: 0.33rem 0.35rem;
     border: 1px solid var(--sl-color-hairline);
@@ -2059,18 +3436,21 @@ const payload = JSON.stringify({
     cursor: pointer;
   }
 
-  .pw-measure__actions button:hover:not(:disabled) {
+  .pw-measure__actions button:hover:not(:disabled),
+  .pw-draw__actions button:hover:not(:disabled) {
     border-color: var(--sl-color-accent);
     color: var(--sl-color-accent-high);
   }
 
-  .pw-measure__actions button.is-primary {
+  .pw-measure__actions button.is-primary,
+  .pw-draw__actions button.is-primary {
     border-color: var(--sl-color-accent);
     background: var(--sl-color-accent);
     color: #fff;
   }
 
-  .pw-measure__actions button:disabled {
+  .pw-measure__actions button:disabled,
+  .pw-draw__actions button:disabled {
     opacity: 0.4;
     cursor: default;
   }
@@ -2079,6 +3459,172 @@ const payload = JSON.stringify({
     margin: 0.45rem 0 0;
     color: var(--pw-muted);
     font-size: 0.6rem;
+  }
+
+  /* ---------- Draw panel ---------- */
+  .pw-draw__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .pw-draw__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    min-width: 0;
+  }
+
+  .pw-draw__eyebrow {
+    color: var(--pw-muted);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .pw-draw__head strong {
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  .pw-draw__close {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--pw-muted);
+    cursor: pointer;
+  }
+
+  .pw-draw__close svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .pw-draw__close:hover {
+    background: color-mix(in srgb, var(--sl-color-accent) 10%, transparent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-draw__colours {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.7rem;
+  }
+
+  .pw-draw__label {
+    color: var(--pw-muted);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pw-draw__swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .pw-draw__swatches button {
+    position: relative;
+    width: 1.45rem;
+    height: 1.45rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--swatch);
+    box-shadow: inset 0 0 0 1px rgb(16 32 58 / 18%);
+    cursor: pointer;
+    transition:
+      transform 120ms ease,
+      box-shadow 120ms ease;
+  }
+
+  .pw-draw__swatches button:hover {
+    transform: scale(1.1);
+  }
+
+  .pw-draw__swatches button.is-active {
+    box-shadow:
+      0 0 0 2px var(--sl-color-bg),
+      0 0 0 4px var(--sl-color-accent);
+  }
+
+  .pw-draw__widths {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 0.7rem;
+  }
+
+  .pw-draw__width-buttons {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .pw-draw__width-buttons button {
+    flex: 1;
+    padding: 0.3rem 0.2rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 7px;
+    background: transparent;
+    color: var(--sl-color-text);
+    font: inherit;
+    font-size: 0.62rem;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+
+  .pw-draw__width-buttons button:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-draw__width-buttons button.is-active {
+    border-color: var(--sl-color-accent);
+    background: var(--sl-color-accent);
+    color: #fff;
+  }
+
+  .pw-draw__hint {
+    margin: 0.55rem 0 0;
+    color: var(--pw-muted);
+    font-size: 0.65rem;
+    line-height: 1.35;
+  }
+
+  .pw-map.is-drawing .pw-map__canvas {
+    cursor: crosshair;
+  }
+
+  .pw-map.is-draw-free .leaflet-container {
+    touch-action: none;
+  }
+
+  .pw-map.is-drawing .leaflet-marker-icon,
+  .pw-map.is-drawing .pw-poi__label {
+    pointer-events: none;
+  }
+
+  .pw-map.is-drawing .pw-map__hint {
+    display: none;
+  }
+
+  .pw-map.is-stroking .leaflet-container {
+    cursor: crosshair;
   }
 
   .pw-map.is-measuring .pw-map__canvas {
@@ -2114,6 +3660,18 @@ const payload = JSON.stringify({
     color: var(--sl-color-accent);
   }
 
+  .pw-measure__tool--fullscreen .pw-fullscreen-exit {
+    display: none;
+  }
+
+  .pw-measure__tool--fullscreen[aria-pressed='true'] .pw-fullscreen-enter {
+    display: none;
+  }
+
+  .pw-measure__tool--fullscreen[aria-pressed='true'] .pw-fullscreen-exit {
+    display: block;
+  }
+
   .pw-measure-label-wrap {
     width: 0 !important;
     height: 0 !important;
@@ -2146,6 +3704,359 @@ const payload = JSON.stringify({
   .pw-measure-label.is-preview {
     border-style: dashed;
     background: rgb(16 32 58 / 82%);
+  }
+
+  /* ---------- Download dialog ---------- */
+  .pw-download {
+    width: min(34rem, calc(100vw - 1.5rem));
+    max-width: none;
+    max-height: min(88dvh, 46rem);
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 18px;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    box-shadow: 0 30px 90px rgb(8 14 26 / 45%);
+    overflow: hidden;
+  }
+
+  .pw-download::backdrop {
+    background: rgb(8 12 20 / 55%);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .pw-download[open] {
+    display: flex;
+  }
+
+  .pw-download__form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    max-height: inherit;
+    padding: 1.05rem 1.1rem 0.95rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .pw-download__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .pw-download__head h2 {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--sl-color-text);
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .pw-download__close {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    padding: 0;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--pw-muted);
+    cursor: pointer;
+  }
+
+  .pw-download__close svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .pw-download__close:hover {
+    background: color-mix(in srgb, var(--sl-color-accent) 10%, transparent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-download__note {
+    margin: 0.45rem 0 0;
+    color: var(--pw-muted);
+    font-size: 0.74rem;
+    line-height: 1.4;
+  }
+
+  .pw-download__modes {
+    min-width: 0;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .pw-download__modes legend {
+    padding: 0;
+    color: var(--pw-muted);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .pw-download__mode-list {
+    display: flex;
+    gap: 0.3rem;
+    margin-top: 0.35rem;
+  }
+
+  .pw-download__mode-list label {
+    position: relative;
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .pw-download__mode-list input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pw-download__mode-list span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.15rem;
+    padding: 0.35rem 0.4rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--sl-color-text);
+    font-size: 0.66rem;
+    font-weight: 650;
+    line-height: 1.2;
+    text-align: center;
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+
+  .pw-download__mode-list label:hover span {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-download__mode-list input:checked + span {
+    border-color: var(--sl-color-accent);
+    background: var(--sl-color-accent);
+    color: #fff;
+  }
+
+  .pw-download__mode-list input:focus-visible + span {
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 2px;
+  }
+
+  .pw-download__picker {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-height: 0;
+    margin-top: 0.7rem;
+  }
+
+  .pw-download__picker[hidden] {
+    display: none;
+  }
+
+  .pw-download__search {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--sl-color-accent) 5%, transparent);
+    color: var(--pw-muted);
+  }
+
+  .pw-download__search svg {
+    flex: none;
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .pw-download__search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--sl-color-text);
+    font: inherit;
+    font-size: 0.78rem;
+  }
+
+  .pw-download__search input::placeholder {
+    color: var(--pw-muted);
+  }
+
+  .pw-download__picker-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .pw-download__picker-tools button {
+    padding: 0.28rem 0.55rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--sl-color-text);
+    font: inherit;
+    font-size: 0.62rem;
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  .pw-download__picker-tools button:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-download__picker-tools span {
+    margin-inline-start: auto;
+    color: var(--pw-muted);
+    font-size: 0.62rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pw-download__list {
+    display: grid;
+    gap: 0.1rem;
+    max-height: min(18rem, 34dvh);
+    overflow-y: auto;
+    padding-inline-end: 0.15rem;
+    overscroll-behavior: contain;
+  }
+
+  .pw-download__place {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.45rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .pw-download__place[hidden] {
+    display: none;
+  }
+
+  .pw-download__place:hover {
+    background: color-mix(in srgb, var(--sl-color-accent) 8%, transparent);
+  }
+
+  .pw-download__place input {
+    flex: none;
+    width: 0.95rem;
+    height: 0.95rem;
+    accent-color: var(--sl-color-accent);
+  }
+
+  .pw-download__place-icon {
+    flex: none;
+    width: 1.35rem;
+    height: 1.35rem;
+    object-fit: contain;
+  }
+
+  .pw-download__place-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.02rem;
+    min-width: 0;
+  }
+
+  .pw-download__place-text strong {
+    overflow: hidden;
+    color: var(--sl-color-text);
+    font-size: 0.72rem;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pw-download__place-text small {
+    color: var(--pw-muted);
+    font-size: 0.6rem;
+  }
+
+  .pw-download__empty {
+    margin: 0.4rem 0;
+    color: var(--pw-muted);
+    font-size: 0.7rem;
+  }
+
+  .pw-download__empty[hidden],
+  .pw-download__error[hidden] {
+    display: none;
+  }
+
+  .pw-download__error {
+    margin: 0.6rem 0 0;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid color-mix(in srgb, #d94a4a 55%, var(--sl-color-hairline));
+    border-radius: 8px;
+    background: color-mix(in srgb, #d94a4a 10%, transparent);
+    color: var(--sl-color-text);
+    font-size: 0.7rem;
+  }
+
+  .pw-download__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .pw-download__actions button {
+    padding: 0.45rem 0.85rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--sl-color-text);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  .pw-download__actions button:hover:not(:disabled) {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-download__actions .pw-download__run {
+    border-color: var(--sl-color-accent);
+    background: var(--sl-color-accent);
+    color: #fff;
+  }
+
+  .pw-download__actions .pw-download__run:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--sl-color-accent) 84%, #000);
+    color: #fff;
+  }
+
+  .pw-download__actions button:disabled {
+    opacity: 0.55;
+    cursor: default;
   }
 
   /* ---------- POI card ---------- */
@@ -2322,7 +4233,8 @@ const payload = JSON.stringify({
       height: 2.2rem;
     }
 
-    .pw-measure__panel {
+    .pw-measure__panel,
+    .pw-draw__panel {
       top: auto;
       right: 0.6rem;
       bottom: 0.6rem;
@@ -2333,8 +4245,51 @@ const payload = JSON.stringify({
       transform: none;
     }
 
-    .pw-map.is-measuring .leaflet-control-zoom {
+    .pw-map.is-fullscreen .pw-measure__panel,
+    .pw-map.is-fullscreen .pw-draw__panel {
+      bottom: max(0.6rem, env(safe-area-inset-bottom));
+    }
+
+    .pw-map.is-measuring .leaflet-control-zoom,
+    .pw-map.is-drawing .leaflet-control-zoom {
       display: none;
+    }
+
+    .pw-map.is-measuring .pw-measure__tools,
+    .pw-map.is-drawing .pw-measure__tools {
+      display: none;
+    }
+
+    .pw-download {
+      width: calc(100vw - 1.2rem);
+      max-height: 88dvh;
+      border-radius: 14px;
+    }
+
+    .pw-download__form {
+      padding: 0.9rem 0.9rem 0.8rem;
+    }
+
+    .pw-download__head h2 {
+      font-size: 1.1rem;
+    }
+
+    .pw-download__mode-list {
+      gap: 0.25rem;
+    }
+
+    .pw-download__mode-list span {
+      padding: 0.3rem 0.25rem;
+      font-size: 0.6rem;
+    }
+
+    .pw-download__list {
+      max-height: 12rem;
+    }
+
+    .pw-download__actions button {
+      flex: 1;
+      padding: 0.45rem 0.5rem;
     }
   }
 
@@ -2346,7 +4301,10 @@ const payload = JSON.stringify({
 
   @media (prefers-reduced-motion: reduce) {
     .pw-poi__icon,
-    .pw-map__filters button {
+    .pw-map__filters button,
+    .pw-draw__swatches button,
+    .pw-draw__width-buttons button,
+    .pw-download__mode-list span {
       transition: none;
     }
   }
