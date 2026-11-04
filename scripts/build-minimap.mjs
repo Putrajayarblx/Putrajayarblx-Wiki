@@ -102,7 +102,8 @@ const svgParts = [...raw.parts]
   })
   .map((part) => {
     const style = layers[part.n] ?? { fill: '#CDCDCD' };
-    return `<polygon points="${polygon(part.p)}" fill="${style.fill}" stroke="${style.fill}" stroke-width="1.5" stroke-linejoin="round"/>`;
+    const fill = part.c ?? style.fill;
+    return `<polygon points="${polygon(part.p)}" fill="${fill}" stroke="${fill}" stroke-width="1.5" stroke-linejoin="round"/>`;
   })
   .join('');
 

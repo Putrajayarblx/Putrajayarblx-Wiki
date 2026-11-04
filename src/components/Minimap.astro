@@ -195,7 +195,6 @@ const payload = JSON.stringify({
     <span class="pw-map__hint-mouse">{strings.hintMouse}</span>
     <span class="pw-map__hint-touch">{strings.hintTouch}</span>
   </p>
-  <span class="pw-map__compass" aria-hidden="true">N</span>
 </div>
 
 <script type="application/json" id="pw-map-data" set:html={payload} />
@@ -218,6 +217,8 @@ const payload = JSON.stringify({
     cat: string;
     catLabel: string;
     iconFile: string;
+    textColor: string;
+    poiColor: string;
     x: number;
     z: number;
   };
@@ -314,7 +315,8 @@ const payload = JSON.stringify({
 
     const iconMarkup = (poi: Poi) => {
       if (poi.iconFile === 'generic') {
-        return `<svg class="pw-poi__icon pw-poi__icon--generic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-7 7c0 4.6 7 12 7 12s7-7.4 7-12a7 7 0 0 0-7-7Z" fill="#fff" stroke="#16233a" stroke-width="2"/><circle cx="12" cy="9.5" r="2.6" fill="#16233a"/></svg>`;
+        const pinColor = esc(poi.poiColor || '#78909C');
+        return `<svg class="pw-poi__icon pw-poi__icon--generic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-7 7c0 4.6 7 12 7 12s7-7.4 7-12a7 7 0 0 0-7-7Z" fill="${pinColor}" stroke="#16233a" stroke-width="2"/><circle cx="12" cy="9.5" r="2.6" fill="#fff"/></svg>`;
       }
       return `<img class="pw-poi__icon" src="/MapIcons/${poi.iconFile}" alt="" width="30" height="30" draggable="false" />`;
     };
@@ -323,7 +325,7 @@ const payload = JSON.stringify({
       const marker = L.marker([-poi.z, poi.x], {
         icon: L.divIcon({
           className: 'pw-poi',
-          html: `${iconMarkup(poi)}<span class="pw-poi__label">${esc(poi.label)}</span>`,
+          html: `${iconMarkup(poi)}<span class="pw-poi__label" style="color:${esc(poi.textColor || '#FFFFFF')}">${esc(poi.label)}</span>`,
           iconSize: [30, 30],
           iconAnchor: [15, 15],
           popupAnchor: [0, -18],
@@ -679,10 +681,14 @@ const payload = JSON.stringify({
   .pw-map__filters {
     display: flex;
     gap: 0.35rem;
-    width: 100%;
+    width: fit-content;
     max-width: 100%;
     overflow-x: auto;
-    padding-bottom: 0.15rem;
+    padding: 0.22rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 999px;
+    background: var(--sl-color-bg);
+    box-shadow: 0 6px 20px rgb(16 32 58 / 18%);
     pointer-events: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -698,20 +704,16 @@ const payload = JSON.stringify({
     align-items: center;
     gap: 0.4rem;
     padding: 0.38rem 0.7rem;
-    border: 1px solid var(--sl-color-hairline);
+    border: 0;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--sl-color-bg) 94%, transparent);
-    box-shadow: 0 4px 14px rgb(16 32 58 / 16%);
+    background: transparent;
     color: var(--sl-color-text);
     font: inherit;
     font-size: 0.72rem;
     font-weight: 700;
     cursor: pointer;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
     transition:
       background-color 140ms ease,
-      border-color 140ms ease,
       color 140ms ease;
   }
 
@@ -722,12 +724,11 @@ const payload = JSON.stringify({
   }
 
   .pw-map__filters button:hover {
-    border-color: var(--sl-color-accent);
+    background: color-mix(in srgb, var(--sl-color-accent) 12%, transparent);
     color: var(--sl-color-accent-high);
   }
 
   .pw-map__filters button.is-active {
-    border-color: var(--sl-color-accent);
     background: var(--sl-color-accent);
     color: #fff;
   }
@@ -753,14 +754,9 @@ const payload = JSON.stringify({
     backdrop-filter: blur(10px);
   }
 
-  .pw-map__hint,
-  .pw-map__compass {
+  .pw-map__hint {
     position: absolute;
     z-index: 600;
-    pointer-events: none;
-  }
-
-  .pw-map__hint {
     bottom: 0.8rem;
     left: 0.8rem;
     margin: 0;
@@ -771,6 +767,7 @@ const payload = JSON.stringify({
     font-size: 0.62rem;
     font-weight: 600;
     letter-spacing: 0.01em;
+    pointer-events: none;
   }
 
   .pw-map__hint-touch {
@@ -785,22 +782,6 @@ const payload = JSON.stringify({
     .pw-map__hint-touch {
       display: inline;
     }
-  }
-
-  .pw-map__compass {
-    bottom: 3.25rem;
-    left: 0.8rem;
-    display: grid;
-    place-items: center;
-    width: 1.9rem;
-    height: 1.9rem;
-    border: 1px solid rgb(16 32 58 / 18%);
-    border-radius: 50%;
-    background: rgb(255 255 255 / 82%);
-    color: #10203a;
-    font-size: 0.7rem;
-    font-weight: 800;
-    box-shadow: 0 4px 12px rgb(16 32 58 / 12%);
   }
 
   .pw-map .leaflet-container {
