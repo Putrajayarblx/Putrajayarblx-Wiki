@@ -1,0 +1,21 @@
+---
+title: Interactive map
+description: Explore every landmark, department, business and transport stop on the Putrajaya map.
+template: splash
+sidebar:
+  hidden: true
+---
+
+import Minimap from '../../components/Minimap.astro';
+
+Every named place from the in-game map, from government offices and emergency services to shops, bridges, parks and transport stops. Search, filter by category, or click a pin to see its world coordinates.
+
+<Minimap />
+
+## About this map
+
+- **67 places** are extracted from the `Waypoints` folder in the Putrajaya studio place.
+- The base map is drawn from the `MapRender` folder — grass, water, urban areas, roads and highways.
+- Coordinates are world **X / Z** values from the game.
+- **Copy link** creates a shareable URL that opens the map on that place.
+- Spot something missing or named incorrectly? Use **Report an error** below or edit the map data via GitHub.

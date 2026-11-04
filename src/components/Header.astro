@@ -20,6 +20,7 @@ const t = isMs
       start: 'Mula di sini',
       roles: 'Peranan dan jabatan',
       connect: 'Hubungi',
+      map: 'Peta',
       website: 'Laman web',
     }
   : {
@@ -30,6 +31,7 @@ const t = isMs
       start: 'Getting started',
       roles: 'Roles and departments',
       connect: 'Connect',
+      map: 'Map',
       website: 'Website',
     };
 
@@ -125,6 +127,11 @@ const connect = [
       <span data-pw-theme-label>{t.dark}</span>
       <span class="pw-mnav__switch" aria-hidden="true"><span></span></span>
     </button>
+
+    <a class="pw-mnav__row" href={`${base}/map/`}>
+      <PwIcon name="bi-map" />
+      <span>{t.map}</span>
+    </a>
 
     <div class="pw-mnav__divider" role="presentation"></div>
 
