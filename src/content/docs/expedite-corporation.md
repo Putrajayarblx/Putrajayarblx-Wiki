@@ -16,6 +16,7 @@ infobox:
       value: "2025"
     - label: Headquarters
       value: Menara L&G, Presint 3, W.P Putrajaya, Putrajaya.rblx
+      href: https://putrajayarblx-wiki.vercel.app/map/?poi=expedite-hq
     - label: Key people
       value: RyssNzr, PlaneProMaster
     - label: Locale
