@@ -22,7 +22,7 @@ export default defineConfig({
         src: './src/assets/logo-mark.png',
         alt: 'Putrajaya.rblx Wiki',
       },
-      favicon: '/apple-touch-icon.png',
+      favicon: '/favicon.svg',
       sidebar,
       lastUpdated: true,
       components: {
