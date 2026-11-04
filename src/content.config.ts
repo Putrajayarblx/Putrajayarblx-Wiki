@@ -10,6 +10,11 @@ export const collections = {
       generateId: ({ entry, data }) => {
         const normalized = entry.replace(/\\/g, '/');
         const base = normalized.replace(/\.(md|mdx)$/i, '');
+
+        // The localized home must use the locale root ID (`ms`) so Starlight
+        // resolves it as the Malay homepage instead of falling back to English.
+        if (base === 'ms/index') return 'ms';
+
         const category =
           typeof data.category === 'string' ? data.category.trim() : '';
 

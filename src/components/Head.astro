@@ -4,37 +4,133 @@ import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
 
 const site = 'https://putrajayarblx-wiki.vercel.app';
+const route = Astro.locals.starlightRoute;
+const pathname = Astro.url.pathname;
+const isMs = route?.locale === 'ms';
+const language = isMs ? 'ms' : 'en';
+const contentLanguage = route?.entryMeta?.lang ?? language;
+const canonical = new URL(pathname, site).href;
+const isHome = pathname === '/' || pathname === '/ms/';
+const is404 = /\/404(?:\.html)?\/?$/.test(pathname);
 
-const schema = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'Putrajaya.rblx Wiki',
-    url: `${site}/`,
-    inLanguage: 'en',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${site}/?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Putrajaya of Roblox',
-    url: 'https://putrajayarblx.github.io/putrajaya-of-roblox/',
-    logo: `${site}/og.png`,
-    sameAs: ['https://github.com/Putrajayarblx'],
-  },
+const pageTitle = route?.entry?.data?.title ?? (isMs ? 'Wiki Putrajaya of Roblox' : 'Putrajaya of Roblox Wiki');
+const pageDescription =
+  route?.entry?.data?.description ??
+  'The official community-maintained Wiki for Putrajaya of Roblox, covering city roles, departments, companies, rules and the interactive map.';
+const pageName = isHome
+  ? isMs
+    ? 'Wiki Putrajaya of Roblox'
+    : 'Putrajaya of Roblox Wiki'
+  : pageTitle;
+const category =
+  typeof route?.entry?.data?.category === 'string' ? route.entry.data.category : undefined;
+const lastUpdated = route?.lastUpdated;
+
+const sameAs = [
+  'https://linktr.ee/putrajaya.rblx',
+  'https://www.roblox.com/communities/33831801/Wilayah-Persekutuan-Putrajaya#!/about',
+  'https://discord.gg/Ng8rVaE7bX',
+  'https://x.com/PutrajayaOfRBLX',
+  'https://www.youtube.com/@PutrajayaOfRoblox',
+  'https://www.tiktok.com/@putrajaya.rblx',
+  'https://putrajayarblx.github.io/putrajaya-of-roblox/',
+  'https://github.com/Putrajayarblx/Putrajayarblx-Wiki',
 ];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${site}/#website`,
+      url: `${site}/`,
+      name: 'Putrajaya.rblx Wiki',
+      alternateName: ['Putrajaya of Roblox Wiki', 'Wiki Putrajaya.rblx'],
+      description:
+        'A community-maintained reference library for Putrajaya of Roblox, covering city roles, departments, companies, rules and the interactive map.',
+      inLanguage: ['en', 'ms'],
+      publisher: { '@id': `${site}/#organization` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${site}/#organization`,
+      name: 'Putrajaya of Roblox',
+      alternateName: 'Putrajaya.rblx',
+      url: 'https://putrajayarblx.github.io/putrajaya-of-roblox/',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${site}/apple-touch-icon.png`,
+        width: 180,
+        height: 180,
+      },
+      sameAs,
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: pageName,
+      description: pageDescription,
+      isPartOf: { '@id': `${site}/#website` },
+      inLanguage: contentLanguage,
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: `${site}/og.png`,
+        width: 1200,
+        height: 630,
+      },
+      about: { '@id': `${site}/#organization` },
+    },
+    ...(category
+      ? [
+          {
+            '@type': 'Article',
+            '@id': `${canonical}#article`,
+            headline: pageTitle,
+            description: pageDescription,
+            url: canonical,
+            mainEntityOfPage: { '@id': `${canonical}#webpage` },
+            isPartOf: { '@id': `${site}/#website` },
+            inLanguage: contentLanguage,
+            image: {
+              '@type': 'ImageObject',
+              url: `${site}/og.png`,
+              width: 1200,
+              height: 630,
+            },
+            articleSection: category,
+            ...(lastUpdated ? { dateModified: lastUpdated.toISOString() } : {}),
+            author: { '@id': `${site}/#organization` },
+            publisher: { '@id': `${site}/#organization` },
+            isAccessibleForFree: true,
+          },
+        ]
+      : []),
+  ],
+};
 ---
 
 <Default />
 
+{is404 ? (
+  <meta name="robots" content="noindex, follow" />
+) : (
+  <meta name="robots" content="max-image-preview:large" />
+)}
 <meta property="og:image" content={`${site}/og.png`} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/png" />
 <meta property="og:image:alt" content="Putrajaya.rblx Wiki" />
+{isMs ? (
+  <meta property="og:locale:alternate" content="en" />
+) : (
+  <meta property="og:locale:alternate" content="ms" />
+)}
+<meta name="twitter:site" content="@PutrajayaOfRBLX" />
+<meta name="twitter:creator" content="@PutrajayaOfRBLX" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={pageDescription} />
 <meta name="twitter:image" content={`${site}/og.png`} />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
