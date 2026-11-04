@@ -1433,10 +1433,10 @@ const payload = JSON.stringify({
       if (!id) return;
       const url = `${window.location.origin}${window.location.pathname}?poi=${encodeURIComponent(id)}`;
       const done = () => {
-        const original = button.textContent;
+        const original = button.innerHTML;
         button.textContent = data.labels.copied;
         window.setTimeout(() => {
-          button.textContent = original;
+          button.innerHTML = original;
         }, 1600);
       };
       if (navigator.clipboard?.writeText) {
