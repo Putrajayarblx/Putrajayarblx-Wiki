@@ -2070,6 +2070,11 @@ html[data-pw-width='wide'] {
   cursor: zoom-in;
 }
 
+/* Map pins and previews are UI, not article illustrations. */
+.sl-markdown-content .pw-map img {
+  cursor: inherit;
+}
+
 .pw-zoom {
   width: 100vw;
   max-width: none;

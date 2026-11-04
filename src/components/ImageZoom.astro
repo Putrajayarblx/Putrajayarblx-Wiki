@@ -20,7 +20,9 @@ import PwIcon from './PwIcon.astro';
         '.sl-markdown-content img'
       ) as HTMLImageElement | null;
 
-      if (!image) return;
+      // The interactive map is not an article illustration: its pins and
+      // preview images must never open the article lightbox.
+      if (!image || image.closest('.pw-map, [data-pw-no-zoom]')) return;
       event.preventDefault();
 
       zoomed.src = image.currentSrc || image.src;
