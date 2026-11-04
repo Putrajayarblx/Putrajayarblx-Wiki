@@ -2,6 +2,8 @@
 
 ![OpenGraph Image](./public/PutrajayaWikiLaunch.png)
 
+The official Wiki of Putrajaya.rblx maintained by the community, approved by the devs. Covering all sorts of topics ranging from gameplay to community history.
+
 The community wiki for **Putrajaya of Roblox**, built with [Astro Starlight](https://starlight.astro.build).
 
 **Live:** https://putrajayarblx-wiki.vercel.app
