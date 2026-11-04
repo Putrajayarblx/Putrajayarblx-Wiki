@@ -710,6 +710,30 @@ const payload = JSON.stringify({
         </svg>
       </button>
     </div>
+
+    <button
+      type="button"
+      class="pw-measure__tool pw-measure__tool--fullscreen pw-measure__tool--fullscreen-float"
+      data-fullscreen-toggle
+      data-label-enter={strings.fullscreen}
+      data-label-exit={strings.exitFullscreen}
+      aria-pressed="false"
+      aria-label={strings.fullscreen}
+      title={strings.fullscreen}
+    >
+      <svg class="pw-fullscreen-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 4H4v5"></path>
+        <path d="M15 4h5v5"></path>
+        <path d="M20 15v5h-5"></path>
+        <path d="M4 15v5h5"></path>
+      </svg>
+      <svg class="pw-fullscreen-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 9h5V4"></path>
+        <path d="M20 9h-5V4"></path>
+        <path d="M20 15h-5v5"></path>
+        <path d="M4 15h5v5"></path>
+      </svg>
+    </button>
   </div>
 
   <dialog class="pw-download" data-download-dialog aria-labelledby="pw-download-title">
@@ -841,7 +865,7 @@ const payload = JSON.stringify({
   const downloadSelectAll = root?.querySelector<HTMLButtonElement>('[data-download-select-all]');
   const downloadClear = root?.querySelector<HTMLButtonElement>('[data-download-clear]');
   const downloadModeInputs = [...(root?.querySelectorAll<HTMLInputElement>('input[name="pw-download-places"]') ?? [])];
-  const fullscreenToggle = root?.querySelector<HTMLButtonElement>('[data-fullscreen-toggle]');
+  const fullscreenToggles = [...(root?.querySelectorAll<HTMLButtonElement>('[data-fullscreen-toggle]') ?? [])];
 
   const source = document.getElementById('pw-map-data');
 
@@ -2772,14 +2796,16 @@ const payload = JSON.stringify({
       root?.classList.toggle('is-fullscreen', active);
       document.documentElement.classList.toggle('pw-map-fs-lock', active);
 
-      if (fullscreenToggle) {
-        fullscreenToggle.setAttribute('aria-pressed', String(active));
-        const label = active
-          ? (fullscreenToggle.dataset.labelExit ?? '')
-          : (fullscreenToggle.dataset.labelEnter ?? '');
-        if (label) {
-          fullscreenToggle.setAttribute('aria-label', label);
-          fullscreenToggle.setAttribute('title', label);
+      if (fullscreenToggles.length) {
+        for (const toggle of fullscreenToggles) {
+          toggle.setAttribute('aria-pressed', String(active));
+          const label = active
+            ? (toggle.dataset.labelExit ?? '')
+            : (toggle.dataset.labelEnter ?? '');
+          if (label) {
+            toggle.setAttribute('aria-label', label);
+            toggle.setAttribute('title', label);
+          }
         }
       }
 
@@ -2830,9 +2856,11 @@ const payload = JSON.stringify({
       }
     };
 
-    fullscreenToggle?.addEventListener('click', () => {
-      void toggleFullscreen();
-    });
+    for (const toggle of fullscreenToggles) {
+      toggle.addEventListener('click', () => {
+        void toggleFullscreen();
+      });
+    }
 
     document.addEventListener('fullscreenchange', () => {
       const native = isNativeFullscreen();
@@ -3833,6 +3861,11 @@ const payload = JSON.stringify({
     display: block;
   }
 
+  .pw-measure__tool--fullscreen-float {
+    display: none;
+    pointer-events: auto;
+  }
+
   .pw-measure-label-wrap {
     width: 0 !important;
     height: 0 !important;
@@ -4431,6 +4464,22 @@ const payload = JSON.stringify({
     .pw-map:not(.is-fullscreen).is-tools-open .pw-measure__tools {
       top: 0.75rem;
       transform: none;
+    }
+
+    .pw-map:not(.is-fullscreen) .pw-measure__tools .pw-measure__tool--fullscreen {
+      display: none;
+    }
+
+    .pw-map:not(.is-fullscreen) .pw-measure__tool--fullscreen-float {
+      display: grid;
+      position: absolute;
+      right: 3.2rem;
+      bottom: 0.55rem;
+    }
+
+    .pw-map.is-measuring .pw-measure__tool--fullscreen-float,
+    .pw-map.is-drawing .pw-measure__tool--fullscreen-float {
+      display: none;
     }
 
     .pw-map.is-fullscreen .pw-map__filter-toggle,
