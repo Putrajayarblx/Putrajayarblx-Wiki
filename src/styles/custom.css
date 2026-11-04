@@ -316,6 +316,19 @@ nav.sidebar {
   font-size: 0.9rem;
 }
 
+.pw-badge-row a.pw-badge {
+  color: var(--pw-muted);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.pw-badge-row a.pw-badge:hover {
+  border-color: var(--sl-color-accent);
+  color: var(--sl-color-accent-high);
+}
+
 /* ---------- Cards ---------- */
 .pw-grid {
   display: grid;
