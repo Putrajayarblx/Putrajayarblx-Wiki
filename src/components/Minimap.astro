@@ -23,6 +23,34 @@ const strings = {
     copied: 'Copied!',
     zoomIn: 'Zoom in',
     zoomOut: 'Zoom out',
+    measure: {
+      title: 'Measure',
+      distance: 'Distance',
+      area: 'Area',
+      units: 'Units',
+      finish: 'Finish',
+      undo: 'Undo',
+      clear: 'Clear',
+      close: 'Close',
+      expand: 'Expand',
+      collapse: 'Collapse',
+      start: 'Click the map to start a measurement.',
+      addPoints: 'Click the map to add points.',
+      hint: 'Click map to add points · double-click to finish.',
+      finishHint: 'Double-click or choose Finish to close it.',
+      needPoints: 'Add at least 3 points.',
+      total: 'Total',
+      areaLabel: 'Area',
+      perimeter: 'Perimeter',
+      completed: 'Completed',
+      measurements: 'measurements',
+      measurement: 'measurement',
+      points: 'points',
+      point: 'point',
+      empty: 'No measurement yet.',
+      fromPoi: 'Measure from here',
+      studNote: '1 stud = 0.28 m',
+    },
   },
   ms: {
     searchLabel: 'Cari tempat pada peta',
@@ -37,8 +65,134 @@ const strings = {
     copied: 'Disalin!',
     zoomIn: 'Zum masuk',
     zoomOut: 'Zum keluar',
+    measure: {
+      title: 'Ukur',
+      distance: 'Jarak',
+      area: 'Luas',
+      units: 'Unit',
+      finish: 'Selesai',
+      undo: 'Batal',
+      clear: 'Kosongkan',
+      close: 'Tutup',
+      expand: 'Kembangkan',
+      collapse: 'Kecilkan',
+      start: 'Klik peta untuk mula mengukur.',
+      addPoints: 'Klik peta untuk tambah titik.',
+      hint: 'Klik peta untuk tambah titik · klik dua kali untuk selesai.',
+      finishHint: 'Klik dua kali atau pilih Selesai untuk menutup.',
+      needPoints: 'Tambah sekurang-kurangnya 3 titik.',
+      total: 'Jumlah',
+      areaLabel: 'Luas',
+      perimeter: 'Perimeter',
+      completed: 'Selesai',
+      measurements: 'ukuran',
+      measurement: 'ukuran',
+      points: 'titik',
+      point: 'titik',
+      empty: 'Belum ada ukuran.',
+      fromPoi: 'Ukur dari sini',
+      studNote: '1 stud = 0.28 m',
+    },
   },
 }[locale];
+
+const STUD_METERS = 0.28;
+
+const distanceUnits = {
+  en: [
+    { id: 'studs', label: 'Studs', short: 'studs', factor: 1, decimals: 1 },
+    { id: 'meters', label: 'Meters', short: 'm', factor: STUD_METERS, decimals: 2 },
+    {
+      id: 'feet',
+      label: 'Feet',
+      short: 'ft',
+      factor: STUD_METERS * 3.280839895013123,
+      decimals: 1,
+    },
+    { id: 'kilometers', label: 'Kilometres', short: 'km', factor: STUD_METERS / 1000, decimals: 3 },
+    { id: 'miles', label: 'Miles', short: 'mi', factor: STUD_METERS / 1609.344, decimals: 3 },
+  ],
+  ms: [
+    { id: 'studs', label: 'Stud', short: 'stud', factor: 1, decimals: 1 },
+    { id: 'meters', label: 'Meter', short: 'm', factor: STUD_METERS, decimals: 2 },
+    {
+      id: 'feet',
+      label: 'Kaki',
+      short: 'ft',
+      factor: STUD_METERS * 3.280839895013123,
+      decimals: 1,
+    },
+    { id: 'kilometers', label: 'Kilometer', short: 'km', factor: STUD_METERS / 1000, decimals: 3 },
+    { id: 'miles', label: 'Batu', short: 'mi', factor: STUD_METERS / 1609.344, decimals: 3 },
+  ],
+};
+
+const areaUnits = {
+  en: [
+    { id: 'sqStuds', label: 'Square studs', short: 'stud²', factor: 1, decimals: 0 },
+    { id: 'sqMeters', label: 'Square metres', short: 'm²', factor: STUD_METERS ** 2, decimals: 1 },
+    {
+      id: 'sqFeet',
+      label: 'Square feet',
+      short: 'ft²',
+      factor: STUD_METERS ** 2 * 10.763910416709722,
+      decimals: 0,
+    },
+    {
+      id: 'hectares',
+      label: 'Hectares',
+      short: 'ha',
+      factor: (STUD_METERS ** 2) / 10000,
+      decimals: 2,
+    },
+    {
+      id: 'acres',
+      label: 'Acres',
+      short: 'ac',
+      factor: (STUD_METERS ** 2) / 4046.8564224,
+      decimals: 2,
+    },
+    {
+      id: 'sqKilometers',
+      label: 'Square kilometres',
+      short: 'km²',
+      factor: (STUD_METERS ** 2) / 1e6,
+      decimals: 3,
+    },
+  ],
+  ms: [
+    { id: 'sqStuds', label: 'Stud persegi', short: 'stud²', factor: 1, decimals: 0 },
+    { id: 'sqMeters', label: 'Meter persegi', short: 'm²', factor: STUD_METERS ** 2, decimals: 1 },
+    {
+      id: 'sqFeet',
+      label: 'Kaki persegi',
+      short: 'ft²',
+      factor: STUD_METERS ** 2 * 10.763910416709722,
+      decimals: 0,
+    },
+    {
+      id: 'hectares',
+      label: 'Hektar',
+      short: 'ha',
+      factor: (STUD_METERS ** 2) / 10000,
+      decimals: 2,
+    },
+    {
+      id: 'acres',
+      label: 'Ekar',
+      short: 'ac',
+      factor: (STUD_METERS ** 2) / 4046.8564224,
+      decimals: 2,
+    },
+    {
+      id: 'sqKilometers',
+      label: 'Kilometer persegi',
+      short: 'km²',
+      factor: (STUD_METERS ** 2) / 1e6,
+      decimals: 3,
+    },
+  ],
+};
 
 const categoryLabels: Record<'en' | 'ms', Record<string, string>> = {
   en: {
@@ -156,10 +310,15 @@ const payload = JSON.stringify({
     zoomIn: strings.zoomIn,
     zoomOut: strings.zoomOut,
   },
+  measure: {
+    ...strings.measure,
+    distanceUnits: distanceUnits[locale],
+    areaUnits: areaUnits[locale],
+  },
 });
 ---
 
-<div class="pw-map" data-pw-map>
+<div class="not-content pw-map" data-pw-map>
   <div class="pw-map__canvas" data-map-canvas aria-label={strings.mapLabel}></div>
 
   <div class="pw-map__overlay">
@@ -189,6 +348,93 @@ const payload = JSON.stringify({
     </div>
   </div>
 
+  <div class="pw-measure" data-pw-measure>
+    <div class="pw-measure__panel" data-measure-panel role="group" aria-label={strings.measure.title} hidden>
+      <div class="pw-measure__head">
+        <strong data-measure-title>{strings.measure.distance}</strong>
+        <span class="pw-measure__head-actions">
+          <button
+            type="button"
+            class="pw-measure__collapse"
+            data-measure-collapse
+            aria-expanded="true"
+            aria-label={strings.measure.collapse}
+            title={strings.measure.collapse}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="pw-measure__close"
+            data-measure-close
+            aria-label={strings.measure.close}
+            title={strings.measure.close}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </span>
+      </div>
+
+      <label class="pw-measure__units">
+        <span>{strings.measure.units}</span>
+        <select data-measure-units></select>
+      </label>
+
+      <div class="pw-measure__readout">
+        <span class="pw-measure__readout-label" data-measure-readout-label>{strings.measure.total}</span>
+        <strong data-measure-value>—</strong>
+        <small data-measure-alt></small>
+      </div>
+
+      <p class="pw-measure__hint" data-measure-hint>{strings.measure.start}</p>
+
+      <div class="pw-measure__actions">
+        <button type="button" data-measure-undo disabled>{strings.measure.undo}</button>
+        <button type="button" class="is-primary" data-measure-finish disabled>{strings.measure.finish}</button>
+        <button type="button" data-measure-clear disabled>{strings.measure.clear}</button>
+      </div>
+
+      <p class="pw-measure__note">{strings.measure.studNote}</p>
+    </div>
+
+    <div class="pw-measure__tools" role="group" aria-label={strings.measure.title}>
+      <button
+        type="button"
+        class="pw-measure__tool"
+        data-measure-mode="distance"
+        aria-pressed="false"
+        aria-label={strings.measure.distance}
+        title={strings.measure.distance}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 17 17 4l3 3L7 20l-3-3Z"></path>
+          <path d="m7 14 2 2M10 11l2 2M13 8l2 2"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="pw-measure__tool"
+        data-measure-mode="area"
+        aria-pressed="false"
+        aria-label={strings.measure.area}
+        title={strings.measure.area}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 7.5 12 3l8 5-2 10-10 2-4-8.5Z"></path>
+          <circle cx="4" cy="7.5" r="1.3" fill="currentColor" stroke="none"></circle>
+          <circle cx="12" cy="3" r="1.3" fill="currentColor" stroke="none"></circle>
+          <circle cx="20" cy="8" r="1.3" fill="currentColor" stroke="none"></circle>
+          <circle cx="18" cy="18" r="1.3" fill="currentColor" stroke="none"></circle>
+          <circle cx="8" cy="20" r="1.3" fill="currentColor" stroke="none"></circle>
+        </svg>
+      </button>
+    </div>
+  </div>
+
   <p class="pw-map__empty" data-map-empty hidden>{strings.empty}</p>
 
   <p class="pw-map__hint">
@@ -209,7 +455,19 @@ const payload = JSON.stringify({
   const filters = root?.querySelector<HTMLElement>('[data-map-filters]');
   const empty = root?.querySelector<HTMLElement>('[data-map-empty]');
   const filterButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-map-filter]') ?? [])];
-  const source = document.getElementById('pw-map-data');
+  const measurePanel = root?.querySelector<HTMLElement>('[data-measure-panel]');
+  const measureTitle = root?.querySelector<HTMLElement>('[data-measure-title]');
+  const measureUnitsSelect = root?.querySelector<HTMLSelectElement>('[data-measure-units]');
+  const measureReadoutLabel = root?.querySelector<HTMLElement>('[data-measure-readout-label]');
+  const measureValue = root?.querySelector<HTMLElement>('[data-measure-value]');
+  const measureAlt = root?.querySelector<HTMLElement>('[data-measure-alt]');
+  const measureHint = root?.querySelector<HTMLElement>('[data-measure-hint]');
+  const measureUndo = root?.querySelector<HTMLButtonElement>('[data-measure-undo]');
+  const measureFinish = root?.querySelector<HTMLButtonElement>('[data-measure-finish]');
+  const measureClear = root?.querySelector<HTMLButtonElement>('[data-measure-clear]');
+  const measureClose = root?.querySelector<HTMLButtonElement>('[data-measure-close]');
+  const measureCollapse = root?.querySelector<HTMLButtonElement>('[data-measure-collapse]');
+  const measureToolButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-measure-mode]') ?? [])];  const source = document.getElementById('pw-map-data');
 
   type Poi = {
     id: string;
@@ -223,6 +481,14 @@ const payload = JSON.stringify({
     z: number;
   };
 
+  type Unit = {
+    id: string;
+    label: string;
+    short: string;
+    factor: number;
+    decimals: number;
+  };
+
   type Data = {
     bounds: { minX: number; maxX: number; minZ: number; maxZ: number };
     pois: Poi[];
@@ -232,6 +498,36 @@ const payload = JSON.stringify({
       mapAlt: string;
       zoomIn: string;
       zoomOut: string;
+    };
+    measure: {
+      title: string;
+      distance: string;
+      area: string;
+      units: string;
+      finish: string;
+      undo: string;
+      clear: string;
+      close: string;
+      expand: string;
+      collapse: string;
+      start: string;
+      addPoints: string;
+      hint: string;
+      finishHint: string;
+      needPoints: string;
+      total: string;
+      areaLabel: string;
+      perimeter: string;
+      completed: string;
+      measurements: string;
+      measurement: string;
+      points: string;
+      point: string;
+      empty: string;
+      fromPoi: string;
+      studNote: string;
+      distanceUnits: Unit[];
+      areaUnits: Unit[];
     };
   };
 
@@ -304,14 +600,57 @@ const payload = JSON.stringify({
         return entities[character] ?? character;
       });
 
-    const popupHtml = (poi: Poi) => `
-      <div class="pw-map-popup">
-        <p class="pw-map-popup__cat">${esc(poi.catLabel)}</p>
-        <h3>${esc(poi.label)}</h3>
-        <p class="pw-map-popup__coords">X ${poi.x.toFixed(1)} · Z ${poi.z.toFixed(1)}</p>
-        <button type="button" class="pw-map-popup__copy" data-copy-poi="${poi.id}">${esc(data.labels.copyLink)}</button>
-      </div>
-    `;
+    const categoryTints: Record<string, string> = {
+      government: '#355a9e',
+      emergency: '#c4454f',
+      services: '#c48b3f',
+      transport: '#2c8a86',
+      landmarks: '#9a5d9c',
+      parks: '#4f8a55',
+      other: '#5f6b7a',
+    };
+
+    const heroMarkup = (poi: Poi) => {
+      if (poi.iconFile === 'generic') {
+        const pinColor = esc(poi.poiColor || '#78909C');
+        return `<svg class="pw-poi-card__img" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-7 7c0 4.6 7 12 7 12s7-7.4 7-12a7 7 0 0 0-7-7Z" fill="${pinColor}" stroke="#16233a" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.6" fill="#fff"/></svg>`;
+      }
+      return `<img class="pw-poi-card__img" src="/MapIcons/${poi.iconFile}" alt="" width="56" height="56" />`;
+    };
+
+    const popupHtml = (poi: Poi) => {
+      const xPct = (poi.x - data.bounds.minX) / (data.bounds.maxX - data.bounds.minX);
+      const yPct = (poi.z - data.bounds.minZ) / (data.bounds.maxZ - data.bounds.minZ);
+      const heroWidth = 288;
+      const heroHeight = 96;
+      const scale = 9;
+      const imageHeight = scale * heroWidth * (1245 / 2400);
+      const bgX = ((0.5 - scale * xPct) / (1 - scale)) * 100;
+      const bgY = ((0.5 - (imageHeight / heroHeight) * yPct) / (1 - imageHeight / heroHeight)) * 100;
+      return `
+        <div class="pw-poi-card" style="--poi-tint:${categoryTints[poi.cat] ?? '#5f6b7a'};--hero-x:${bgX}%;--hero-y:${bgY}%">
+          <div class="pw-poi-card__hero" aria-hidden="true">
+            <span class="pw-poi-card__map"></span>
+            ${heroMarkup(poi)}
+          </div>
+          <div class="pw-poi-card__body">
+            <span class="pw-poi-card__kind">${esc(poi.catLabel)}</span>
+            <h3>${esc(poi.label)}</h3>
+            <p class="pw-poi-card__coords">X ${poi.x.toFixed(1)} · Z ${poi.z.toFixed(1)}</p>
+            <div class="pw-poi-card__actions">
+              <button type="button" class="pw-poi-card__btn" data-copy-poi="${poi.id}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="10" height="10" rx="2"></rect><path d="M15 9V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path></svg>
+                ${esc(data.labels.copyLink)}
+              </button>
+              <button type="button" class="pw-poi-card__btn pw-poi-card__btn--accent" data-measure-poi="${poi.id}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17 17 4l3 3L7 20l-3-3Z"></path><path d="m7 14 2 2M10 11l2 2M13 8l2 2"></path></svg>
+                ${esc(data.measure.fromPoi)}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    };
 
     const iconMarkup = (poi: Poi) => {
       if (poi.iconFile === 'generic') {
@@ -338,7 +677,8 @@ const payload = JSON.stringify({
         closeButton: false,
         offset: [0, -18],
         className: 'pw-map-popup-wrap',
-        maxWidth: 280,
+        maxWidth: 340,
+        minWidth: 300,
       });
       marker.on('click', () => selectPoi(poi));
       markerById.set(poi.id, marker);
@@ -532,6 +872,532 @@ const payload = JSON.stringify({
       scheduleLabelUpdate();
     };
 
+    // ---------- Measurement tools ----------
+    const measureCopy = data.measure;
+    const measurePane = map.createPane('pwMeasurePane');
+    measurePane.style.zIndex = '650';
+    measurePane.style.pointerEvents = 'none';
+
+    const measureLayer = L.layerGroup().addTo(map);
+    const previewLayer = L.layerGroup().addTo(map);
+
+    type MeasureMode = 'distance' | 'area';
+    type MeasurePath = { kind: MeasureMode; points: L.LatLng[] };
+
+    const measurePaths: MeasurePath[] = [];
+    let measureMode: MeasureMode | null = null;
+    let measureActive: MeasurePath | null = null;
+    let measureCollapsed = false;
+    let distanceUnit = measureCopy.distanceUnits[0];
+    let areaUnit = measureCopy.areaUnits[0];
+    const measureBreakpoint = window.matchMedia('(max-width: 50rem)');
+
+    const studsUnit =
+      measureCopy.distanceUnits.find((unit) => unit.id === 'studs') ?? measureCopy.distanceUnits[0];
+    const metersUnit =
+      measureCopy.distanceUnits.find((unit) => unit.id === 'meters') ?? measureCopy.distanceUnits[0];
+    const feetUnit =
+      measureCopy.distanceUnits.find((unit) => unit.id === 'feet') ?? measureCopy.distanceUnits[0];
+
+    const numberLocale = document.documentElement.lang === 'ms' ? 'ms-MY' : 'en-MY';
+    const formatNumber = (value: number, decimals: number) =>
+      value.toLocaleString(numberLocale, {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      });
+    const formatValue = (value: number, unit: Unit) =>
+      `${formatNumber(value * unit.factor, unit.decimals)} ${unit.short}`;
+    const pointLabel = (count: number) =>
+      `${count} ${count === 1 ? measureCopy.point : measureCopy.points}`;
+    const measurementLabel = (count: number) =>
+      `${count} ${count === 1 ? measureCopy.measurement : measureCopy.measurements}`;
+
+    const distanceStuds = (a: L.LatLng, b: L.LatLng) => Math.hypot(b.lng - a.lng, b.lat - a.lat);
+    const pathLength = (points: L.LatLng[]) =>
+      points.reduce(
+        (total, point, index) => (index ? total + distanceStuds(points[index - 1], point) : 0),
+        0
+      );
+    const polygonPerimeter = (points: L.LatLng[]) =>
+      points.length >= 2 ? pathLength([...points, points[0]]) : 0;
+    const polygonArea = (points: L.LatLng[]) => {
+      if (points.length < 3) return 0;
+      let area = 0;
+      for (let index = 0; index < points.length; index += 1) {
+        const a = points[index];
+        const b = points[(index + 1) % points.length];
+        area += a.lng * b.lat - b.lng * a.lat;
+      }
+      return Math.abs(area) / 2;
+    };
+    const polygonCentroid = (points: L.LatLng[]) => {
+      if (!points.length) return null;
+      let area = 0;
+      let x = 0;
+      let y = 0;
+      for (let index = 0; index < points.length; index += 1) {
+        const a = points[index];
+        const b = points[(index + 1) % points.length];
+        const factor = a.lng * b.lat - b.lng * a.lat;
+        area += factor;
+        x += (a.lng + b.lng) * factor;
+        y += (a.lat + b.lat) * factor;
+      }
+      area /= 2;
+      if (Math.abs(area) < 1e-6) {
+        const sum = points.reduce(
+          (acc, point) => ({ x: acc.x + point.lng, y: acc.y + point.lat }),
+          { x: 0, y: 0 }
+        );
+        return L.latLng(sum.y / points.length, sum.x / points.length);
+      }
+      return L.latLng(y / (6 * area), x / (6 * area));
+    };
+
+    const measureUnit = (mode: MeasureMode) => (mode === 'area' ? areaUnit : distanceUnit);
+    const measureUnits = (mode: MeasureMode) =>
+      mode === 'area' ? measureCopy.areaUnits : measureCopy.distanceUnits;
+
+    const makeMeasureLabel = (latlng: L.LatLng, text: string, extra = '') =>
+      L.marker(latlng, {
+        pane: 'pwMeasurePane',
+        interactive: false,
+        keyboard: false,
+        icon: L.divIcon({
+          className: 'pw-measure-label-wrap',
+          html: `<span class="pw-measure-label ${extra}">${esc(text)}</span>`,
+          iconSize: [0, 0],
+          iconAnchor: [0, 0],
+        }),
+      });
+
+    const addVertex = (point: L.LatLng) =>
+      L.circleMarker(point, {
+        pane: 'pwMeasurePane',
+        radius: 4,
+        color: '#10203a',
+        weight: 2,
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        interactive: false,
+      });
+
+    const drawPath = (path: MeasurePath) => {
+      const { points, kind } = path;
+      if (!points.length) return;
+
+      const labels: L.Layer[] = [];
+
+      if (kind === 'distance') {
+        if (points.length >= 2) {
+          measureLayer.addLayer(
+            L.polyline(points, {
+              pane: 'pwMeasurePane',
+              color: '#10203a',
+              weight: 7,
+              opacity: 0.42,
+              interactive: false,
+            })
+          );
+          measureLayer.addLayer(
+            L.polyline(points, {
+              pane: 'pwMeasurePane',
+              color: '#ffd24a',
+              weight: 4,
+              opacity: 0.95,
+              lineCap: 'round',
+              lineJoin: 'round',
+              interactive: false,
+            })
+          );
+
+          if (points.length > 2) {
+            for (let index = 1; index < points.length; index += 1) {
+              const a = points[index - 1];
+              const b = points[index];
+              const midpoint = L.latLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2);
+              labels.push(
+                makeMeasureLabel(midpoint, formatValue(distanceStuds(a, b), distanceUnit))
+              );
+            }
+          }
+
+          const total = pathLength(points);
+          labels.push(
+            makeMeasureLabel(
+              points[points.length - 1],
+              `${measureCopy.total}: ${formatValue(total, distanceUnit)}`,
+              'is-total'
+            )
+          );
+        }
+      } else if (points.length >= 3) {
+        measureLayer.addLayer(
+          L.polygon(points, {
+            pane: 'pwMeasurePane',
+            color: '#ffd24a',
+            weight: 3,
+            opacity: 0.95,
+            fillColor: '#ffd24a',
+            fillOpacity: 0.18,
+            interactive: false,
+          })
+        );
+        const center = polygonCentroid(points);
+        if (center) {
+          labels.push(
+            makeMeasureLabel(
+              center,
+              `${measureCopy.areaLabel}: ${formatValue(polygonArea(points), areaUnit)}`,
+              'is-area'
+            )
+          );
+        }
+      } else if (points.length >= 2) {
+        measureLayer.addLayer(
+          L.polyline(points, {
+            pane: 'pwMeasurePane',
+            color: '#ffd24a',
+            weight: 3,
+            opacity: 0.95,
+            interactive: false,
+          })
+        );
+      }
+
+      for (const point of points) measureLayer.addLayer(addVertex(point));
+      for (const label of labels) measureLayer.addLayer(label);
+    };
+
+    const drawMeasurements = () => {
+      measureLayer.clearLayers();
+      for (const path of measurePaths) drawPath(path);
+      if (measureActive) drawPath(measureActive);
+      updateMeasurePanel();
+    };
+
+    let previewFrame = 0;
+    let previewPoint: L.LatLng | null = null;
+
+    const clearPreview = () => {
+      previewPoint = null;
+      previewLayer.clearLayers();
+    };
+
+    const drawPreview = (cursor: L.LatLng) => {
+      previewLayer.clearLayers();
+      if (!measureActive || !measureActive.points.length) return;
+
+      const points = measureActive.points;
+      const last = points[points.length - 1];
+
+      if (measureActive.kind === 'distance') {
+        previewLayer.addLayer(
+          L.polyline([last, cursor], {
+            pane: 'pwMeasurePane',
+            color: '#ffd24a',
+            weight: 3,
+            opacity: 0.78,
+            dashArray: '6 5',
+            interactive: false,
+          })
+        );
+        const midpoint = L.latLng((last.lat + cursor.lat) / 2, (last.lng + cursor.lng) / 2);
+        previewLayer.addLayer(
+          makeMeasureLabel(midpoint, formatValue(distanceStuds(last, cursor), distanceUnit), 'is-preview')
+        );
+      } else {
+        const previewPoints = [...points, cursor];
+        if (previewPoints.length >= 3) {
+          previewLayer.addLayer(
+            L.polygon(previewPoints, {
+              pane: 'pwMeasurePane',
+              color: '#ffd24a',
+              weight: 2,
+              opacity: 0.72,
+              dashArray: '6 5',
+              fillColor: '#ffd24a',
+              fillOpacity: 0.1,
+              interactive: false,
+            })
+          );
+          const center = polygonCentroid(previewPoints);
+          if (center) {
+            previewLayer.addLayer(
+              makeMeasureLabel(
+                center,
+                `${measureCopy.areaLabel}: ${formatValue(polygonArea(previewPoints), areaUnit)}`,
+                'is-preview'
+              )
+            );
+          }
+        } else {
+          previewLayer.addLayer(
+            L.polyline(previewPoints, {
+              pane: 'pwMeasurePane',
+              color: '#ffd24a',
+              weight: 2,
+              opacity: 0.72,
+              dashArray: '6 5',
+              interactive: false,
+            })
+          );
+        }
+      }
+    };
+
+    const schedulePreview = (point: L.LatLng) => {
+      previewPoint = point;
+      if (previewFrame) return;
+      previewFrame = requestAnimationFrame(() => {
+        previewFrame = 0;
+        if (previewPoint) drawPreview(previewPoint);
+      });
+    };
+
+    const populateUnitSelect = () => {
+      if (!measureUnitsSelect || !measureMode) return;
+      const units = measureUnits(measureMode);
+      if (measureUnitsSelect.dataset.mode !== measureMode) {
+        measureUnitsSelect.innerHTML = units
+          .map((unit) => `<option value="${unit.id}">${esc(unit.label)}</option>`)
+          .join('');
+        measureUnitsSelect.dataset.mode = measureMode;
+      }
+      measureUnitsSelect.value = measureUnit(measureMode).id;
+    };
+
+    const setMeasureCollapsed = (collapsed: boolean) => {
+      measureCollapsed = collapsed;
+      measurePanel?.classList.toggle('is-collapsed', collapsed);
+      if (measureCollapse) {
+        measureCollapse.setAttribute('aria-expanded', String(!collapsed));
+        measureCollapse.setAttribute(
+          'aria-label',
+          collapsed ? measureCopy.expand : measureCopy.collapse
+        );
+        measureCollapse.setAttribute(
+          'title',
+          collapsed ? measureCopy.expand : measureCopy.collapse
+        );
+      }
+    };
+
+    const updateMeasurePanel = () => {
+      if (!measurePanel || !measureMode) return;
+      if (measureTitle) {
+        measureTitle.textContent =
+          measureMode === 'distance' ? measureCopy.distance : measureCopy.area;
+      }
+      populateUnitSelect();
+
+      const unit = measureUnit(measureMode);
+      const minimum = measureMode === 'distance' ? 2 : 3;
+      const activePoints = measureActive?.points ?? [];
+      const completed = measurePaths.filter((path) => path.kind === measureMode);
+      const completedCount = completed.length;
+
+      let label = measureCopy.total;
+      let value = '—';
+      let alt = measureCopy.empty;
+      let hint = measureCopy.start;
+
+      if (activePoints.length) {
+        if (measureMode === 'distance') {
+          if (activePoints.length >= 2) {
+            const total = pathLength(activePoints);
+            const conversions: string[] = [];
+            if (unit.id !== 'studs') conversions.push(formatValue(total, studsUnit));
+            if (unit.id !== 'meters') conversions.push(formatValue(total, metersUnit));
+            if (!conversions.length) conversions.push(formatValue(total, feetUnit));
+            value = formatValue(total, unit);
+            alt = conversions.join(' · ');
+          } else {
+            value = pointLabel(activePoints.length);
+            alt = measureCopy.addPoints;
+          }
+          hint = measureCopy.hint;
+        } else if (activePoints.length >= 3) {
+          const area = polygonArea(activePoints);
+          const perimeter = polygonPerimeter(activePoints);
+          label = measureCopy.areaLabel;
+          value = formatValue(area, unit);
+          alt = `${measureCopy.perimeter}: ${formatValue(perimeter, studsUnit)} · ${formatValue(perimeter, metersUnit)}`;
+          hint = measureCopy.hint;
+        } else {
+          value = pointLabel(activePoints.length);
+          alt = measureCopy.needPoints;
+          hint = measureCopy.hint;
+        }
+      } else if (completedCount) {
+        if (measureMode === 'distance') {
+          const total = completed.reduce((sum, path) => sum + pathLength(path.points), 0);
+          value = formatValue(total, unit);
+        } else {
+          const total = completed.reduce((sum, path) => sum + polygonArea(path.points), 0);
+          value = formatValue(total, unit);
+        }
+        label = measureCopy.completed;
+        alt = measurementLabel(completedCount);
+        hint = measureCopy.addPoints;
+      }
+
+      if (measureReadoutLabel) measureReadoutLabel.textContent = label;
+      if (measureValue) measureValue.textContent = value;
+      if (measureAlt) measureAlt.textContent = alt;
+      if (measureHint) measureHint.textContent = hint;
+      if (measureFinish) measureFinish.disabled = !(measureActive && activePoints.length >= minimum);
+      if (measureUndo) {
+        measureUndo.disabled = !(measureActive && activePoints.length > 0) && !measurePaths.length;
+      }
+      if (measureClear) measureClear.disabled = !measureActive && !measurePaths.length;
+
+      for (const tool of measureToolButtons) {
+        const active = tool.dataset.measureMode === measureMode;
+        tool.classList.toggle('is-active', active);
+        tool.setAttribute('aria-pressed', String(active));
+      }
+    };
+
+    const commitActive = () => {
+      if (!measureActive) return;
+      const minimum = measureActive.kind === 'distance' ? 2 : 3;
+      if (measureActive.points.length >= minimum) measurePaths.push(measureActive);
+      measureActive = null;
+      clearPreview();
+    };
+
+    const startMeasure = (mode: MeasureMode, seed?: L.LatLng) => {
+      commitActive();
+      const wasHidden = measurePanel?.hidden ?? true;
+      measureMode = mode;
+      measureActive = { kind: mode, points: seed ? [seed] : [] };
+      if (measurePanel) measurePanel.hidden = false;
+      if (wasHidden) setMeasureCollapsed(measureBreakpoint.matches);
+      root?.classList.add('is-measuring');
+      map.doubleClickZoom.disable();
+      map.closePopup();
+      clearPreview();
+      drawMeasurements();
+    };
+
+    const exitMeasure = () => {
+      commitActive();
+      measureMode = null;
+      measureActive = null;
+      clearPreview();
+      if (measurePanel) measurePanel.hidden = true;
+      root?.classList.remove('is-measuring');
+      map.doubleClickZoom.enable();
+      for (const tool of measureToolButtons) {
+        tool.classList.remove('is-active');
+        tool.setAttribute('aria-pressed', 'false');
+      }
+      drawMeasurements();
+    };
+
+    const finishMeasure = () => {
+      if (!measureActive) return;
+      const minimum = measureActive.kind === 'distance' ? 2 : 3;
+      if (measureActive.points.length < minimum) return;
+      measurePaths.push(measureActive);
+      measureActive = null;
+      clearPreview();
+      drawMeasurements();
+    };
+
+    const undoMeasure = () => {
+      if (measureActive?.points.length) measureActive.points.pop();
+      else if (measurePaths.length) measurePaths.pop();
+      clearPreview();
+      drawMeasurements();
+    };
+
+    const clearMeasure = () => {
+      measurePaths.length = 0;
+      measureActive = null;
+      clearPreview();
+      drawMeasurements();
+    };
+
+    let lastMeasureClick: L.LatLng | null = null;
+    let lastMeasureClickTime = 0;
+
+    map.on('click', (event) => {
+      if (!measureMode) return;
+      const now = Date.now();
+      if (lastMeasureClick && now - lastMeasureClickTime < 400) {
+        const previous = map.latLngToContainerPoint(lastMeasureClick);
+        const current = map.latLngToContainerPoint(event.latlng);
+        if (previous.distanceTo(current) < 5) {
+          lastMeasureClick = event.latlng;
+          lastMeasureClickTime = now;
+          return;
+        }
+      }
+      lastMeasureClick = event.latlng;
+      lastMeasureClickTime = now;
+      if (!measureActive) measureActive = { kind: measureMode, points: [] };
+      measureActive.points.push(event.latlng);
+      clearPreview();
+      drawMeasurements();
+    });
+
+    map.on('dblclick', () => {
+      if (measureMode) finishMeasure();
+    });
+
+    map.on('mousemove', (event) => {
+      if (!measureMode || !measureActive || !measureActive.points.length) return;
+      schedulePreview(event.latlng);
+    });
+
+    map.on('mouseout', () => clearPreview());
+
+    for (const tool of measureToolButtons) {
+      tool.addEventListener('click', () => {
+        const mode = tool.dataset.measureMode as MeasureMode | undefined;
+        if (!mode) return;
+        if (measureMode === mode && measurePanel && !measurePanel.hidden) {
+          exitMeasure();
+          return;
+        }
+        startMeasure(mode);
+      });
+    }
+
+    measureClose?.addEventListener('click', exitMeasure);
+    measureCollapse?.addEventListener('click', () => setMeasureCollapsed(!measureCollapsed));
+    measureBreakpoint.addEventListener('change', (event) => {
+      if (measureMode) setMeasureCollapsed(event.matches);
+    });
+    measureFinish?.addEventListener('click', finishMeasure);
+    measureUndo?.addEventListener('click', undoMeasure);
+    measureClear?.addEventListener('click', clearMeasure);
+    measureUnitsSelect?.addEventListener('change', () => {
+      if (!measureMode) return;
+      const units = measureUnits(measureMode);
+      const unit = units.find((item) => item.id === measureUnitsSelect.value) ?? units[0];
+      if (measureMode === 'area') areaUnit = unit;
+      else distanceUnit = unit;
+      drawMeasurements();
+      if (previewPoint) drawPreview(previewPoint);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (!measureMode) return;
+      if (event.key === 'Escape') {
+        if (measureActive?.points.length) {
+          measureActive = null;
+          clearPreview();
+          drawMeasurements();
+        } else {
+          exitMeasure();
+        }
+      }
+      if (event.key === 'Enter') finishMeasure();
+    });
+
     for (const button of filterButtons) {
       button.addEventListener('click', () => {
         category = button.dataset.mapFilter ?? 'all';
@@ -550,6 +1416,17 @@ const payload = JSON.stringify({
     });
 
     document.addEventListener('click', (event) => {
+      const measureButton = (event.target as Element).closest<HTMLButtonElement>('[data-measure-poi]');
+      if (measureButton) {
+        const id = measureButton.dataset.measurePoi;
+        const poi = id ? poiById.get(id) : null;
+        if (poi) {
+          map.closePopup();
+          startMeasure('distance', L.latLng(-poi.z, poi.x));
+        }
+        return;
+      }
+
       const button = (event.target as Element).closest<HTMLButtonElement>('[data-copy-poi]');
       if (!button) return;
       const id = button.dataset.copyPoi;
@@ -569,7 +1446,11 @@ const payload = JSON.stringify({
       }
     });
 
-    map.on('popupclose', () => setActive(null));
+    map.on('popupopen', () => root?.classList.add('is-poi-open'));
+    map.on('popupclose', () => {
+      root?.classList.remove('is-poi-open');
+      setActive(null);
+    });
     map.on('move zoom resize viewreset moveend zoomend', scheduleLabelUpdate);
 
     render();
@@ -791,8 +1672,7 @@ const payload = JSON.stringify({
 
   /* Starlight adds a vertical rhythm margin between markdown blocks.
      Leaflet panes are positioned absolutely and must stay at 0, 0. */
-  .pw-map .leaflet-container .leaflet-pane,
-  .pw-map .leaflet-container .leaflet-pane * {
+  .pw-map .leaflet-container .leaflet-pane {
     margin: 0;
   }
 
@@ -908,58 +1788,427 @@ const payload = JSON.stringify({
     visibility: visible;
   }
 
-  .pw-map-popup {
-    min-width: 12rem;
-    color: var(--sl-color-text);
+  /* ---------- Measurement tools ---------- */
+  .pw-measure {
+    position: absolute;
+    inset: 0;
+    z-index: 660;
+    pointer-events: none;
   }
 
-  .pw-map-popup__cat {
-    margin: 0 0 0.15rem !important;
+  .pw-measure__tools {
+    position: absolute;
+    top: 50%;
+    right: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    transform: translateY(-50%);
+    pointer-events: auto;
+  }
+
+  .pw-map.is-poi-open .pw-measure__tools {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .pw-measure__tool {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 10px;
+    background: var(--sl-color-bg);
+    box-shadow: 0 6px 18px rgb(16 32 58 / 18%);
+    color: var(--sl-color-text);
+    cursor: pointer;
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease;
+  }
+
+  .pw-measure__tool svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .pw-measure__tool:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-measure__tool.is-active {
+    border-color: var(--sl-color-accent);
+    background: var(--sl-color-accent);
+    color: #fff;
+  }
+
+  .pw-measure__panel {
+    position: absolute;
+    top: 50%;
+    right: 3.9rem;
+    width: min(18rem, calc(100% - 5rem));
+    max-height: calc(100% - 1.6rem);
+    overflow-y: auto;
+    padding: 0.8rem 0.85rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--sl-color-bg) 97%, transparent);
+    box-shadow: 0 16px 44px rgb(16 32 58 / 26%);
+    color: var(--sl-color-text);
+    transform: translateY(-50%);
+    pointer-events: auto;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .pw-measure__panel[hidden] {
+    display: none;
+  }
+
+  .pw-measure__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .pw-measure__head strong {
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .pw-measure__head-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .pw-measure__close,
+  .pw-measure__collapse {
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
     color: var(--pw-muted);
-    font-size: 0.62rem;
+    cursor: pointer;
+  }
+
+  .pw-measure__close svg,
+  .pw-measure__collapse svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .pw-measure__close:hover,
+  .pw-measure__collapse:hover {
+    background: color-mix(in srgb, var(--sl-color-accent) 10%, transparent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-measure__collapse svg {
+    transition: transform 140ms ease;
+  }
+
+  .pw-measure__panel.is-collapsed .pw-measure__collapse svg {
+    transform: rotate(180deg);
+  }
+
+  .pw-measure__panel.is-collapsed .pw-measure__units,
+  .pw-measure__panel.is-collapsed .pw-measure__actions,
+  .pw-measure__panel.is-collapsed .pw-measure__note {
+    display: none;
+  }
+
+  .pw-measure__units {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+    color: var(--pw-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .pw-measure__units select {
+    max-width: 9.5rem;
+    padding: 0.28rem 0.45rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 7px;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font: inherit;
+    font-size: 0.7rem;
+  }
+
+  .pw-measure__readout {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin-top: 0.55rem;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--sl-color-accent) 7%, transparent);
+  }
+
+  .pw-measure__readout-label {
+    color: var(--pw-muted);
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
   }
 
-  .pw-map-popup h3 {
-    margin: 0;
-    border: 0;
-    padding: 0;
-    color: var(--sl-color-text);
-    font-size: 0.95rem;
-    line-height: 1.25;
+  .pw-measure__readout strong {
+    font-size: 1.1rem;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
   }
 
-  .pw-map-popup__coords {
-    margin: 0.35rem 0 0.6rem !important;
+  .pw-measure__readout small {
     color: var(--pw-muted);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
+    line-height: 1.35;
   }
 
-  .pw-map-popup__copy {
+  .pw-measure__hint {
+    margin: 0.5rem 0 0;
+    color: var(--pw-muted);
+    font-size: 0.65rem;
+    line-height: 1.35;
+  }
+
+  .pw-measure__actions {
+    display: flex;
+    gap: 0.3rem;
+    margin-top: 0.55rem;
+  }
+
+  .pw-measure__actions button {
+    flex: 1;
+    padding: 0.33rem 0.35rem;
     border: 1px solid var(--sl-color-hairline);
-    border-radius: 999px;
+    border-radius: 7px;
     background: transparent;
-    color: var(--sl-color-accent);
+    color: var(--sl-color-text);
     font: inherit;
-    font-size: 0.68rem;
+    font-size: 0.64rem;
     font-weight: 650;
-    padding: 0.3rem 0.7rem;
     cursor: pointer;
   }
 
-  .pw-map-popup__copy:hover {
+  .pw-measure__actions button:hover:not(:disabled) {
     border-color: var(--sl-color-accent);
-    background: color-mix(in srgb, var(--sl-color-accent) 10%, transparent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-measure__actions button.is-primary {
+    border-color: var(--sl-color-accent);
+    background: var(--sl-color-accent);
+    color: #fff;
+  }
+
+  .pw-measure__actions button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .pw-measure__note {
+    margin: 0.45rem 0 0;
+    color: var(--pw-muted);
+    font-size: 0.6rem;
+  }
+
+  .pw-map.is-measuring .pw-map__canvas {
+    cursor: crosshair;
+  }
+
+  .pw-map.is-measuring .leaflet-marker-icon,
+  .pw-map.is-measuring .pw-poi__label {
+    pointer-events: none;
+  }
+
+  .pw-measure-label-wrap {
+    width: 0 !important;
+    height: 0 !important;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .pw-measure-label {
+    display: inline-block;
+    padding: 0.14rem 0.38rem;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 6px;
+    background: rgb(16 32 58 / 92%);
+    box-shadow: 0 4px 12px rgb(16 32 58 / 25%);
+    color: #fff;
+    font-size: 0.66rem;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    transform: translate(-50%, -50%);
+  }
+
+  .pw-measure-label.is-total,
+  .pw-measure-label.is-area {
+    border-color: transparent;
+    background: var(--sl-color-accent);
+  }
+
+  .pw-measure-label.is-preview {
+    border-style: dashed;
+    background: rgb(16 32 58 / 82%);
+  }
+
+  /* ---------- POI card ---------- */
+  .pw-poi-card {
+    width: 18rem;
+    max-width: 100%;
+    color: var(--sl-color-text);
+  }
+
+  .pw-poi-card__hero {
+    position: relative;
+    height: 6rem;
+    overflow: hidden;
+    background: #a4ce8d;
+  }
+
+  .pw-poi-card__map {
+    position: absolute;
+    inset: 0;
+    background-image: url('/minimap.svg');
+    background-size: 900% auto;
+    background-position: var(--hero-x) var(--hero-y);
+  }
+
+  .pw-poi-card__hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, color-mix(in srgb, var(--sl-color-bg) 88%, transparent) 0%, transparent 30%),
+      linear-gradient(to right, color-mix(in srgb, var(--poi-tint) 14%, transparent), transparent 65%);
+  }
+
+  .pw-poi-card__img {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgb(16 32 58 / 35%));
+    transform: translate(-50%, -50%);
+  }
+
+  .pw-poi-card__body {
+    padding: 0.8rem 0.9rem 0.9rem;
+  }
+
+  .pw-poi-card__kind {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--pw-muted);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .pw-poi-card__kind::before {
+    content: '';
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--poi-tint);
+  }
+
+  .pw-poi-card__body h3 {
+    margin: 0.15rem 0 0;
+    border: 0;
+    padding: 0;
+    color: var(--sl-color-text);
+    font-size: 1.05rem;
+    line-height: 1.25;
+  }
+
+  .pw-poi-card__coords {
+    margin: 0.25rem 0 0 !important;
+    color: var(--pw-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.62rem;
+  }
+
+  .pw-poi-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.65rem;
+  }
+
+  .pw-poi-card__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.38rem 0.65rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--sl-color-text);
+    font: inherit;
+    font-size: 0.64rem;
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  .pw-poi-card__btn svg {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  .pw-poi-card__btn:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-poi-card__btn--accent {
+    border-color: var(--sl-color-accent);
+    background: var(--sl-color-accent);
+    color: #fff;
+  }
+
+  .pw-poi-card__btn--accent:hover {
+    background: color-mix(in srgb, var(--sl-color-accent) 84%, #000);
+    color: #fff;
   }
 
   .pw-map .leaflet-popup-content-wrapper {
-    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 16px;
     background: var(--sl-color-bg);
     color: var(--sl-color-text);
     box-shadow: 0 16px 44px rgb(16 32 58 / 26%);
+  }
+
+  .pw-map .leaflet-popup-content {
+    width: auto !important;
+    margin: 0;
   }
 
   .pw-map .leaflet-popup-tip {
@@ -986,6 +2235,36 @@ const payload = JSON.stringify({
       max-width: calc(100% - 2rem);
       white-space: normal;
       text-align: center;
+    }
+
+    .pw-measure__tools {
+      right: 0.55rem;
+    }
+
+    .pw-measure__tool {
+      width: 2.2rem;
+      height: 2.2rem;
+    }
+
+    .pw-measure__panel {
+      top: auto;
+      right: 0.6rem;
+      bottom: 0.6rem;
+      left: 0.6rem;
+      width: auto;
+      max-height: 60%;
+      padding: 0.7rem;
+      transform: none;
+    }
+
+    .pw-map.is-measuring .leaflet-control-zoom {
+      display: none;
+    }
+  }
+
+  @media (min-width: 50.01rem) {
+    .pw-measure__collapse {
+      display: none;
     }
   }
 
