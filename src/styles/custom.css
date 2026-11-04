@@ -337,6 +337,13 @@ nav.sidebar {
   margin: 1.75rem 0 2.5rem;
 }
 
+/* Starlight's markdown rhythm adds a top margin to the second and later
+   sibling divs inside content. Cards are grid items, so their spacing has
+   to come from the grid gap alone or they end up different heights. */
+.pw-grid > .pw-card {
+  margin: 0;
+}
+
 .pw-card {
   display: flex;
   flex-direction: column;
