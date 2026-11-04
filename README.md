@@ -1,5 +1,7 @@
 # Putrajaya.rblx Wiki
 
+![OpenGraph Image](./public/PutrajayaWikiLaunch.png)
+
 The community wiki for **Putrajaya of Roblox**, built with [Astro Starlight](https://starlight.astro.build).
 
 **Live:** https://putrajayarblx-wiki.vercel.app
