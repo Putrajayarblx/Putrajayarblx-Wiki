@@ -17,7 +17,9 @@ const docs = entries.filter(
     Boolean(entry.data.category)
 );
 
-const articles = docs.filter((entry) => !entry.data.landing).length;
+// Category landing pages are articles too; only home, 404 and uncategorized
+// utility pages are left out of the count.
+const articles = docs.length;
 const sections = new Set(docs.map((entry) => entry.data.category)).size || 1;
 const languages = 2;
 

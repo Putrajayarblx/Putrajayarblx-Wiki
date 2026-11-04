@@ -110,18 +110,24 @@ header.header {
   backdrop-filter: none;
   transition:
     background-color 320ms ease,
-    border-color 320ms ease;
+    border-color 320ms ease,
+    -webkit-backdrop-filter 320ms ease,
+    backdrop-filter 320ms ease;
 }
 
-/* Drive the header through Starlight's own variables: its layered rules
-   win over unlayered !important declarations, so overriding the token is
-   the reliable way to make the bar transparent. */
-html.pw-scrolled {
-  --sl-color-bg-nav: transparent;
-}
-
+/* Frost the header when it floats over scrolled content. The scrolled state
+   is applied by Header.astro on wider viewports. */
 html.pw-scrolled header.header {
-  --sl-color-hairline: transparent;
+  background-color: color-mix(in srgb, var(--sl-color-bg) 72%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--sl-color-hairline) 55%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  backdrop-filter: blur(16px) saturate(1.25);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html.pw-scrolled header.header {
+    background-color: color-mix(in srgb, var(--sl-color-bg) 94%, transparent);
+  }
 }
 
 .pw-top-link {
