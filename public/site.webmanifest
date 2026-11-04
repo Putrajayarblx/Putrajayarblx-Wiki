@@ -13,12 +13,6 @@
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "/favicon.png",
-      "sizes": "64x64",
-      "type": "image/png",
-      "purpose": "any"
     }
   ]
 }
