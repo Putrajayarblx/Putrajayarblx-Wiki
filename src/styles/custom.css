@@ -1030,6 +1030,38 @@ site-search button[data-open-modal] {
   background: var(--sl-color-hairline);
 }
 
+.pw-mnav__social {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.pw-mnav__social > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.pw-mnav__social > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pw-mnav__social-caret {
+  margin-inline-start: auto;
+  color: var(--pw-muted);
+  transition: transform 160ms ease;
+}
+
+.pw-mnav__social[open] .pw-mnav__social-caret {
+  transform: rotate(180deg);
+}
+
+.pw-mnav__social-links {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0.15rem 0 0.2rem 0.75rem;
+  padding-inline-start: 0.35rem;
+  border-inline-start: 1px solid var(--sl-color-hairline);
+}
+
 .pw-mnav__switch {
   position: relative;
   margin-inline-start: auto;
@@ -2076,12 +2108,15 @@ html[data-pw-width='wide'] {
 }
 
 .pw-zoom {
-  width: 100vw;
+  position: fixed;
+  inset: 0;
+  width: 100%;
   max-width: none;
   height: 100vh;
+  height: 100dvh;
   max-height: none;
   margin: 0;
-  padding: 2rem;
+  padding: 1.5rem;
   border: 0;
   background: rgb(8 12 20 / 88%);
   -webkit-backdrop-filter: blur(6px);
@@ -2098,8 +2133,11 @@ html[data-pw-width='wide'] {
 }
 
 .pw-zoom img {
-  max-width: min(96vw, 1500px);
-  max-height: 88vh;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 30px 90px rgb(0 0 0 / 55%);
   cursor: default;
@@ -2123,6 +2161,17 @@ html[data-pw-width='wide'] {
 
 .pw-zoom__close:hover {
   background: rgb(255 255 255 / 20%);
+}
+
+@media (max-width: 50rem) {
+  .pw-zoom {
+    padding: 0.75rem;
+  }
+
+  .pw-zoom__close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
 }
 
 /* ---------- Mobile "Wiki navigation" bar (under On this page) ---------- */

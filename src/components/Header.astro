@@ -21,6 +21,7 @@ const t = isMs
       roles: 'Peranan dan jabatan',
       connect: 'Hubungi',
       map: 'Peta',
+      main: 'Laman utama',
       website: 'Laman web',
     }
   : {
@@ -32,6 +33,7 @@ const t = isMs
       roles: 'Roles and departments',
       connect: 'Connect',
       map: 'Map',
+      main: 'Main site',
       website: 'Website',
     };
 
@@ -133,18 +135,30 @@ const connect = [
       <span>{t.map}</span>
     </a>
 
+    <a class="pw-mnav__row" href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
+      <PwIcon name="bi-house-door" />
+      <span>{t.main}</span>
+    </a>
+
     <div class="pw-mnav__divider" role="presentation"></div>
 
-    <p class="pw-mnav__title">{t.connect}</p>
-
-    {
-      connect.map((link) => (
-        <a href={link.href} target="_blank" rel="noopener noreferrer">
-          <PwIcon name={link.icon} />
-          {link.label}
-        </a>
-      ))
-    }
+    <details class="pw-mnav__social">
+      <summary class="pw-mnav__row">
+        <PwIcon name="bi-link-45deg" />
+        <span>{t.connect}</span>
+        <PwIcon name="bi-chevron-down" class="pw-mnav__social-caret" />
+      </summary>
+      <div class="pw-mnav__social-links">
+        {
+          connect.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer">
+              <PwIcon name={link.icon} />
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+    </details>
   </nav>
 </div>
 

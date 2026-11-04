@@ -14,6 +14,12 @@ import PwIcon from './PwIcon.astro';
   const zoomed = dialog?.querySelector<HTMLImageElement>('[data-pw-zoom-image]');
   const close = dialog?.querySelector<HTMLButtonElement>('[data-pw-zoom-close]');
 
+  // A modal dialog should be positioned against the viewport, not the fixed
+  // site header. Moving it to <body> avoids header clipping/containing blocks.
+  if (dialog && dialog.parentElement !== document.body) {
+    document.body.append(dialog);
+  }
+
   if (dialog && zoomed) {
     document.addEventListener('click', (event) => {
       const image = (event.target as Element | null)?.closest?.(
