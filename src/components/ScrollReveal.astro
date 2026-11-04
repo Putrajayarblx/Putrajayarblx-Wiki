@@ -4,8 +4,17 @@
 <script>
   const root = document.documentElement;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
+  const isHome = pathname === '/' || pathname === '/ms';
 
-  if ('IntersectionObserver' in window && !reduce.matches) {
+  if (!isHome) {
+    // Article, map and utility pages should render their content immediately.
+    root.classList.remove('pw-motion');
+    for (const el of document.querySelectorAll<HTMLElement>('.pw-reveal')) {
+      el.classList.remove('pw-reveal', 'pw-inview');
+      el.style.removeProperty('--pw-delay');
+    }
+  } else if ('IntersectionObserver' in window && !reduce.matches) {
     try {
       const blocks = [
         ...document.querySelectorAll('.sl-markdown-content .pw-article-body > *'),
