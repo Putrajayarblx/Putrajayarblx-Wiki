@@ -34,6 +34,8 @@ const strings = {
       close: 'Close',
       expand: 'Expand',
       collapse: 'Collapse',
+      hidePois: 'Hide places',
+      showPois: 'Show places',
       start: 'Click the map to start a measurement.',
       addPoints: 'Click the map to add points.',
       hint: 'Click map to add points · double-click to finish.',
@@ -76,6 +78,8 @@ const strings = {
       close: 'Tutup',
       expand: 'Kembangkan',
       collapse: 'Kecilkan',
+      hidePois: 'Sembunyikan tempat',
+      showPois: 'Tunjukkan tempat',
       start: 'Klik peta untuk mula mengukur.',
       addPoints: 'Klik peta untuk tambah titik.',
       hint: 'Klik peta untuk tambah titik · klik dua kali untuk selesai.',
@@ -432,6 +436,25 @@ const payload = JSON.stringify({
           <circle cx="8" cy="20" r="1.3" fill="currentColor" stroke="none"></circle>
         </svg>
       </button>
+      <button
+        type="button"
+        class="pw-measure__tool pw-measure__tool--pois"
+        data-pois-toggle
+        aria-pressed="false"
+        aria-label={strings.measure.hidePois}
+        title={strings.measure.hidePois}
+      >
+        <svg class="pw-pois-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+          <circle cx="12" cy="12" r="2.6"></circle>
+        </svg>
+        <svg class="pw-pois-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m3 3 18 18"></path>
+          <path d="M10.6 6.2A10.6 10.6 0 0 1 12 6c6.5 0 10 6 10 6a17.5 17.5 0 0 1-3.1 3.7"></path>
+          <path d="M6.2 6.7C3.6 8.3 2 12 2 12s3.5 6 10 6a10.6 10.6 0 0 0 5.1-1.3"></path>
+          <path d="M9.8 9.8a3 3 0 0 0 4.4 4.4"></path>
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -467,7 +490,8 @@ const payload = JSON.stringify({
   const measureClear = root?.querySelector<HTMLButtonElement>('[data-measure-clear]');
   const measureClose = root?.querySelector<HTMLButtonElement>('[data-measure-close]');
   const measureCollapse = root?.querySelector<HTMLButtonElement>('[data-measure-collapse]');
-  const measureToolButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-measure-mode]') ?? [])];  const source = document.getElementById('pw-map-data');
+  const measureToolButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-measure-mode]') ?? [])];
+  const poisToggle = root?.querySelector<HTMLButtonElement>('[data-pois-toggle]');  const source = document.getElementById('pw-map-data');
 
   type Poi = {
     id: string;
@@ -510,6 +534,8 @@ const payload = JSON.stringify({
       close: string;
       expand: string;
       collapse: string;
+      hidePois: string;
+      showPois: string;
       start: string;
       addPoints: string;
       hint: string;
@@ -888,6 +914,7 @@ const payload = JSON.stringify({
     let measureMode: MeasureMode | null = null;
     let measureActive: MeasurePath | null = null;
     let measureCollapsed = false;
+    let poisHidden = false;
     let distanceUnit = measureCopy.distanceUnits[0];
     let areaUnit = measureCopy.areaUnits[0];
     const measureBreakpoint = window.matchMedia('(max-width: 50rem)');
@@ -1183,6 +1210,24 @@ const payload = JSON.stringify({
       }
     };
 
+    const setPoisHidden = (hidden: boolean) => {
+      poisHidden = hidden;
+      root?.classList.toggle('is-pois-hidden', hidden);
+      if (poisToggle) {
+        poisToggle.setAttribute('aria-pressed', String(hidden));
+        poisToggle.setAttribute('aria-label', hidden ? measureCopy.showPois : measureCopy.hidePois);
+        poisToggle.setAttribute('title', hidden ? measureCopy.showPois : measureCopy.hidePois);
+      }
+      if (hidden) {
+        map.closePopup();
+        setActive(null);
+        setUrl(null);
+      } else {
+        measureLabels();
+        updateLabels();
+      }
+    };
+
     const updateMeasurePanel = () => {
       if (!measurePanel || !measureMode) return;
       if (measureTitle) {
@@ -1371,6 +1416,7 @@ const payload = JSON.stringify({
     measureBreakpoint.addEventListener('change', (event) => {
       if (measureMode) setMeasureCollapsed(event.matches);
     });
+    poisToggle?.addEventListener('click', () => setPoisHidden(!poisHidden));
     measureFinish?.addEventListener('click', finishMeasure);
     measureUndo?.addEventListener('click', undoMeasure);
     measureClear?.addEventListener('click', clearMeasure);
@@ -1446,7 +1492,13 @@ const payload = JSON.stringify({
       }
     });
 
-    map.on('popupopen', () => root?.classList.add('is-poi-open'));
+    map.on('popupopen', () => {
+      if (measureMode) {
+        map.closePopup();
+        return;
+      }
+      root?.classList.add('is-poi-open');
+    });
     map.on('popupclose', () => {
       root?.classList.remove('is-poi-open');
       setActive(null);
@@ -2036,6 +2088,30 @@ const payload = JSON.stringify({
   .pw-map.is-measuring .leaflet-marker-icon,
   .pw-map.is-measuring .pw-poi__label {
     pointer-events: none;
+  }
+
+  .pw-map.is-pois-hidden .leaflet-marker-pane {
+    display: none;
+  }
+
+  .pw-measure__tool--pois {
+    margin-top: 0.15rem;
+  }
+
+  .pw-measure__tool--pois .pw-pois-eye-off {
+    display: none;
+  }
+
+  .pw-measure__tool--pois[aria-pressed='true'] .pw-pois-eye {
+    display: none;
+  }
+
+  .pw-measure__tool--pois[aria-pressed='true'] .pw-pois-eye-off {
+    display: block;
+  }
+
+  .pw-measure__tool--pois[aria-pressed='true'] {
+    color: var(--sl-color-accent);
   }
 
   .pw-measure-label-wrap {
