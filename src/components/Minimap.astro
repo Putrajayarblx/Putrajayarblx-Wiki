@@ -422,13 +422,32 @@ const payload = JSON.stringify({
       <input type="search" placeholder={strings.searchPlaceholder} autocomplete="off" data-map-search />
     </label>
 
-    <div class="pw-map__filters" data-map-filters role="group" aria-label={strings.filterLabel}>
+    <button
+      type="button"
+      class="pw-map__filter-toggle"
+      data-filter-toggle
+      aria-expanded="false"
+      aria-controls="pw-map-filters"
+      title={strings.filterLabel}
+    >
+      <span class="sr-only">{strings.filterLabel}</span>
+      <svg class="pw-filter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"></path>
+      </svg>
+      <span data-filter-toggle-label>{categories[0].label} {counts.all}</span>
+      <svg class="pw-filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </button>
+
+    <div class="pw-map__filters" id="pw-map-filters" data-map-filters role="group" aria-label={strings.filterLabel}>
       {
         categories.map((category, index) => (
           <button
             type="button"
             class:list={{ 'is-active': index === 0 }}
             data-map-filter={category.id}
+            data-category-label={category.label}
             aria-pressed={index === 0 ? 'true' : 'false'}
           >
             {category.label}
@@ -551,6 +570,25 @@ const payload = JSON.stringify({
     </div>
 
     <div class="pw-measure__tools" role="group" aria-label={strings.toolsLabel}>
+      <button
+        type="button"
+        class="pw-measure__tool pw-measure__tools-toggle"
+        data-tools-toggle
+        aria-expanded="false"
+        aria-label={strings.toolsLabel}
+        title={strings.toolsLabel}
+      >
+        <svg class="pw-tools-open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h7M15 18h5"></path>
+          <circle cx="15" cy="6" r="2"></circle>
+          <circle cx="9" cy="12" r="2"></circle>
+          <circle cx="13" cy="18" r="2"></circle>
+        </svg>
+        <svg class="pw-tools-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18"></path>
+        </svg>
+      </button>
+
       <button
         type="button"
         class="pw-measure__tool"
@@ -776,6 +814,9 @@ const payload = JSON.stringify({
   const measureCollapse = root?.querySelector<HTMLButtonElement>('[data-measure-collapse]');
   const measureToolButtons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-measure-mode]') ?? [])];
   const poisToggle = root?.querySelector<HTMLButtonElement>('[data-pois-toggle]');
+  const filterToggle = root?.querySelector<HTMLButtonElement>('[data-filter-toggle]');
+  const filterToggleLabel = root?.querySelector<HTMLElement>('[data-filter-toggle-label]');
+  const toolsToggle = root?.querySelector<HTMLButtonElement>('[data-tools-toggle]');
 
   const drawPanel = root?.querySelector<HTMLElement>('[data-draw-panel]');
   const drawTitle = root?.querySelector<HTMLElement>('[data-draw-title]');
@@ -916,6 +957,17 @@ const payload = JSON.stringify({
   if (root && canvas && source) {
     const data = JSON.parse(source.textContent || '{}') as Data;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const setFiltersOpen = (open: boolean) => {
+      root?.classList.toggle('is-filters-open', open);
+      filterToggle?.setAttribute('aria-expanded', String(open));
+    };
+
+    const setToolsOpen = (open: boolean) => {
+      root?.classList.toggle('is-tools-open', open);
+      toolsToggle?.setAttribute('aria-expanded', String(open));
+    };
+
     const bounds = L.latLngBounds(
       [-data.bounds.maxZ, data.bounds.minX],
       [-data.bounds.minZ, data.bounds.maxX]
@@ -959,6 +1011,18 @@ const payload = JSON.stringify({
     let activeId: string | null = null;
     let query = '';
     let category = 'all';
+
+    const updateFilterToggle = () => {
+      if (!filterToggleLabel) return;
+      const active = filterButtons.find((button) => button.dataset.mapFilter === category);
+      if (!active) return;
+      const label = active.dataset.categoryLabel ?? '';
+      const count = active.querySelector('span')?.textContent?.trim() ?? '';
+      filterToggleLabel.textContent = count ? `${label} ${count}` : label;
+      root?.classList.toggle('is-filtered', category !== 'all');
+    };
+
+    updateFilterToggle();
 
     const esc = (value: string) =>
       value.replace(/[&<>"']/g, (character) => {
@@ -1755,6 +1819,7 @@ const payload = JSON.stringify({
           return;
         }
         startMeasure(mode);
+        setToolsOpen(false);
       });
     }
 
@@ -1763,7 +1828,10 @@ const payload = JSON.stringify({
     measureBreakpoint.addEventListener('change', (event) => {
       if (measureMode) setMeasureCollapsed(event.matches);
     });
-    poisToggle?.addEventListener('click', () => setPoisHidden(!poisHidden));
+    poisToggle?.addEventListener('click', () => {
+      setPoisHidden(!poisHidden);
+      setToolsOpen(false);
+    });
     measureFinish?.addEventListener('click', finishMeasure);
     measureUndo?.addEventListener('click', undoMeasure);
     measureClear?.addEventListener('click', clearMeasure);
@@ -2116,7 +2184,9 @@ const payload = JSON.stringify({
       tool.addEventListener('click', () => {
         const mode = tool.dataset.drawMode as DrawMode | undefined;
         if (!mode) return;
+        const wasActive = drawMode === mode;
         startDraw(mode);
+        if (!wasActive) setToolsOpen(false);
       });
     }
 
@@ -2651,7 +2721,10 @@ const payload = JSON.stringify({
       }
     };
 
-    downloadOpen?.addEventListener('click', openDownload);
+    downloadOpen?.addEventListener('click', () => {
+      setToolsOpen(false);
+      openDownload();
+    });
     downloadRun?.addEventListener('click', runDownload);
     updateDownloadCount();
 
@@ -2692,6 +2765,10 @@ const payload = JSON.stringify({
 
     const syncFullscreen = () => {
       const active = isNativeFullscreen() || cssFullscreen;
+      if (!active) {
+        setToolsOpen(false);
+        setFiltersOpen(false);
+      }
       root?.classList.toggle('is-fullscreen', active);
       document.documentElement.classList.toggle('pw-map-fs-lock', active);
 
@@ -2780,9 +2857,22 @@ const payload = JSON.stringify({
           other.classList.toggle('is-active', active);
           other.setAttribute('aria-pressed', String(active));
         }
+        updateFilterToggle();
+        setFiltersOpen(false);
+        if (filterToggle && getComputedStyle(filterToggle).display !== 'none') {
+          filterToggle.focus({ preventScroll: true });
+        }
         render();
       });
     }
+
+    filterToggle?.addEventListener('click', () => {
+      setFiltersOpen(!root?.classList.contains('is-filters-open'));
+    });
+
+    toolsToggle?.addEventListener('click', () => {
+      setToolsOpen(!root?.classList.contains('is-tools-open'));
+    });
 
     search?.addEventListener('input', () => {
       query = search.value;
@@ -2998,6 +3088,58 @@ const payload = JSON.stringify({
 
   .pw-map__filters::-webkit-scrollbar {
     display: none;
+  }
+
+  .pw-map__filter-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.35rem;
+    align-self: flex-start;
+    padding: 0.38rem 0.65rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 999px;
+    background: var(--sl-color-bg);
+    box-shadow: 0 6px 18px rgb(16 32 58 / 18%);
+    color: var(--sl-color-text);
+    font: inherit;
+    font-size: 0.68rem;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .pw-map__filter-toggle:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-map.is-filtered .pw-map__filter-toggle {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .pw-map__filter-toggle .pw-filter-icon {
+    flex: none;
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .pw-map__filter-toggle .pw-filter-chevron {
+    flex: none;
+    width: 0.8rem;
+    height: 0.8rem;
+    transition: transform 140ms ease;
+  }
+
+  .pw-map__filter-toggle[aria-expanded='true'] .pw-filter-chevron {
+    transform: rotate(180deg);
+  }
+
+  .pw-map__filter-toggle [data-filter-toggle-label] {
+    overflow: hidden;
+    max-width: 12rem;
+    text-overflow: ellipsis;
   }
 
   .pw-map__filters button {
@@ -3266,6 +3408,22 @@ const payload = JSON.stringify({
     border-color: var(--sl-color-accent);
     background: var(--sl-color-accent);
     color: #fff;
+  }
+
+  .pw-measure__tools-toggle {
+    display: none;
+  }
+
+  .pw-measure__tools-toggle .pw-tools-close-icon {
+    display: none;
+  }
+
+  .pw-measure__tools-toggle[aria-expanded='true'] .pw-tools-open-icon {
+    display: none;
+  }
+
+  .pw-measure__tools-toggle[aria-expanded='true'] .pw-tools-close-icon {
+    display: block;
   }
 
   .pw-measure__divider {
@@ -4230,6 +4388,14 @@ const payload = JSON.stringify({
       max-width: 100%;
     }
 
+    .pw-map__filter-toggle {
+      display: inline-flex;
+    }
+
+    .pw-map:not(.is-fullscreen):not(.is-filters-open) .pw-map__filters {
+      display: none;
+    }
+
     .pw-map__empty {
       max-width: calc(100% - 2rem);
       white-space: normal;
@@ -4243,6 +4409,33 @@ const payload = JSON.stringify({
     .pw-measure__tool {
       width: 2.2rem;
       height: 2.2rem;
+    }
+
+    .pw-measure__tools-toggle {
+      display: grid;
+    }
+
+    .pw-map:not(.is-fullscreen):not(.is-tools-open) .pw-measure__tools > .pw-measure__tool:not(.pw-measure__tools-toggle) {
+      display: none;
+    }
+
+    .pw-map:not(.is-fullscreen):not(.is-tools-open) .pw-measure__divider {
+      display: none;
+    }
+
+    .pw-map:not(.is-fullscreen).is-tools-open .pw-map__overlay,
+    .pw-map:not(.is-fullscreen).is-tools-open .leaflet-control-zoom {
+      display: none;
+    }
+
+    .pw-map:not(.is-fullscreen).is-tools-open .pw-measure__tools {
+      top: 0.75rem;
+      transform: none;
+    }
+
+    .pw-map.is-fullscreen .pw-map__filter-toggle,
+    .pw-map.is-fullscreen .pw-measure__tools-toggle {
+      display: none;
     }
 
     .pw-measure__panel,
@@ -4316,7 +4509,8 @@ const payload = JSON.stringify({
     .pw-map__filters button,
     .pw-draw__swatches button,
     .pw-draw__width-buttons button,
-    .pw-download__mode-list span {
+    .pw-download__mode-list span,
+    .pw-map__filter-toggle .pw-filter-chevron {
       transition: none;
     }
   }
