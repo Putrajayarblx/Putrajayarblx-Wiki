@@ -59,7 +59,7 @@ const schema = {
       url: 'https://putrajayarblx.github.io/putrajaya-of-roblox/',
       logo: {
         '@type': 'ImageObject',
-        url: `${site}/apple-touch-icon.png`,
+        url: `${site}/icon-192.png`,
         width: 180,
         height: 180,
       },
@@ -133,7 +133,11 @@ const schema = {
 <meta name="twitter:title" content={pageTitle} />
 <meta name="twitter:description" content={pageDescription} />
 <meta name="twitter:image" content={`${site}/og.png`} />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="/icon-48.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/icon-96.png" />
+<link rel="icon" type="image/png" sizes="144x144" href="/icon-144.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,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" />
 <link rel="manifest" href="/site.webmanifest" />
