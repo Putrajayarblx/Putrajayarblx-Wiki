@@ -46,3 +46,9 @@ Aerojaya currently operates several helicopters as part of its fleet.
 | Agusta Westland AW139 | Helicopter | A medium-sized twin-engine helicopter designed for maximum comfort, stability, and extended sightseeing tours. |
 
 
+  
+:::note
+
+Aerojaya is owned by a Putrajaya.rblx developer.
+
+:::
