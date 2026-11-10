@@ -30,8 +30,19 @@ infobox:
       value: Roblox Group
       href: https://www.roblox.com/communities/693458337/aerojaya#!/about
 ---
-```
-Aerojaya Charter Services (stylized as aerojaya) is an elite aviation charter service focused on high-end aerial sightseeing and private transport. We provide passengers with an immersive flight experience, utilizing a modern fleet equipped for precision and reliability.
+**Aerojaya Charter Services (stylized as aerojaya)** is an elite aviation charter service focused on high-end aerial sightseeing and private transport. We provide passengers with an immersive flight experience, utilizing a modern fleet equipped for precision and reliability.
 
-```
+
+
+## Fleet
+
+Aerojaya currently operates several helicopters as part of its fleet.
+
+
+|  |  |  |
+| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| **Aircraft** | **Type** | **Use** |
+| Agusta Westland AW109 | Helicopter | A twin-engine light helicopter optimized for agile maneuvers, rapid transit, and dynamic scenic routes. |
+| Agusta Westland AW139 | Helicopter | A medium-sized twin-engine helicopter designed for maximum comfort, stability, and extended sightseeing tours. |
+
 
