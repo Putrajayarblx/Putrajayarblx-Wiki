@@ -7,3 +7,4 @@ infobox:
   title: Tasik Cruise
   imageAlt: Tasik Cruise logo
 ---
+If you found this, screenshot this and send it in Putrajaya.rblx Discord server
