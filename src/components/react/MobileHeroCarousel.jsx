@@ -25,16 +25,25 @@ export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki ca
     [pool, categoryLabel]
   );
 
+  // A panorama needs more than one card per quadrant to read as a strip.
+  // Repeat the shuffled set so every category still appears, with copies
+  // placed opposite each other so they are never on screen at the same time.
+  const ring = useMemo(() => {
+    if (items.length === 0) return items;
+    const repeats = Math.max(1, Math.ceil(8 / items.length));
+    return Array.from({ length: repeats }, () => items).flat();
+  }, [items]);
+
   useEffect(() => {
     const slot = document.querySelector('[data-pw-mobile-carousel]');
     if (slot) setTarget(slot);
   }, []);
 
-  if (!target || items.length === 0) return null;
+  if (!target || ring.length === 0) return null;
 
   return createPortal(
     <CircularCarousel
-      items={items}
+      items={ring}
       preset="panorama"
       intro="assemble"
       cardWidth={300}
@@ -55,7 +64,7 @@ export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki ca
       draggable
       parallax={0.3}
       stretch={0.5}
-      fadeColor="#120f17"
+      fadeColor="var(--sl-color-bg)"
       depthFade={0.55}
       innerShade={0.6}
       cornerRadius={19}
