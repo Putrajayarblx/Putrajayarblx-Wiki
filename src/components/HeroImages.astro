@@ -182,7 +182,11 @@ const categories = candidates
           }
         }
       </script>
-      <MobileHeroCarousel client:media="(max-width: 50rem)" pool={categories} />
+      <MobileHeroCarousel
+        client:media="(max-width: 50rem)"
+        pool={categories}
+        categoryLabel={isMs ? 'Kategori wiki' : 'Wiki category'}
+      />
     </>
   )
 }

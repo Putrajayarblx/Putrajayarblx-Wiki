@@ -2,8 +2,6 @@
   --cc-fade: #000000;
   --cc-radius: 12px;
   --cc-inner: 0.4;
-  --cc-card-w: 220px;
-  --cc-card-h: 220px;
   position: relative;
   width: 100%;
   height: 100%;
@@ -123,32 +121,6 @@
 .circular-carousel__inner {
   background: #000000;
   opacity: var(--cc-inner);
-}
-
-/* Category names stay on the image, like the original floating cards. */
-.circular-carousel__card-label {
-  position: absolute;
-  left: calc(var(--cc-card-w) / -2);
-  bottom: calc(var(--cc-card-h) / -2);
-  box-sizing: border-box;
-  width: var(--cc-card-w);
-  overflow: hidden;
-  padding: 1.5rem 0.75rem 0.6rem;
-  border-radius: 0 0 var(--cc-radius) var(--cc-radius);
-  background: linear-gradient(to top, rgb(8 12 20 / 84%), transparent);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.01em;
-  text-align: left;
-  text-overflow: ellipsis;
-  opacity: var(--cc-label, 1);
-  pointer-events: none;
-  transform: translateZ(2px);
-  white-space: nowrap;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 .circular-carousel__caption {

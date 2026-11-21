@@ -12,16 +12,17 @@ const shuffle = items => {
   return next;
 };
 
-export default function MobileHeroCarousel({ pool = [] }) {
+export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki category' }) {
   const [target, setTarget] = useState(null);
   const items = useMemo(
     () =>
       shuffle(pool).map(category => ({
         src: category.image,
-        alt: `${category.name} — wiki category`,
+        alt: `${category.name} — ${categoryLabel.toLowerCase()}`,
         title: category.name,
+        subtitle: categoryLabel,
       })),
-    [pool]
+    [pool, categoryLabel]
   );
 
   useEffect(() => {
@@ -34,23 +35,16 @@ export default function MobileHeroCarousel({ pool = [] }) {
   return createPortal(
     <CircularCarousel
       items={items}
-      preset="orbit"
+      preset="panorama"
       intro="assemble"
-      cardWidth={180}
+      cardWidth={300}
       aspectRatio={1.333}
-      gap={16}
+      speed={10}
+      captions
       tilt={0}
       perspective={1800}
-      speed={6}
-      cornerRadius={16}
-      captions={false}
-      overlayTitle
-      fadeColor="var(--sl-color-bg)"
+      cornerRadius={19}
       autoplay="off"
-      draggable
-      pauseOnHover
-      parallax={0.2}
-      stretch={0.4}
     />,
     target
   );

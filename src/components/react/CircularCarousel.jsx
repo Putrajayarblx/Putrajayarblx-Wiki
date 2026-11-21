@@ -84,7 +84,7 @@ const PRESETS = {
     tilt: -16,
     perspective: 1500,
     curve: 0,
-    spread: 1.05,
+    spread: 1.45,
     inward: false,
     billboard: true,
     backfaces: false,
@@ -203,7 +203,6 @@ const CircularCarousel = ({
   innerShade = 0.6,
   cornerRadius = 12,
   captions = false,
-  overlayTitle = false,
   onChange,
   onItemClick,
   className = '',
@@ -313,7 +312,6 @@ const CircularCarousel = ({
     stretch: reduced ? 0 : clamp(stretch, 0, 1),
     depthFade: clamp(depthFade, 0, 1),
     captions,
-    overlayTitle,
     reduced
   };
   const settingsRef = useRef(settings);
@@ -610,7 +608,6 @@ const CircularCarousel = ({
         if (s.layout.inward) card.style.visibility = Math.abs(world) > 86 ? 'hidden' : '';
         const fade = s.depthFade * Math.pow((1 - facing) / 2, 1.25);
         card.style.setProperty('--cc-depth', fade.toFixed(3));
-        card.style.setProperty('--cc-label', clamp(1 - fade * 1.8, 0, 1).toFixed(3));
       }
 
       const index = ((Math.round(-state.angle / s.step) % s.count) + s.count) % s.count || 0;
@@ -925,9 +922,7 @@ const CircularCarousel = ({
         ...style,
         '--cc-fade': fadeColor,
         '--cc-radius': `${Math.max(0, cornerRadius)}px`,
-        '--cc-inner': (1 - clamp(innerShade, 0, 1)).toFixed(3),
-        '--cc-card-w': `${cardW}px`,
-        '--cc-card-h': `${cardH}px`
+        '--cc-inner': (1 - clamp(innerShade, 0, 1)).toFixed(3)
       }}
       role="region"
       aria-roledescription="carousel"
@@ -967,11 +962,6 @@ const CircularCarousel = ({
                 >
                   {tiles.map(tile => renderTile(item, tile, false, index))}
                   {layout.backfaces && tiles.map(tile => renderTile(item, tile, true, index))}
-                  {overlayTitle && item.title && (
-                    <span className="circular-carousel__card-label" aria-hidden="true">
-                      {item.title}
-                    </span>
-                  )}
                 </div>
               ))}
             </div>
