@@ -1796,6 +1796,24 @@ header .site-title img {
   }
 }
 
+/* ---------- Mobile category carousel ---------- */
+.pw-mobile-carousel {
+  display: none;
+}
+
+@media (max-width: 50rem) {
+  .pw-art {
+    display: none !important;
+  }
+
+  .pw-mobile-carousel {
+    display: block;
+    width: 100%;
+    height: 22rem;
+    margin: 0.25rem auto 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pw-art__card {
     animation: none;

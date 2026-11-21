@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
 import starlight from '@astrojs/starlight';
 import { sidebar } from './src/data/sidebar.mjs';
 import remarkUploads from './src/plugins/remark-uploads.mjs';
@@ -62,6 +63,7 @@ export default defineConfig({
       ],
       customCss: ['./src/styles/custom.css'],
     }),
+    react(),
   ],
 });
 

@@ -2,6 +2,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
+import MobileHeroCarousel from './react/MobileHeroCarousel';
 
 const locale = Astro.locals.starlightRoute?.locale ?? 'en';
 const isMs = locale === 'ms';
@@ -181,6 +182,7 @@ const categories = candidates
           }
         }
       </script>
+      <MobileHeroCarousel client:media="(max-width: 50rem)" pool={categories} />
     </>
   )
 }
