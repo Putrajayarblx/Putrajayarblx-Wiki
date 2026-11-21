@@ -16,13 +16,11 @@ export default function MobileHeroCarousel({ pool = [] }) {
   const [target, setTarget] = useState(null);
   const items = useMemo(
     () =>
-      shuffle(pool)
-        .slice(0, 3)
-        .map(category => ({
-          src: category.image,
-          alt: `${category.name} — wiki category`,
-          title: category.name,
-        })),
+      shuffle(pool).map(category => ({
+        src: category.image,
+        alt: `${category.name} — wiki category`,
+        title: category.name,
+      })),
     [pool]
   );
 
@@ -38,15 +36,17 @@ export default function MobileHeroCarousel({ pool = [] }) {
       items={items}
       preset="orbit"
       intro="assemble"
-      cardWidth={170}
+      cardWidth={180}
       aspectRatio={1.333}
-      gap={18}
-      speed={5}
+      gap={16}
+      tilt={0}
+      perspective={1800}
+      speed={6}
       cornerRadius={16}
       captions={false}
       overlayTitle
       fadeColor="var(--sl-color-bg)"
-      autoplay="drift"
+      autoplay="off"
       draggable
       pauseOnHover
       parallax={0.2}
