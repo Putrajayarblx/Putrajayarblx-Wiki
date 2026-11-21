@@ -6,11 +6,12 @@ import PwIcon from './PwIcon.astro';
   <button
     class="pw-appearance__toggle"
     type="button"
+    aria-label="Appearance"
+    title="Appearance"
     aria-expanded="false"
     aria-controls="pw-appearance-panel"
   >
     <PwIcon name="bi-sliders" />
-    <span>Appearance</span>
   </button>
 
   <div class="pw-appearance__panel" id="pw-appearance-panel" hidden>
