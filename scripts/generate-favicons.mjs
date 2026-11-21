@@ -23,9 +23,10 @@ for (const size of sizes) {
     .toBuffer();
 
   pngs.set(size, buffer);
-  // Keep the existing URLs valid while the cache-busted v2 URLs are linked.
+  // Keep old URLs valid while the latest cache-busted URLs are linked.
   await writeFile(path.join(output, `icon-${size}.png`), buffer);
   await writeFile(path.join(output, `icon-${size}-v2.png`), buffer);
+  await writeFile(path.join(output, `icon-${size}-v3.png`), buffer);
 }
 
 // Build a multi-size favicon.ico with PNG entries for the root fallback.
@@ -68,6 +69,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><image 
 
 await writeFile(path.join(output, 'favicon.svg'), svg);
 await writeFile(path.join(output, 'favicon-v2.svg'), svg);
+await writeFile(path.join(output, 'favicon-v3.svg'), svg);
 
 console.log(
   `[favicons] generated ${sizes.map((size) => `${size}x${size}`).join(', ')} + favicon.ico`
