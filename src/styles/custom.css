@@ -165,6 +165,8 @@ html.pw-scrolled header.header {
 }
 
 header.header .site-title {
+  gap: 0.55rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: -0.015em;
 }
@@ -1305,7 +1307,7 @@ site-search button[data-open-modal] {
 /* Full artwork (including its wordmark), no tile or border. */
 header .site-title img {
   width: auto;
-  height: 52px;
+  height: 40px;
 }
 
 /* ---------- Menu icon states + animation ---------- */
