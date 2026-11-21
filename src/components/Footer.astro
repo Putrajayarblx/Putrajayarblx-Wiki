@@ -104,6 +104,7 @@ const issueBody = `Page: ${Astro.url.href}\n\n${t.body}\n\n`;
 const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
 ---
 
+<div class:list={['pw-bottom', hasSidebar && 'pw-bottom--article']} data-pagefind-ignore="all">
 <Default />
 
 <div
@@ -240,6 +241,7 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
     </div>
   </div>
 </footer>
+</div>
 
 <script>
   const content = document.querySelector('.sl-markdown-content');

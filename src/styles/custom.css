@@ -48,6 +48,8 @@
   --pw-glow-a: rgb(37 71 155 / 9%);
   --pw-glow-b: rgb(242 165 99 / 12%);
   --pw-card-bg: rgb(255 255 255 / 74%);
+  --pw-bottom-bg: #e8f1f7;
+  --pw-bottom-card-bg: #fff;
 }
 
 :root[data-theme='dark'] {
@@ -75,6 +77,8 @@
   --pw-glow-a: rgb(108 196 232 / 10%);
   --pw-glow-b: rgb(242 165 99 / 10%);
   --pw-card-bg: rgb(18 35 56 / 72%);
+  --pw-bottom-bg: #0e1d2f;
+  --pw-bottom-card-bg: #122338;
 }
 
 /* ---------- Page shell ---------- */
@@ -717,6 +721,73 @@ starlight-toc a[aria-current='true'] {
 .pagination-links a:hover {
   transform: translateY(-2px);
   border-color: var(--sl-color-accent);
+}
+
+/* ---------- Article bottom panel ---------- */
+.pw-bottom {
+  min-width: 0;
+}
+
+.pw-bottom--article {
+  position: relative;
+  margin: 2.25rem calc(-1 * var(--sl-content-pad-x, 1rem)) 0;
+  padding: 1.35rem var(--sl-content-pad-x, 1rem) 1.6rem;
+  border-top: 1px solid var(--sl-color-hairline);
+  background: var(--pw-bottom-bg);
+}
+
+.pw-bottom--article::before {
+  content: '';
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--pw-blue), var(--pw-teal), var(--pw-amber));
+}
+
+.pw-bottom--article > footer.sl-flex,
+.pw-bottom--article > footer.sl-flex > .meta {
+  margin-top: 0;
+}
+
+.pw-nextprev {
+  min-width: 0;
+}
+
+.pw-nextprev__title {
+  margin: 0 0 0.7rem;
+  color: var(--pw-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pw-nextprev .pagination-links {
+  gap: 0.65rem;
+}
+
+.pw-nextprev .pagination-links a {
+  border-radius: 10px;
+  padding: 0.85rem 0.95rem;
+  background: var(--pw-bottom-card-bg);
+  box-shadow: var(--pw-shadow-sm);
+}
+
+.pw-nextprev .pagination-links .link-title {
+  color: var(--sl-color-text);
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+@media (max-width: 50rem) {
+  .pw-bottom--article {
+    padding-top: 1.15rem;
+  }
+
+  .pw-nextprev .pagination-links a {
+    padding: 0.8rem 0.85rem;
+  }
 }
 
 /* ---------- Search ---------- */

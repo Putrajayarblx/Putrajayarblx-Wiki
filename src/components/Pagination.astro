@@ -1,0 +1,19 @@
+---
+import Default from '@astrojs/starlight/components/Pagination.astro';
+
+const route = Astro.locals.starlightRoute;
+const isMs = (route?.locale ?? 'en') === 'ms';
+const hasLinks = Boolean(route?.pagination?.prev || route?.pagination?.next);
+const label = isMs ? 'Artikel sebelumnya / seterusnya' : 'Previous / next article';
+---
+
+{
+  hasLinks && (
+    <section class="pw-nextprev" aria-labelledby="pw-nextprev-title">
+      <h2 class="pw-nextprev__title" id="pw-nextprev-title">
+        {label}
+      </h2>
+      <Default />
+    </section>
+  )
+}

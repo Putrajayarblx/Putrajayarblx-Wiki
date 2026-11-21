@@ -29,6 +29,7 @@ export default defineConfig({
         Head: './src/components/Head.astro',
         Header: './src/components/Header.astro',
         Footer: './src/components/Footer.astro',
+        Pagination: './src/components/Pagination.astro',
         SocialIcons: './src/components/SocialIcons.astro',
         MobileMenuFooter: './src/components/MobileMenuFooter.astro',
         MarkdownContent: './src/components/MarkdownContent.astro',
