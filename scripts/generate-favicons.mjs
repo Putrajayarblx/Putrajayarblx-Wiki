@@ -9,16 +9,12 @@ const sizes = [16, 32, 48, 96, 144, 180, 192, 512];
 
 await mkdir(output, { recursive: true });
 
-// Use the emblem from the full mark without the wordmark, which is
-// unreadable at favicon sizes. The crop is centred in a transparent square.
-const emblem = await sharp(source)
-  .extract({ left: 90, top: 0, width: 320, height: 245 })
-  .png()
-  .toBuffer();
+// Use the complete mark, uncropped, centred on a transparent square.
+const artwork = await sharp(source).png().toBuffer();
 
 const pngs = new Map();
 for (const size of sizes) {
-  const buffer = await sharp(emblem)
+  const buffer = await sharp(artwork)
     .resize(size, size, {
       fit: 'contain',
       background: { r: 0, g: 0, b: 0, alpha: 0 },
@@ -60,7 +56,7 @@ await writeFile(
   Buffer.concat([header, directory, ...entries.map((entry) => entry.png)])
 );
 
-const svgPng = await sharp(emblem)
+const svgPng = await sharp(artwork)
   .resize(64, 64, {
     fit: 'contain',
     background: { r: 0, g: 0, b: 0, alpha: 0 },
