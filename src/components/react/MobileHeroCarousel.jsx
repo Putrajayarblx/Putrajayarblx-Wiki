@@ -44,7 +44,6 @@ export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki ca
       tilt={0}
       perspective={1800}
       cornerRadius={19}
-      autoplay="off"
     />,
     target
   );
