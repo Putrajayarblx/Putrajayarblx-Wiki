@@ -921,7 +921,7 @@ site-search button[data-open-modal] {
   width: 2.5rem;
   height: 2.5rem;
   border: 1px solid var(--sl-color-hairline);
-  border-radius: 12px;
+  border-radius: 999px;
   background: color-mix(in srgb, var(--sl-color-accent) 8%, transparent);
   color: var(--sl-color-text);
   font-size: 1.15rem;
@@ -1112,6 +1112,15 @@ site-search button[data-open-modal] {
 
   header.header {
     padding-inline-end: calc(var(--sl-nav-pad-x, 1rem) + 2.9rem);
+  }
+
+  site-search button[data-open-modal] {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border-radius: 999px;
   }
 
   /* One menu only: our drawer replaces Starlight's sidebar toggle. */

@@ -20,6 +20,7 @@ const t = isMs
       start: 'Mula di sini',
       roles: 'Peranan dan jabatan',
       connect: 'Hubungi',
+      articles: 'Artikel',
       map: 'Peta',
       main: 'Laman utama',
       website: 'Laman web',
@@ -32,6 +33,7 @@ const t = isMs
       start: 'Getting started',
       roles: 'Roles and departments',
       connect: 'Connect',
+      articles: 'Articles',
       map: 'Map',
       main: 'Main site',
       website: 'Website',
@@ -133,6 +135,11 @@ const connect = [
     <a class="pw-mnav__row" href={`${base}/map/`}>
       <PwIcon name="bi-map" />
       <span>{t.map}</span>
+    </a>
+
+    <a class="pw-mnav__row" href={`${base}/#explore-the-wiki`}>
+      <PwIcon name="bi-journal-text" />
+      <span>{t.articles}</span>
     </a>
 
     <a class="pw-mnav__row" href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
