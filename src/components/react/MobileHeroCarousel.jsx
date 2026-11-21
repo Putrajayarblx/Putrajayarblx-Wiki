@@ -40,9 +40,24 @@ export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki ca
       cardWidth={300}
       aspectRatio={1.333}
       speed={10}
-      captions
+      captions={false}
+      gap={25}
       tilt={0}
+      curve={1}
       perspective={1800}
+      autoplay="drift"
+      interval={3}
+      direction="left"
+      momentum={0.6}
+      snap
+      pauseOnHover
+      focusOnClick
+      draggable
+      parallax={0.3}
+      stretch={0.5}
+      fadeColor="#120f17"
+      depthFade={0.55}
+      innerShade={0.6}
       cornerRadius={19}
     />,
     target
