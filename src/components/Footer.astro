@@ -265,12 +265,14 @@ const reportHref = `https://github.com/Putrajayarblx/Putrajayarblx-Wiki/issues/n
 
     const key = `pw-helpful:${location.pathname}`;
     const thanks = widget.querySelector<HTMLElement>('[data-pw-thanks]');
+    const question = widget.querySelector<HTMLElement>('p');
     const buttons = [...widget.querySelectorAll<HTMLButtonElement>('[data-pw-vote]')];
 
     const show = (vote: string) => {
       if (!thanks) return;
       thanks.hidden = false;
       thanks.textContent = vote === 'yes' ? thanksYes : thanksNo;
+      if (question) question.hidden = true;
     };
 
     const mark = (vote: string) => {

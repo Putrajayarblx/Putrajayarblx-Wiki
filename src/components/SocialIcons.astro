@@ -5,6 +5,8 @@ const isMs = (Astro.locals.starlightRoute?.locale ?? 'en') === 'ms';
 const connectLabel = isMs ? 'Hubungi' : 'Connect';
 const mainLabel = isMs ? 'Laman utama' : 'Main site';
 const mapLabel = isMs ? 'Peta' : 'Map';
+const articlesLabel = isMs ? 'Artikel' : 'Articles';
+const articlesHref = `${isMs ? '/ms' : ''}/#${isMs ? 'terokai-wiki' : 'explore-the-wiki'}`;
 const websiteLabel = isMs ? 'Laman web' : 'Website';
 
 const links = [
@@ -31,20 +33,37 @@ const links = [
 ];
 ---
 
-<a class="pw-top-link" href="https://putrajayarblx.github.io/putrajaya-of-roblox/">
+<a
+  class="pw-top-link"
+  href="https://putrajayarblx.github.io/putrajaya-of-roblox/"
+  aria-label={mainLabel}
+  title={mainLabel}
+>
   <PwIcon name="bi-house-door" />
   <span>{mainLabel}</span>
 </a>
 
-<a class="pw-top-link" href={`${isMs ? '/ms' : ''}/map/`}>
+<a
+  class="pw-top-link"
+  href={`${isMs ? '/ms' : ''}/map/`}
+  aria-label={mapLabel}
+  title={mapLabel}
+>
   <PwIcon name="bi-map" />
   <span>{mapLabel}</span>
+</a>
+
+<a class="pw-top-link" href={articlesHref} aria-label={articlesLabel} title={articlesLabel}>
+  <PwIcon name="bi-journal-text" />
+  <span>{articlesLabel}</span>
 </a>
 
 <div class="pw-cmenu" data-pw-connect>
   <button
     class="pw-cmenu__trigger"
     type="button"
+    aria-label={connectLabel}
+    title={connectLabel}
     aria-expanded="false"
     aria-controls="pw-connect-panel"
   >
