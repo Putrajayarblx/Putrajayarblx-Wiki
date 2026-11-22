@@ -297,9 +297,11 @@ nav.sidebar {
 
 .hero::before {
   position: absolute;
-  inset: -10% 0 auto 0;
+  inset: -10% auto auto 50%;
+  width: 100vw;
   height: 120%;
   z-index: -1;
+  transform: translateX(-50%);
   background:
     radial-gradient(circle at 20% 30%, var(--pw-glow-a), transparent 26rem),
     radial-gradient(circle at 80% 10%, var(--pw-glow-b), transparent 26rem);
@@ -1479,9 +1481,11 @@ header .site-title img {
 /* Soft gradient wash behind the hero Ã¢â‚¬â€ no ray pattern, no logo artwork. */
 .hero::after {
   position: absolute;
-  inset: -30% -8% auto -8%;
-  z-index: -1;
+  inset: -30% auto auto 50%;
+  width: 100vw;
   height: 132%;
+  transform: translateX(-50%);
+  z-index: -1;
   background:
     radial-gradient(
       64% 80% at 78% 14%,
@@ -1496,6 +1500,15 @@ header .site-title img {
   filter: blur(10px);
   content: '';
   pointer-events: none;
+}
+
+@media (min-width: 72rem) {
+  /* The desktop article column is nudged right to balance the TOC;
+     pull the full-bleed washes back to the viewport centre. */
+  .hero::before,
+  .hero::after {
+    left: calc(50% - 1.5rem);
+  }
 }
 
 /* ---------- Chip colours ---------- */
