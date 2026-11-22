@@ -1,5 +1,5 @@
 /* ============================================================
-   Putrajaya Wiki â€” theme
+   Putrajaya Wiki Ã¢â‚¬â€ theme
    Palette and typography inspired by mys.wiki (Public Sans,
    paper/ink neutrals, red/blue/amber accents, soft cards).
    ============================================================ */
@@ -1476,7 +1476,7 @@ header .site-title img {
   font-size: 0.7rem;
 }
 
-/* Soft gradient wash behind the hero â€” no ray pattern, no logo artwork. */
+/* Soft gradient wash behind the hero Ã¢â‚¬â€ no ray pattern, no logo artwork. */
 .hero::after {
   position: absolute;
   inset: -30% -8% auto -8%;
@@ -1899,12 +1899,12 @@ header .site-title img {
   }
 }
 
-/* ColourBends backdrop for the whole hero. */
-.hero.pw-hero-bends-host {
+/* DotGrid backdrop for the whole hero. */
+.hero.pw-hero-dots-host {
   isolation: isolate;
 }
 
-.pw-hero-bends {
+.pw-hero-dots {
   position: absolute;
   inset-block: 0;
   left: 50%;
@@ -1913,23 +1913,18 @@ header .site-title img {
   overflow: hidden;
   transform: translateX(-50%);
   pointer-events: none;
-  opacity: 0.8;
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
 }
 
-.hero.pw-hero-bends-host > .hero-html,
-.hero.pw-hero-bends-host > .stack {
+.hero.pw-hero-dots-host > .hero-html,
+.hero.pw-hero-dots-host > .stack {
   position: relative;
   z-index: 1;
 }
 
-.hero.pw-hero-bends-host > .stack {
+.hero.pw-hero-dots-host > .stack {
   z-index: 50;
-}
-
-:root[data-theme='dark'] .pw-hero-bends {
-  opacity: 0.9;
 }
 
 @media (min-width: 84rem) {

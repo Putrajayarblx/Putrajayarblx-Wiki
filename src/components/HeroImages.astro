@@ -3,8 +3,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import MobileHeroCarousel from './react/MobileHeroCarousel';
-import HeroTitleGradient from './react/HeroTitleGradient';
-import HeroColorBends from './react/HeroColorBends';
+import HeroDotGrid from './react/HeroDotGrid';
 
 const locale = Astro.locals.starlightRoute?.locale ?? 'en';
 const isMs = locale === 'ms';
@@ -50,8 +49,7 @@ const categories = candidates
 {
   isHome && categories.length >= 3 && (
     <>
-      <HeroColorBends client:load />
-      <HeroTitleGradient client:load />
+      <HeroDotGrid client:load />
       <MobileHeroCarousel
         client:media="(max-width: 50rem)"
         pool={categories}
@@ -67,3 +65,5 @@ const categories = candidates
     </>
   )
 }
+
+
