@@ -122,9 +122,9 @@
   content: attr(data-card-label);
   position: absolute;
   z-index: 3;
-  left: calc(var(--cc-card-w, 0px) / -2 + 12px);
-  top: calc(var(--cc-card-h, 0px) / 2 - 32px);
-  max-width: calc(var(--cc-card-w, 0px) - 24px);
+  left: calc(var(--cc-card-w, 0px) / -2 + 14px);
+  top: calc(var(--cc-card-h, 0px) / 2 - 34px);
+  max-width: calc(var(--cc-card-w, 0px) - 28px);
   overflow: hidden;
   color: #ffffff;
   font-size: 0.74rem;
@@ -138,7 +138,7 @@
   white-space: nowrap;
   pointer-events: none;
   opacity: calc(0.08 + 0.92 * (1 - var(--cc-depth, 0)));
-  transform: translate3d(0, 0, 40px);
+  transform: translate3d(0, 0, 10px);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }

@@ -45,7 +45,7 @@ const DESKTOP = {
   cardWidth: 320,
   aspectRatio: 1.333,
   gap: 20,
-  curve: 1,
+  curve: 0.4,
   tilt: -10,
   perspective: 2500,
   captions: false,

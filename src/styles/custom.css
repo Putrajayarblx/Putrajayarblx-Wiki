@@ -392,6 +392,23 @@ nav.sidebar {
 
   .hero:has(.pw-desktop-carousel) > .stack {
     grid-row: 1;
+    align-items: center;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero:has(.pw-desktop-carousel) .copy {
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  .hero:has(.pw-desktop-carousel) h1,
+  .hero:has(.pw-desktop-carousel) .tagline {
+    margin-inline: auto;
+  }
+
+  .hero:has(.pw-desktop-carousel) .actions {
+    justify-content: center;
   }
 }
 
