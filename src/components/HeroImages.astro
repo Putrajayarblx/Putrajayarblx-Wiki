@@ -3,6 +3,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import MobileHeroCarousel from './react/MobileHeroCarousel';
+import HeroTitleGradient from './react/HeroTitleGradient';
 
 const locale = Astro.locals.starlightRoute?.locale ?? 'en';
 const isMs = locale === 'ms';
@@ -48,6 +49,7 @@ const categories = candidates
 {
   isHome && categories.length >= 3 && (
     <>
+      <HeroTitleGradient client:load />
       <MobileHeroCarousel
         client:media="(max-width: 50rem)"
         pool={categories}
