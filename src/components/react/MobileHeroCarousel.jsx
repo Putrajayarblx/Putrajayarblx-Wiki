@@ -45,7 +45,7 @@ const DESKTOP = {
   cardWidth: 320,
   aspectRatio: 1.333,
   gap: 20,
-  curve: 0.4,
+  curve: 0.65,
   tilt: -10,
   perspective: 2500,
   captions: false,
@@ -89,9 +89,10 @@ export default function MobileHeroCarousel({
   // placed opposite each other so they are never on screen at the same time.
   const ring = useMemo(() => {
     if (items.length === 0) return items;
-    const repeats = Math.max(1, Math.ceil(8 / items.length));
+    const minimum = desktop ? 12 : 8;
+    const repeats = Math.max(1, Math.ceil(minimum / items.length));
     return Array.from({ length: repeats }, () => items).flat();
-  }, [items]);
+  }, [items, desktop]);
 
   useEffect(() => {
     const selector = desktop

@@ -138,7 +138,7 @@
   white-space: nowrap;
   pointer-events: none;
   opacity: calc(0.08 + 0.92 * (1 - var(--cc-depth, 0)));
-  transform: translate3d(0, 0, 10px);
+  transform: translate3d(0, 0, 14px);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
