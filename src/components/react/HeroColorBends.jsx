@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import ColorBends from './ColorBends';
 
-const COLORS = ['#d4cadc'];
+const COLORS = ['#185a9d'];
 
 export default function HeroColorBends() {
   const [target, setTarget] = useState(null);
@@ -44,9 +44,10 @@ export default function HeroColorBends() {
         bandWidth={6}
         transparent
         autoRotate={0}
-        color="#d4cadc"
+        color="#185a9d"
       />
     </div>,
     target
   );
 }
+
