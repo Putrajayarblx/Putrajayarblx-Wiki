@@ -1895,6 +1895,10 @@ header .site-title img {
     margin-top: 0.25rem;
   }
 
+  .pw-badge-row {
+    margin-top: 7rem;
+  }
+
   .hero:has(.pw-desktop-carousel) > .hero-html {
     margin-top: -5rem;
   }
