@@ -1887,8 +1887,12 @@ header .site-title img {
     margin-right: 0;
   }
 
-  .hero:has(.pw-desktop-carousel) .actions {
+  .hero:has(.pw-desktop-carousel) .copy {
     margin-top: 2.5rem;
+  }
+
+  .hero:has(.pw-desktop-carousel) .actions {
+    margin-top: 0.25rem;
   }
 
   .hero:has(.pw-desktop-carousel) > .hero-html {
