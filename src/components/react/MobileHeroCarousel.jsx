@@ -46,7 +46,7 @@ export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki ca
       items={ring}
       preset="panorama"
       intro="assemble"
-      cardWidth={300}
+      cardWidth={200}
       aspectRatio={1.333}
       speed={10}
       captions={false}
