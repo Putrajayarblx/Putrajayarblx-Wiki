@@ -1868,8 +1868,15 @@ header .site-title img {
   .pw-desktop-carousel {
     display: block;
     width: 100%;
-    height: 19rem;
+    height: 22rem;
     margin: 0 auto;
+  }
+}
+
+@media (min-width: 84rem) {
+  .pw-desktop-carousel {
+    width: calc(100% + 14rem);
+    margin-inline: -7rem;
   }
 }
 
