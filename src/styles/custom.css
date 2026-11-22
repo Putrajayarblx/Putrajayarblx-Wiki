@@ -415,7 +415,8 @@ nav.sidebar {
 
   .hero:has(.pw-desktop-carousel) > .stack {
     position: relative;
-    z-index: 2;
+    z-index: 50;
+    transform: translateZ(0);
     grid-row: 1;
     align-items: center;
     margin-inline: auto;
@@ -1898,45 +1899,37 @@ header .site-title img {
   }
 }
 
-/* ColourBends backdrop stays clipped to the carousel panel. */
-.pw-carousel-shell {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+/* ColourBends backdrop for the whole hero. */
+.hero.pw-hero-bends-host {
   isolation: isolate;
-  border-radius: 22px;
-  background: color-mix(in srgb, var(--sl-color-bg) 86%, var(--pw-teal) 14%);
 }
 
-.pw-carousel-shell > .circular-carousel {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-}
-
-.pw-carousel-bends {
+.pw-hero-bends {
   position: absolute;
-  inset: 0;
+  inset-block: 0;
+  left: 50%;
+  width: 100vw;
   z-index: 0;
   overflow: hidden;
-  border-radius: inherit;
-  opacity: 0.38;
+  transform: translateX(-50%);
   pointer-events: none;
+  opacity: 0.52;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
 }
 
-:root[data-theme='dark'] .pw-carousel-bends {
-  opacity: 0.6;
+.hero.pw-hero-bends-host > .hero-html,
+.hero.pw-hero-bends-host > .stack {
+  position: relative;
+  z-index: 1;
 }
 
-@media (min-width: 50.001rem) {
-  .pw-carousel-shell {
-    border-radius: 0;
-  }
+.hero.pw-hero-bends-host > .stack {
+  z-index: 50;
+}
 
-  .pw-carousel-bends {
-    opacity: 0.32;
-  }
+:root[data-theme='dark'] .pw-hero-bends {
+  opacity: 0.68;
 }
 
 @media (min-width: 84rem) {
