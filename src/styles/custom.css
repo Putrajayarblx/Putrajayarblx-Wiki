@@ -1878,6 +1878,7 @@ header .site-title img {
     width: 100vw;
     max-width: none;
     flex: 0 0 auto;
+    height: 28rem;
     margin-left: calc(50% - 50vw);
     margin-right: 0;
   }
@@ -1887,7 +1888,7 @@ header .site-title img {
   }
 
   .hero:has(.pw-desktop-carousel) > .hero-html {
-    margin-top: -1.5rem;
+    margin-top: -2rem;
   }
 }
 
