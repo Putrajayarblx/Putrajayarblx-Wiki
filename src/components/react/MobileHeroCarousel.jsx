@@ -12,8 +12,67 @@ const shuffle = items => {
   return next;
 };
 
-export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki category' }) {
+const MOBILE = {
+  preset: 'panorama',
+  intro: 'assemble',
+  cardWidth: 200,
+  aspectRatio: 1.333,
+  gap: 25,
+  curve: 1,
+  tilt: 0,
+  perspective: 1800,
+  captions: false,
+  autoplay: 'drift',
+  interval: 3,
+  direction: 'left',
+  momentum: 0.6,
+  speed: 10,
+  snap: true,
+  pauseOnHover: true,
+  focusOnClick: true,
+  draggable: true,
+  parallax: 0.3,
+  stretch: 0.5,
+  fadeColor: 'var(--sl-color-bg)',
+  depthFade: 0.55,
+  innerShade: 0.6,
+  cornerRadius: 19,
+};
+
+const DESKTOP = {
+  preset: 'cylinder',
+  intro: 'assemble',
+  cardWidth: 320,
+  aspectRatio: 1.333,
+  gap: 20,
+  curve: 1,
+  tilt: -10,
+  perspective: 2500,
+  captions: false,
+  autoplay: 'drift',
+  interval: 3,
+  direction: 'left',
+  momentum: 0.6,
+  speed: 10,
+  snap: true,
+  pauseOnHover: true,
+  focusOnClick: true,
+  draggable: true,
+  parallax: 0.3,
+  stretch: 0.3,
+  fadeColor: 'var(--sl-color-bg)',
+  depthFade: 0.9,
+  innerShade: 0.6,
+  cornerRadius: 19,
+};
+
+export default function MobileHeroCarousel({
+  pool = [],
+  categoryLabel = 'Wiki category',
+  variant = 'mobile',
+}) {
   const [target, setTarget] = useState(null);
+  const desktop = variant === 'desktop';
   const items = useMemo(
     () =>
       shuffle(pool).map(category => ({
@@ -25,7 +84,7 @@ export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki ca
     [pool, categoryLabel]
   );
 
-  // A panorama needs more than one card per quadrant to read as a strip.
+  // A ring needs more than one card per quadrant to read as a strip.
   // Repeat the shuffled set so every category still appears, with copies
   // placed opposite each other so they are never on screen at the same time.
   const ring = useMemo(() => {
@@ -35,40 +94,17 @@ export default function MobileHeroCarousel({ pool = [], categoryLabel = 'Wiki ca
   }, [items]);
 
   useEffect(() => {
-    const slot = document.querySelector('[data-pw-mobile-carousel]');
+    const selector = desktop
+      ? '[data-pw-desktop-carousel]'
+      : '[data-pw-mobile-carousel]';
+    const slot = document.querySelector(selector);
     if (slot) setTarget(slot);
-  }, []);
+  }, [desktop]);
 
   if (!target || ring.length === 0) return null;
 
   return createPortal(
-    <CircularCarousel
-      items={ring}
-      preset="panorama"
-      intro="assemble"
-      cardWidth={200}
-      aspectRatio={1.333}
-      speed={10}
-      captions={false}
-      gap={25}
-      tilt={0}
-      curve={1}
-      perspective={1800}
-      autoplay="drift"
-      interval={3}
-      direction="left"
-      momentum={0.6}
-      snap
-      pauseOnHover
-      focusOnClick
-      draggable
-      parallax={0.3}
-      stretch={0.5}
-      fadeColor="var(--sl-color-bg)"
-      depthFade={0.55}
-      innerShade={0.6}
-      cornerRadius={19}
-    />,
+    <CircularCarousel items={ring} {...(desktop ? DESKTOP : MOBILE)} />,
     target
   );
 }

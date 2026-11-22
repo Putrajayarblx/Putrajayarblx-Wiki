@@ -137,8 +137,10 @@
     0 0 12px rgb(0 0 0 / 48%);
   white-space: nowrap;
   pointer-events: none;
-  opacity: calc(0.5 + 0.5 * (1 - var(--cc-depth, 0)));
+  opacity: calc(0.08 + 0.92 * (1 - var(--cc-depth, 0)));
   transform: translate3d(0, 0, 40px);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .circular-carousel__inner {
