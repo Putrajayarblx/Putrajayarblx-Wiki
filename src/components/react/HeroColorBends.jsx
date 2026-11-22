@@ -38,7 +38,7 @@ export default function HeroColorBends() {
         warpStrength={0.9}
         mouseInfluence={1}
         parallax={2}
-        noise={0.37}
+        noise={0.1}
         iterations={1}
         intensity={1.5}
         bandWidth={6}
