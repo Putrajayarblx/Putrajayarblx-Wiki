@@ -1899,42 +1899,6 @@ header .site-title img {
   }
 }
 
-/* DotGrid backdrop for the whole hero. */
-.hero.pw-hero-dots-host {
-  isolation: isolate;
-}
-
-.hero.pw-hero-dots-host::before {
-  display: none;
-}
-
-.pw-hero-dots {
-  position: absolute;
-  inset-block: 0;
-  left: 50%;
-  width: 100vw;
-  z-index: 0;
-  overflow: hidden;
-  transform: translate(-50%, -1.5rem);
-  pointer-events: none;
-}
-
-.hero.pw-hero-dots-host > .hero-html,
-.hero.pw-hero-dots-host > .stack {
-  position: relative;
-  z-index: 1;
-}
-
-.hero.pw-hero-dots-host > .stack {
-  z-index: 50;
-}
-
-@media (min-width: 50.001rem) {
-  .pw-hero-dots {
-    left: calc(50% - var(--sl-content-pad-x, 1.5rem));
-  }
-}
-
 @media (min-width: 84rem) {
   .pw-desktop-carousel {
     width: 100vw;
