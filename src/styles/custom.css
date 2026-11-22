@@ -1915,7 +1915,7 @@ header .site-title img {
   width: 100vw;
   z-index: 0;
   overflow: hidden;
-  transform: translateX(-50%);
+  transform: translate(-50%, -1.5rem);
   pointer-events: none;
 }
 
@@ -1954,7 +1954,7 @@ header .site-title img {
   }
 
   .pw-badge-row {
-    margin-top: 0.25rem;
+    margin-top: 7rem;
   }
 
   .hero:has(.pw-desktop-carousel) > .hero-html {
