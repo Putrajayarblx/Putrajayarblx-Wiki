@@ -18,7 +18,7 @@ export default function HeroDotGrid() {
   return createPortal(
     <div className="pw-hero-dots" aria-hidden="true">
       <DotGrid
-        baseColor="#a9c2d9"
+        baseColor="#8aa9c6"
         activeColor="#185a9d"
         shape="circle"
         dotSize={4}
@@ -34,8 +34,8 @@ export default function HeroDotGrid() {
         stretch={0.5}
         glow={0.5}
         fade={0}
-        opacity={0.6}
-        intro
+        opacity={0.85}
+        intro={false}
         mouseInteraction
         clickShock
       />
@@ -43,4 +43,5 @@ export default function HeroDotGrid() {
     target
   );
 }
+
 
