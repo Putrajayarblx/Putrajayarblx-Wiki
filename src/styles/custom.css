@@ -1913,8 +1913,6 @@ header .site-title img {
   overflow: hidden;
   transform: translateX(-50%);
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
 }
 
 .hero.pw-hero-dots-host > .hero-html,
@@ -1925,6 +1923,12 @@ header .site-title img {
 
 .hero.pw-hero-dots-host > .stack {
   z-index: 50;
+}
+
+@media (min-width: 50.001rem) {
+  .pw-hero-dots {
+    left: calc(50% - var(--sl-content-pad-x, 1.5rem));
+  }
 }
 
 @media (min-width: 84rem) {

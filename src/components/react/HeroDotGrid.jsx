@@ -33,7 +33,7 @@ export default function HeroDotGrid() {
         swell={0.8}
         stretch={0.5}
         glow={0.5}
-        fade={0.18}
+        fade={0}
         opacity={0.6}
         intro
         mouseInteraction
@@ -43,3 +43,4 @@ export default function HeroDotGrid() {
     target
   );
 }
+
