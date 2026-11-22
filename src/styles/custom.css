@@ -1910,10 +1910,9 @@ header .site-title img {
 
 .pw-hero-dots {
   position: absolute;
-  top: 0;
+  inset-block: 0;
   left: 50%;
   width: 100vw;
-  height: 100vh;
   z-index: 0;
   overflow: hidden;
   transform: translateX(-50%);
@@ -1955,7 +1954,7 @@ header .site-title img {
   }
 
   .pw-badge-row {
-    margin-top: 7rem;
+    margin-top: 0.25rem;
   }
 
   .hero:has(.pw-desktop-carousel) > .hero-html {
