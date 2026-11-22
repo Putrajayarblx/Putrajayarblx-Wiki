@@ -1868,15 +1868,26 @@ header .site-title img {
   .pw-desktop-carousel {
     display: block;
     width: 100%;
-    height: 22rem;
+    height: 20rem;
     margin: 0 auto;
   }
 }
 
 @media (min-width: 84rem) {
   .pw-desktop-carousel {
-    width: calc(100% + 14rem);
-    margin-inline: -7rem;
+    width: 100vw;
+    max-width: none;
+    flex: 0 0 auto;
+    margin-left: calc(50% - 50vw);
+    margin-right: 0;
+  }
+
+  .hero:has(.pw-desktop-carousel) .actions {
+    margin-top: 2.5rem;
+  }
+
+  .hero:has(.pw-desktop-carousel) > .hero-html {
+    margin-top: -1.5rem;
   }
 }
 
