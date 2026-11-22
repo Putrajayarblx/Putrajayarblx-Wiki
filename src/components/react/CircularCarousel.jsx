@@ -922,7 +922,9 @@ const CircularCarousel = ({
         ...style,
         '--cc-fade': fadeColor,
         '--cc-radius': `${Math.max(0, cornerRadius)}px`,
-        '--cc-inner': (1 - clamp(innerShade, 0, 1)).toFixed(3)
+        '--cc-inner': (1 - clamp(innerShade, 0, 1)).toFixed(3),
+        '--cc-card-w': `${cardW}px`,
+        '--cc-card-h': `${cardH}px`
       }}
       role="region"
       aria-roledescription="carousel"
@@ -954,6 +956,7 @@ const CircularCarousel = ({
                   }}
                   className="circular-carousel__card"
                   data-cc-index={index}
+                  data-card-label={item.title || item.alt || ''}
                   role="group"
                   aria-roledescription="slide"
                   aria-label={`${item.title || item.alt || `Image ${index + 1}`}, ${
