@@ -914,6 +914,37 @@ const CircularCarousel = ({
     );
   };
 
+  const renderCardLabel = item => {
+    const text = item.title || item.alt || '';
+    if (!text) return null;
+    const charWidth = 7.6;
+    const bend = curveValue > 0.001 ? radius / curveValue : 0;
+    const origin = -cardW / 2 + 20;
+    return (
+      <span className="circular-carousel__card-label" aria-hidden="true">
+        {[...text].map((char, index) => {
+          const along = origin + index * charWidth;
+          const alpha = bend ? along / bend : 0;
+          const shift = bend ? bend * Math.sin(alpha) : along;
+          const sink = bend ? bend * (1 - Math.cos(alpha)) : 0;
+          const depth = layout.inward ? sink : -sink;
+          const turn = ((layout.inward ? -alpha : alpha) * 180) / Math.PI;
+          return (
+            <span
+              key={index}
+              className="circular-carousel__card-char"
+              style={{
+                transform: `translate3d(${shift - charWidth / 2}px, 0, ${depth + 2}px) rotateY(${turn}deg)`
+              }}
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          );
+        })}
+      </span>
+    );
+  };
+
   return (
     <div
       ref={rootRef}
@@ -965,6 +996,7 @@ const CircularCarousel = ({
                 >
                   {tiles.map(tile => renderTile(item, tile, false, index))}
                   {layout.backfaces && tiles.map(tile => renderTile(item, tile, true, index))}
+                  {renderCardLabel(item)}
                 </div>
               ))}
             </div>

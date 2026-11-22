@@ -127,28 +127,33 @@
   opacity: var(--cc-depth, 0);
 }
 
-.circular-carousel__card::after {
-  content: attr(data-card-label);
+.circular-carousel__card-label {
   position: absolute;
-  z-index: 3;
-  left: calc(var(--cc-card-w, 0px) / -2 + 20px);
+  left: 0;
   top: calc(var(--cc-card-h, 0px) / 2 - 42px);
-  max-width: calc(var(--cc-card-w, 0px) - 40px);
-  overflow: hidden;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  opacity: calc(0.08 + 0.92 * (1 - var(--cc-depth, 0)));
+}
+
+.circular-carousel__card-char {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7.6px;
   color: #ffffff;
   font-size: 0.76rem;
   font-weight: 750;
   line-height: 1.25;
-  letter-spacing: 0.01em;
-  text-overflow: ellipsis;
+  text-align: center;
   text-shadow:
     0 1px 2px rgb(0 0 0 / 90%),
     0 0 10px rgb(0 0 0 / 65%),
     0 0 22px rgb(0 0 0 / 35%);
-  white-space: nowrap;
+  white-space: pre;
   pointer-events: none;
-  opacity: calc(0.08 + 0.92 * (1 - var(--cc-depth, 0)));
-  transform: translate3d(0, 0, 14px);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
