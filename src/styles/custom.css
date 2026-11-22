@@ -1913,7 +1913,7 @@ header .site-title img {
   overflow: hidden;
   transform: translateX(-50%);
   pointer-events: none;
-  opacity: 0.52;
+  opacity: 0.8;
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
 }
@@ -1929,7 +1929,7 @@ header .site-title img {
 }
 
 :root[data-theme='dark'] .pw-hero-bends {
-  opacity: 0.68;
+  opacity: 0.9;
 }
 
 @media (min-width: 84rem) {
