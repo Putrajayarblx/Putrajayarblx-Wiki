@@ -1910,9 +1910,10 @@ header .site-title img {
 
 .pw-hero-dots {
   position: absolute;
-  inset-block: 0;
+  top: 0;
   left: 50%;
   width: 100vw;
+  height: 100vh;
   z-index: 0;
   overflow: hidden;
   transform: translateX(-50%);
