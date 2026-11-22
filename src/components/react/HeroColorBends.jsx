@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import ColorBends from './ColorBends';
 
-const COLORS = ['#ff5c7a', '#8a5cff', '#00ffd1'];
+const COLORS = ['#d4cadc'];
 
 export default function HeroColorBends() {
   const [target, setTarget] = useState(null);
