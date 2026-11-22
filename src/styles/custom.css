@@ -1904,6 +1904,10 @@ header .site-title img {
   isolation: isolate;
 }
 
+.hero.pw-hero-dots-host::before {
+  display: none;
+}
+
 .pw-hero-dots {
   position: absolute;
   inset-block: 0;
