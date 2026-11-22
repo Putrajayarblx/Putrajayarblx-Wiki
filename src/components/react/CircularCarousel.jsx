@@ -934,7 +934,7 @@ const CircularCarousel = ({
               key={index}
               className="circular-carousel__card-char"
               style={{
-                transform: `translate3d(${shift - charWidth / 2}px, 0, ${depth + 2}px) rotateY(${turn}deg)`
+                transform: `translate3d(${shift - charWidth / 2}px, 0, ${depth + 12}px) rotateY(${turn}deg)`
               }}
             >
               {char === ' ' ? '\u00A0' : char}
