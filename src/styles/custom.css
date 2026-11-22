@@ -1898,6 +1898,47 @@ header .site-title img {
   }
 }
 
+/* ColourBends backdrop stays clipped to the carousel panel. */
+.pw-carousel-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--sl-color-bg) 86%, var(--pw-teal) 14%);
+}
+
+.pw-carousel-shell > .circular-carousel {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+}
+
+.pw-carousel-bends {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+:root[data-theme='dark'] .pw-carousel-bends {
+  opacity: 0.6;
+}
+
+@media (min-width: 50.001rem) {
+  .pw-carousel-shell {
+    border-radius: 0;
+  }
+
+  .pw-carousel-bends {
+    opacity: 0.32;
+  }
+}
+
 @media (min-width: 84rem) {
   .pw-desktop-carousel {
     width: 100vw;
