@@ -29,24 +29,29 @@ infobox:
     - label: Link
       value: Roblox Group
       href: https://www.roblox.com/communities/693458337/aerojaya#!/about
+    - label: Link
+      value: Website
+      href: https://aerojaya.vercel.app/
 ---
 **Aerojaya Charter Services (stylized as aerojaya)** is an elite aviation charter service focused on high-end aerial sightseeing and private transport. We provide passengers with an immersive flight experience, utilizing a modern fleet equipped for precision and reliability.
 
 
+
+> ![](/uploads/banner.png)
+
+> ![](/uploads/banner.png)
 
 ## Fleet
 
 Aerojaya currently operates several helicopters as part of its fleet.
 
 
-|  |  |  |
-| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
-| **Aircraft** | **Type** | **Use** |
-| Agusta Westland AW109 | Helicopter | A twin-engine light helicopter optimized for agile maneuvers, rapid transit, and dynamic scenic routes. |
-| Agusta Westland AW139 | Helicopter | A medium-sized twin-engine helicopter designed for maximum comfort, stability, and extended sightseeing tours. |
+| **Image** | **Aircraft** | **Type** | **Use** |
+| ----------------------------------------------------------------------------------------------------------- | ---------------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| ![](/uploads/fleet-aw109.jpg) | Augusta Westland AW109 | Helicopter | A twin-engine light helicopter optimized for agile maneuvers, rapid transit, and dynamic scenic routes. |
+| ![](/uploads/fleet-aw139.jpg) | Augusta Westland AW139 | Helicopter | A medium-sized twin-engine helicopter designed for maximum comfort, stability, and extended sightseeing tours. |
 
 
-  
 :::note
 
 Aerojaya is owned by a Putrajaya.rblx developer.
