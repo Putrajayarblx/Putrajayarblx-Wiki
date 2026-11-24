@@ -768,7 +768,80 @@ nav.sidebar {
   border-spacing: 0;
   background: var(--pw-card-bg);
   box-shadow: var(--pw-shadow-sm);
-  overflow: hidden;
+  overflow-x: auto;
+}
+
+.sl-markdown-content :is(th, td) {
+  vertical-align: top;
+}
+
+.sl-markdown-content table img {
+  width: 9rem;
+  max-width: none;
+  height: auto;
+}
+
+/* Image-led tables become stacked cards on phones so nothing scrolls sideways. */
+@media (max-width: 50rem) {
+  .sl-markdown-content table:has(tbody td:first-child img) {
+    display: block;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) thead {
+    display: none;
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) tbody {
+    display: block;
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) tr {
+    position: relative;
+    display: block;
+    min-height: 6.5rem;
+    padding: 0.9rem 0 0.9rem calc(8rem + 0.9rem);
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) tr + tr {
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) td:first-child {
+    position: absolute;
+    top: 0.9rem;
+    left: 0;
+    width: 8rem;
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) td:nth-child(2) {
+    font-weight: 650;
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) td:nth-child(3) {
+    margin-top: 0.1rem;
+    color: var(--pw-muted);
+    font-size: 0.9rem;
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) td:nth-child(4) {
+    margin-top: 0.4rem;
+    color: var(--pw-muted);
+  }
+
+  .sl-markdown-content table:has(tbody td:first-child img) td img {
+    width: 100%;
+  }
 }
 
 .sl-markdown-content th {
