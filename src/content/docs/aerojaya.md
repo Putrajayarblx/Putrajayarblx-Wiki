@@ -35,6 +35,11 @@ infobox:
 ---
 **Aerojaya Charter Services (stylized as aerojaya)** is an elite aviation charter service focused on high-end aerial sightseeing and private transport. We provide passengers with an immersive flight experience, utilizing a modern fleet equipped for precision and reliability.
 
+> ![](/uploads/aerojaya_banner.png)
+>
+> An official Aerojaya advertisement promoting the company
+
+![](/uploads/banner.png)
 
 ## Fleet
 
